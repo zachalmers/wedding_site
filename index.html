@@ -144,6 +144,17 @@
     .status-text.error{color:#fca5a5}
     .status-text.success{color:#86efac}
 
+    /* Slider layout utilities (moved from inline styles) */
+    .slider-row{display:flex;align-items:flex-start;gap:12px}
+    .emoji{margin-top:10px}
+    .scale-grid{position:relative;height:16px;font-size:11px;color:var(--muted);margin-top:6px}
+    .scale-grid span{position:absolute;top:0}
+    .s0{left:0}
+    .s25{left:25%;transform:translateX(-50%);text-align:center}
+    .s50{left:50%;transform:translateX(-50%);text-align:center}
+    .s75{left:75%;transform:translateX(-50%);text-align:center}
+    .s100{right:0}
+
     /* Range slider (match inputs) */
     input[type=range]{-webkit-appearance:none;height:38px;background:transparent}
     input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:linear-gradient(90deg, rgba(255,255,255,.18), rgba(255,255,255,.08));border:1px solid var(--border)}
@@ -292,20 +303,20 @@
 
         <div class="full">
           <label for="likelihood" style="font-size:18px;font-weight:500;color:var(--text);letter-spacing:.1px">Do you think you’ll be able to attend? <span class="tiny">(Not an RSVP, vibes only)</span></label>
-          <div style="display:flex;align-items:flex-start;gap:12px">
-            <span class="tiny" style="margin-top:10px">🤷</span>
+          <div class="slider-row">
+            <span class="tiny emoji">🤷</span>
             <div style="flex:1;display:flex;flex-direction:column;align-items:stretch;">
               <input id="likelihood" name="likelihood" type="range" min="1" max="5" step="1" value="3" aria-label="Likelihood to attend (1-5)" />
               <!-- Lock labels to exact slider percentages -->
-              <div class="scale" aria-hidden="true" style="position:relative;height:16px;font-size:11px;color:var(--muted);margin-top:6px">
-                <span style="position:absolute;left:0;top:0;">Unlikely</span>
-                <span style="position:absolute;left:25%;top:0;transform:translateX(-50%);text-align:center;">Maybe</span>
-                <span style="position:absolute;left:50%;top:0;transform:translateX(-50%);text-align:center;">Probably</span>
-                <span style="position:absolute;left:75%;top:0;transform:translateX(-50%);text-align:center;">Very likely</span>
-                <span style="position:absolute;right:0;top:0;">Definitely</span>
+              <div class="scale-grid" aria-hidden="true">
+                <span class="s0">Unlikely</span>
+                <span class="s25">Maybe</span>
+                <span class="s50">Probably</span>
+                <span class="s75">Very likely</span>
+                <span class="s100">Definitely</span>
               </div>
             </div>
-            <span class="tiny" style="margin-top:10px">🎉</span>
+            <span class="tiny emoji">🎉</span>
           </div>
         </div>
 
