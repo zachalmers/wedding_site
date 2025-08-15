@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="assets/styles.css?v=20250814" />
 </head>
 <body>
+  <span class="sr-only">Oaxaca destination wedding — Umangi Patel &amp; Zachary Chalmers — Zach Chalmers.</span>
   <div class="bg" id="bg"></div>
   <div class="grain" aria-hidden="true"></div>
   <section class="hero" aria-label="Oaxaca City — background slideshow">
@@ -204,110 +205,84 @@
     // ===== Background Slideshow (Ken Burns-style) using local assets =====
     const bg = document.getElementById('bg');
 
-    // --- Discover background photos ---
-    // 1) Prefer a ./assets/photos.json manifest (validated),
-    // 2) Otherwise probe common name patterns (.jpeg/.jpg) and keep only existing files.
-    async function discoverPhotos(){
-      // Preferred: a manifest if present; validate entries actually load
-      try{
-        const res = await fetch('./assets/photos.json', { cache: 'no-store' });
-        if(res.ok){
-          const list = await res.json();
-          if (Array.isArray(list) && list.length){
-            const normalized = list.map(p => p.startsWith('./') ? p : (p.startsWith('assets/') ? `./${p}` : `./assets/${p}`));
-            const existing = await preloadExisting(normalized);
-            if (existing.length) return existing;
-          }
-        }
-      }catch{}
-
-      // Fallback: probe common filename patterns (validate existence)
-      const patterns = [
-        i => `./assets/bg${i}.jpeg`,
-        i => `./assets/photo${i}.jpeg`,
-        i => `./assets/img${i}.jpeg`,
-        i => `./assets/bg${i}.jpg`,
-        i => `./assets/photo${i}.jpg`,
-        i => `./assets/img${i}.jpg`,
-      ];
-      const max = 60; // try up to 60 per pattern to allow growth
-      const candidates = [];
-      for (const pat of patterns){
-        for (let i=1;i<=max;i++) candidates.push(pat(i));
-      }
-      return await preloadExisting(candidates);
-    }
-
-    // Preload a list of candidate URLs and return only those that actually load.
-    function preloadExisting(srcs){
-      return new Promise(resolve => {
-        const found = [];
-        let pending = srcs.length;
-        if (pending === 0) return resolve(found);
-        srcs.forEach(src => {
-          const img = new Image();
-          img.onload = () => { found.push(src); if(--pending===0) resolve(found); };
-          img.onerror = () => { if(--pending===0) resolve(found); };
-          img.src = src;
-        });
+    // Preload a single image and resolve true/false
+    function preloadOne(src){
+      return new Promise(res => {
+        const img = new Image();
+        img.onload = () => res(true);
+        img.onerror = () => res(false);
+        img.src = src;
       });
     }
 
-    // Fisher–Yates shuffle (in-place) for random slide order.
+    // Discover bg1.jpeg, bg2.jpeg, ... contiguously until the first miss
+    async function discoverPhotos(){
+      const out = [];
+      for (let i = 1; ; i++) {
+        const url = `./assets/bg${i}.jpeg`;
+        if (await preloadOne(url)) out.push(url); else break;
+      }
+      return out;
+    }
+
+    // In-place Fisher–Yates shuffle
     function shuffle(arr){
-      for(let i=arr.length-1;i>0;i--){
-        const j = Math.floor(Math.random()*(i+1));
-        [arr[i],arr[j]] = [arr[j],arr[i]];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
       }
       return arr;
     }
 
-    // Initialize slideshow: set first slide, start Ken Burns, then advance every 10s.
+    // Initialize slideshow
     (async function initSlideshow(){
+      const FIRST = './assets/bg1.jpeg';
+      const INTERVAL_MS = 10000; // 10s
+      const POSITIONS = ['center top','left center','center bottom','right center','center center'];
+
       let photos = await discoverPhotos();
-      if(!photos || photos.length===0){
-        // final fallback: original three
-        photos = ['./assets/bg1.jpeg','./assets/bg2.jpeg','./assets/bg3.jpeg'];
-      }
-      // Always start with bg1 if present, then shuffle the remaining images
-      const firstIdx = photos.findIndex(p => /\/bg1\.jpe?g$/i.test(p));
-      if (firstIdx > -1){
-        const first = photos.splice(firstIdx, 1)[0];
-        shuffle(photos);
-        photos = [first, ...photos];
-      } else {
-        shuffle(photos);
+      if (!photos || photos.length === 0) {
+        // Minimal fallback if discovery finds nothing
+        photos = [FIRST, './assets/bg2.jpeg', './assets/bg3.jpeg'];
       }
 
-      const positions = ['center top','left center','center bottom','right center','center center'];
+      // Ensure FIRST is shown first, with the rest randomized
+      photos = photos.filter(p => p !== FIRST); // drop any duplicate of FIRST
+
+      // Preload FIRST to avoid initial blank frame
+      await preloadOne(FIRST);
+
+      shuffle(photos);
+      photos.unshift(FIRST);
+
+      // Render a given index
       let slideIndex = 0;
-
       function setSlide(idx){
         const src = photos[idx % photos.length];
-        const pos = positions[Math.floor(Math.random()*positions.length)];
+        const pos = POSITIONS[Math.floor(Math.random()*POSITIONS.length)];
         bg.style.backgroundImage = `url(${src})`;
         bg.style.backgroundPosition = pos;
       }
 
-      // Start state
+      // First frame + start Ken Burns
       setSlide(slideIndex);
       setTimeout(()=> bg.classList.add('kb-zoom'), 10);
 
       function nextBg(){
-        slideIndex = (slideIndex + 1) % photos.length;
+        slideIndex = (slideIndex + 1) % photos.length; // wrap at end
         bg.style.transition = 'opacity 1s, transform 18s ease, background-position 18s ease, background-image 600ms ease';
         bg.style.opacity = 0.3;
         setTimeout(()=>{
           bg.classList.remove('kb-zoom');
           setSlide(slideIndex);
-          void bg.offsetWidth; // reflow to restart animation
+          void bg.offsetWidth; // restart animation
           bg.classList.add('kb-zoom');
           bg.style.transition = 'opacity 1.2s, transform 18s ease, background-position 18s ease, background-image 600ms ease';
           bg.style.opacity = 1;
         }, 350);
       }
 
-      const interval = setInterval(nextBg, 10000); // every 10 seconds
+      const interval = setInterval(nextBg, INTERVAL_MS);
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
         clearInterval(interval);
         bg.classList.remove('kb-zoom');
