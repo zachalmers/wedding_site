@@ -14,7 +14,7 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Umangi &amp; Zach" />
-  <meta property="og:title" content="#ChalmedByPatel — December 4–6, 2026" />
+  <meta property="og:title" content="#ChalmedByPatel | December 4–6, 2026" />
   <meta property="og:description" content="Save the date: Oaxaca City, Mexico. Share your contact details (not an RSVP)." />
   <meta property="og:url" content="https://umangiandzach.love/" />
   <meta property="og:image" content="https://umangiandzach.love/assets/bg1.jpeg" />
@@ -269,7 +269,15 @@
         // final fallback: original three
         photos = ['./assets/bg1.jpeg','./assets/bg2.jpeg','./assets/bg3.jpeg'];
       }
-      shuffle(photos);
+      // Always start with bg1 if present, then shuffle the remaining images
+      const firstIdx = photos.findIndex(p => /\/bg1\.jpe?g$/i.test(p));
+      if (firstIdx > -1){
+        const first = photos.splice(firstIdx, 1)[0];
+        shuffle(photos);
+        photos = [first, ...photos];
+      } else {
+        shuffle(photos);
+      }
 
       const positions = ['center top','left center','center bottom','right center','center center'];
       let slideIndex = 0;

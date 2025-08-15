@@ -1,0 +1,6 @@
+# Allow all crawlers to index the site
+User-agent: *
+Disallow:
+
+# (Optional) Point to a sitemap if/when you add one
+Sitemap: https://umangiandzach.love/sitemap.xml
