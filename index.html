@@ -240,22 +240,11 @@
       const INTERVAL_MS = 10000; // 10s
       const POSITIONS = ['center top','left center','center bottom','right center','center center'];
 
-      let photos = await discoverPhotos();
-      if (!photos || photos.length === 0) {
-        // Minimal fallback if discovery finds nothing
-        photos = [FIRST, './assets/bg2.jpeg', './assets/bg3.jpeg'];
-      }
+      // Start with FIRST immediately; discover the rest in the background
+      let photos = [FIRST];
+      await preloadOne(FIRST); // ensure first paint
 
-      // Ensure FIRST is shown first, with the rest randomized
-      photos = photos.filter(p => p !== FIRST); // drop any duplicate of FIRST
-
-      // Preload FIRST to avoid initial blank frame
-      await preloadOne(FIRST);
-
-      shuffle(photos);
-      photos.unshift(FIRST);
-
-      // Render a given index
+      // Render + start Ken Burns
       let slideIndex = 0;
       function setSlide(idx){
         const src = photos[idx % photos.length];
@@ -263,13 +252,24 @@
         bg.style.backgroundImage = `url(${src})`;
         bg.style.backgroundPosition = pos;
       }
-
-      // First frame + start Ken Burns
       setSlide(slideIndex);
       setTimeout(()=> bg.classList.add('kb-zoom'), 10);
 
+      // Background discovery + preload of the rest
+      (async ()=>{
+        const found = await discoverPhotos();
+        let rest = found.filter(p => p !== FIRST);
+        shuffle(rest);
+        // Warm the cache for smoother transitions
+        rest.forEach(src => { const im = new Image(); im.src = src; });
+        photos = [FIRST, ...rest];
+        maybeStart();
+      })();
+
+      // Advance frame (wrap at end)
       function nextBg(){
-        slideIndex = (slideIndex + 1) % photos.length; // wrap at end
+        if (photos.length <= 1) return; // nothing else yet
+        slideIndex = (slideIndex + 1) % photos.length;
         bg.style.transition = 'opacity 1s, transform 18s ease, background-position 18s ease, background-image 600ms ease';
         bg.style.opacity = 0.3;
         setTimeout(()=>{
@@ -282,9 +282,17 @@
         }, 350);
       }
 
-      const interval = setInterval(nextBg, INTERVAL_MS);
+      // Only start cycling once we have more than one photo
+      let started = false; let interval = null;
+      function maybeStart(){
+        if (!started && photos.length > 1) {
+          started = true;
+          interval = setInterval(nextBg, INTERVAL_MS);
+        }
+      }
+      // In case reduced motion is requested
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-        clearInterval(interval);
+        if (interval) clearInterval(interval);
         bg.classList.remove('kb-zoom');
       }
     })();
