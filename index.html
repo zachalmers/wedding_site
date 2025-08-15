@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Umangi & Zach — Contact Card</title>
+  <meta name="description" content="Share your contact details for Umangi & Zach's wedding (Dec 4–6, 2026). This is not an RSVP — just a quick vibe check and contact capture." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --text:#e6edf3;         /* primary text on dark */
+      --muted:#b9c0c9;        /* secondary text */
+      --bg:#0b0c0f;           /* page background */
+      --bg-soft:rgba(12,14,18,.65);
+      --card:linear-gradient(180deg, rgba(18,20,26,.62), rgba(10,12,16,.45));
+      --border:rgba(255,255,255,.12);
+      --ring:rgba(56,189,248,.22);
+      --primary:#0ea5e9;      /* brand accent */
+      --primary-600:#0284c7;
+      --shadow:0 10px 30px rgba(0,0,0,.45);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      color:var(--text);
+      background:var(--bg);
+      min-height:100vh;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* ===== Background / Ken Burns ===== */
+    .hero{
+      position:relative;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      isolation:isolate;
+      padding:56px 0 0 0;
+      width:100vw;
+    }
+    .bg{
+      position:fixed;inset:0;z-index:-2;filter:brightness(.85);
+      background-position:center; background-size:cover; background-repeat:no-repeat;
+      transform:scale(1.06);
+      transition:transform 18s ease, opacity 1s ease, background-image 600ms ease, background-position 18s ease;
+      will-change:transform,opacity,background-image,background-position;
+      width:100vw;height:100vh;pointer-events:none;
+    }
+    .bg.kb-zoom{transform:scale(1.18)}
+    .grain{position:fixed;inset:0;z-index:-1;opacity:.12;mix-blend-mode:overlay;
+      background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.6"/></svg>');
+      width:100vw;height:100vh;pointer-events:none}
+    /* soft top fade for legibility over photography */
+    .hero::before{content:"";position:fixed;inset:0 0 45% 0;z-index:-1;pointer-events:none; background:linear-gradient(180deg, rgba(8,10,14,.75), rgba(8,10,14,.35) 60%, transparent)}
+
+    /* ===== Splash (header) ===== */
+    .splash{position:absolute;left:50%;top:0;width:100%;max-width:min(880px,92vw);transform:translateX(-50%);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      height:calc(50vh - 70px); z-index:2; padding:32px 0 24px; text-align:center; color:var(--text);
+    }
+    .splash .line1{
+      font-family:'Playfair Display',serif; font-weight:700;
+      font-size:clamp(54px,10vw,108px); letter-spacing:1.2px; margin:0 0 14px;
+      text-shadow:0 10px 24px rgba(0,0,0,.45), 0 0 0 2px rgba(0,0,0,.6); /* subtle "rim" */
+      line-height:1.06;
+    }
+    .splash .line1::after{content:"";display:block;margin:16px auto 0;width:64px;height:4px;border-radius:2px;background:#fff;opacity:.85}
+    .splash .line2{font-weight:600;font-size:clamp(26px,3.8vw,44px);color:#e5e7eb;margin:0 0 6px;text-shadow:0 6px 18px rgba(0,0,0,.35)}
+    .splash .line3{font-weight:400;font-size:clamp(18px,2.6vw,28px);color:#cbd5e1;margin:0;text-shadow:0 6px 18px rgba(0,0,0,.25)}
+
+    /* ===== Card ===== */
+    .card{
+      width:min(880px,92vw);
+      background:var(--card);
+      border:1px solid var(--border);
+      backdrop-filter:blur(10px);
+      border-radius:var(--radius);
+      padding:26px 24px 22px;
+      box-shadow:var(--shadow);
+      margin:calc(50vh - 70px) auto 10px;
+      font-size:16px;
+    }
+    header{display:flex;gap:16px;align-items:center;margin-bottom:10px}
+    .brand{display:flex;align-items:center;gap:18px}
+    .monogram{width:72px;height:72px;border-radius:16px;display:grid;place-items:center;font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(1.1rem,2.2vw,1.45rem);line-height:1;background:#f1f5f9;color:#0f172a;letter-spacing:.5px;box-shadow:0 8px 22px rgba(0,0,0,.28)}
+    h1#title{font-family:'Playfair Display',serif;font-weight:600;font-size:clamp(22px,3.6vw,36px);margin:0;color:var(--text)}
+    .sub{font:400 14px/1.5 Inter,system-ui,sans-serif;color:var(--muted);margin:2px 0 18px}
+
+    /* ===== Form ===== */
+    form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .full{grid-column:1/-1}
+    label{display:block;font-size:12px;color:#cdd6df;margin:0 0 6px 2px}
+    input,select,textarea{width:100%;padding:12px 12px;border-radius:12px;border:1px solid var(--border);
+      background:rgba(0,0,0,.30);color:#fff;outline:none;transition:border-color .2s, box-shadow .2s, background .2s}
+
+    /* Keep dark glass bg + white text when browser autofills */
+    input, textarea { caret-color:#fff; }
+    input:-webkit-autofill,
+    textarea:-webkit-autofill,
+    select:-webkit-autofill{
+      -webkit-text-fill-color:#fff !important;
+      transition: background-color 5000s ease-in-out 0s !important;
+      box-shadow: 0 0 0 1000px rgba(0,0,0,.30) inset !important;
+      -webkit-box-shadow: 0 0 0 1000px rgba(0,0,0,.30) inset !important;
+    }
+    input:-webkit-autofill:focus,
+    textarea:-webkit-autofill:focus,
+    select:-webkit-autofill:focus{
+      -webkit-text-fill-color:#fff !important;
+      box-shadow: 0 0 0 1000px rgba(0,0,0,.30) inset, 0 0 0 4px var(--ring) !important;
+      -webkit-box-shadow: 0 0 0 1000px rgba(0,0,0,.30) inset, 0 0 0 4px var(--ring) !important;
+    }
+    input::placeholder,textarea::placeholder{color:#aeb7c2}
+    input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px var(--ring)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .tiny{font-size:12px;color:var(--muted)}
+
+    .members{display:flex;flex-direction:column;gap:10px}
+    .member{border:1px dashed rgba(255,255,255,.2);border-radius:12px;padding:10px}
+    .member .member-row{display:grid;grid-template-columns:1fr 1fr auto auto;gap:10px;align-items:center}
+    .chk{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#e5e7eb;white-space:nowrap}
+    .chk input{width:18px;height:18px}
+
+    .actions{display:flex;gap:12px;align-items:center;margin-top:8px}
+    .actions-right{justify-content:flex-end}
+    .btn{appearance:none;border:1px solid var(--border);background:var(--primary);color:#fff;padding:12px 16px;border-radius:12px;font-weight:600;cursor:pointer;transition:transform .05s ease, filter .15s ease, background .2s}
+    .btn:hover{filter:brightness(1.05)}
+    .btn:active{transform:translateY(1px)}
+    .btn:focus-visible{outline:none;box-shadow:0 0 0 4px var(--ring)}
+    .btn.secondary{background:transparent}
+    .btn.icon{width:42px;min-width:42px;padding:10px 0;text-align:center}
+
+    /* Inline status text (replaces alert boxes) */
+    .status-text{font-size:14px;color:#e5e7eb;min-height:1.2em}
+    .status-text.error{color:#fca5a5}
+    .status-text.success{color:#86efac}
+
+    /* Range slider (match inputs) */
+    input[type=range]{-webkit-appearance:none;height:38px;background:transparent}
+    input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:linear-gradient(90deg, rgba(255,255,255,.18), rgba(255,255,255,.08));border:1px solid var(--border)}
+    input[type=range]::-moz-range-track{height:6px;border-radius:999px;background:linear-gradient(90deg, rgba(255,255,255,.18), rgba(255,255,255,.08));border:1px solid var(--border)}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; margin-top:-8px; width:22px;height:22px;border-radius:50%; background:var(--primary); border:1px solid rgba(255,255,255,.22); box-shadow:0 0 0 4px var(--ring)}
+    input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%; background:var(--primary); border:1px solid rgba(255,255,255,.22); box-shadow:0 0 0 4px var(--ring)}
+
+    /* Success / Error chips */
+    .alert{display:none;margin-top:8px;padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:rgba(0,0,0,.30);font-size:14px}
+    .alert.success{border-color:rgba(16,185,129,.35)}
+    .alert.error{border-color:rgba(239,68,68,.35)}
+
+    /* ===== FAQ (glass + ring parity with inputs) ===== */
+    .faq-card{width:min(880px,92vw);margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(10px);padding:26px 24px 16px;position:relative;z-index:1}
+    .faq{margin-top:6px}
+    .faq h2{font-family:'Playfair Display',serif;font-weight:600;font-size:22px;color:var(--text);letter-spacing:.2px;margin:0 0 10px}
+    .faq details{border:1px solid var(--border);background:rgba(0,0,0,.30);border-radius:12px;margin:10px 0;overflow:hidden;transition:border-color .2s, box-shadow .2s}
+    .faq summary{font:600 15px Inter,system-ui,sans-serif;color:#e5e7eb;cursor:pointer;padding:14px 16px;display:flex;align-items:center;gap:10px;list-style:none}
+    .faq summary::-webkit-details-marker{display:none}
+    .faq summary:focus-visible{outline:none;border-radius:12px;box-shadow:0 0 0 4px var(--ring)}
+    .faq summary::after{content:"";width:10px;height:10px;border-right:2px solid #cbd5e1;border-bottom:2px solid #cbd5e1;transform:rotate(-45deg);margin-left:auto;transition:transform .2s ease}
+    .faq details[open] summary::after{transform:rotate(45deg)}
+    .faq details[open]{border-color:var(--primary);box-shadow:0 0 0 4px var(--ring)}
+    .faq .answer{font:400 14px/1.6 Inter,system-ui,sans-serif;color:#cbd5e1;padding:10px 16px 16px;border-top:1px solid rgba(255,255,255,.12);opacity:.98;transform-origin:top;animation:faqIn .25s ease}
+    @keyframes faqIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ===== Footer ===== */
+    footer{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;margin:38px 0 50px;color:#e5e7eb;font-size:12px;text-align:center}
+
+    /* ===== Responsive ===== */
+    @media (max-width:780px){
+      .hero{padding:24px 0}
+      .splash{position:static;transform:none;width:100%;height:auto;margin:10vh auto 20px;padding:18px 10px}
+      .card{margin:0 auto 10px}
+      form{grid-template-columns:1fr}
+      .member .member-row{grid-template-columns:1fr 1fr auto}
+      .chk{order:3}
+    }
+
+    /* Accessibility niceties */
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    :focus-visible{outline:none;box-shadow:0 0 0 4px var(--ring)}
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      .bg{transition:none}
+      .bg.kb-zoom{transform:scale(1.06)}
+      .faq .answer{animation:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" id="bg"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <section class="hero" aria-label="Oaxaca City — background slideshow">
+    <!-- Splash header stacked above the form -->
+    <div class="splash" aria-label="Save the Date">
+      <div class="line1">Save the Date</div>
+      <div class="line2">December 4-6, 2026</div>
+      <div class="line3">Oaxaca City, Mexico</div>
+    </div>
+
+    <main class="card" role="main" aria-labelledby="title">
+      <header>
+        <div class="brand">
+          <div class="monogram" aria-hidden="true">U · Z</div>
+          <div>
+            <h1 id="title">Share your contact details</h1>
+            <div class="sub">for <strong>Umangi & Zach’s</strong> wedding</div>
+          </div>
+        </div>
+      </header>
+
+      <form id="contact-form" novalidate autocomplete="on">
+        <input type="text" name="company" id="company" autocomplete="organization" style="position:absolute;left:-9999px;top:-9999px" tabindex="-1" aria-hidden="true" />
+
+        <div>
+          <label class="sr-only" for="firstName">Your first name *</label>
+          <input id="firstName" name="firstName" type="text" autocomplete="given-name" autocapitalize="words" placeholder="First name *" required />
+        </div>
+        <div>
+          <label class="sr-only" for="lastName">Your last name *</label>
+          <input id="lastName" name="lastName" type="text" autocomplete="family-name" autocapitalize="words" placeholder="Last name *" required />
+        </div>
+
+        <div>
+          <label class="sr-only" for="email">Email *</label>
+          <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="Email *" required />
+        </div>
+        <div>
+          <label class="sr-only" for="phone">Mobile phone</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="Mobile phone" />
+        </div>
+
+        <div class="full">
+          <label class="sr-only" for="address1">Street address *</label>
+          <input id="address1" name="address1" type="text" autocomplete="street-address" placeholder="Street address *" required />
+        </div>
+        <div>
+          <label class="sr-only" for="address2">Apt / Unit</label>
+          <input id="address2" name="address2" type="text" autocomplete="address-line2" placeholder="Apt / Unit" />
+        </div>
+        <div>
+          <label class="sr-only" for="city">City *</label>
+          <input id="city" name="city" type="text" autocomplete="address-level2" placeholder="City *" required />
+        </div>
+        <div>
+          <label class="sr-only" for="state">State / Province *</label>
+          <input id="state" name="state" type="text" autocomplete="address-level1" placeholder="State / Province *" required />
+        </div>
+        <div>
+          <label class="sr-only" for="zip">Postal code *</label>
+          <input id="zip" name="zip" type="text" autocomplete="postal-code" placeholder="Postal code *" required />
+        </div>
+        <div>
+          <label class="sr-only" for="country">Country *</label>
+                    <input id="country" name="country-name" type="text" autocomplete="country-name" placeholder="Country *" value="United States" required />
+        </div>
+
+        <div class="full">
+          <label id="members-label" style="font-size:18px;font-weight:500;color:var(--text);letter-spacing:.1px">
+            Other household / party members <span class="tiny">(Optional)</span>
+          </label>
+          <div class="members" id="members">
+            <div class="member" data-key="1">
+              <div class="member-row">
+                <div>
+                  <label class="sr-only" for="member-1-fn">First name</label>
+                  <input id="member-1-fn" name="members[0].firstName" type="text" placeholder="First name" />
+                </div>
+                <div>
+                  <label class="sr-only" for="member-1-ln">Last name</label>
+                  <input id="member-1-ln" name="members[0].lastName" type="text" placeholder="Last name" />
+                </div>
+                <label class="chk" for="member-1-child">
+                  <input type="checkbox" id="member-1-child" name="members[0].child" /> Child
+                </label>
+                <button type="button" class="btn secondary icon remove-btn" aria-label="Remove person" title="Remove">×</button>
+              </div>
+            </div>
+          </div>
+          <div class="actions actions-right">
+            <button class="btn secondary" id="add-member" type="button">+ Add another person</button>
+          </div>
+        </div>
+
+        <div class="full">
+          <label for="likelihood" style="font-size:18px;font-weight:500;color:var(--text);letter-spacing:.1px">Do you think you’ll be able to attend? <span class="tiny">(Not an RSVP, vibes only)</span></label>
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <span class="tiny" style="margin-top:10px">🤷</span>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:stretch;">
+              <input id="likelihood" name="likelihood" type="range" min="1" max="5" step="1" value="3" aria-label="Likelihood to attend (1-5)" />
+              <!-- Lock labels to exact slider percentages -->
+              <div class="scale" aria-hidden="true" style="position:relative;height:16px;font-size:11px;color:var(--muted);margin-top:6px">
+                <span style="position:absolute;left:0;top:0;">Unlikely</span>
+                <span style="position:absolute;left:25%;top:0;transform:translateX(-50%);text-align:center;">Maybe</span>
+                <span style="position:absolute;left:50%;top:0;transform:translateX(-50%);text-align:center;">Probably</span>
+                <span style="position:absolute;left:75%;top:0;transform:translateX(-50%);text-align:center;">Very likely</span>
+                <span style="position:absolute;right:0;top:0;">Definitely</span>
+              </div>
+            </div>
+            <span class="tiny" style="margin-top:10px">🎉</span>
+          </div>
+        </div>
+
+
+        <div class="full">
+          <label class="sr-only" for="note">Anything we should know?</label>
+          <textarea id="note" name="note" rows="3" placeholder="Anything we should know? (dietary needs, travel constraints, etc.)"></textarea>
+        </div>
+
+        <div class="full actions actions-right">
+          <span id="inline-status" class="status-text" aria-live="polite"></span>
+          <button class="btn secondary" type="submit" id="submit">Submit</button>
+        </div>
+      </form>
+
+    </main>
+  </section>
+
+  <section class="faq-card">
+    <section class="faq" aria-labelledby="faq-title">
+      <h2 id="faq-title">FAQs</h2>
+      <details>
+        <summary>Is this an RSVP?</summary>
+        <div class="answer tiny">No — this just lets us collect contact details and a rough headcount vibe. Formal invites + RSVP to follow.</div>
+      </details>
+      <details>
+        <summary>Are kids welcome?</summary>
+        <div class="answer tiny">Yes! Oaxaca is magical for families — we’ll share kid-friendly suggestions.</div>
+      </details>
+      <details>
+        <summary>When and where?</summary>
+        <div class="answer tiny">December 4–6, 2026 in Oaxaca City, Mexico. Festivities will take place Friday night through Sunday morning.</div>
+      </details>
+    </section>
+  </section>
+
+  <footer>
+    <span>© <span id="year"></span> Umangi &amp; Zach | Designed with ❤️ in SF</span>
+  </footer>
+
+  <script>
+  (()=>{
+    // ===== Background Slideshow (Ken Burns-style) using local assets =====
+    const photos=['./assets/bg1.jpeg','./assets/bg2.jpeg','./assets/bg3.jpeg'];
+    const positions=['center top','left center','center bottom','right center','center center'];
+    const bg=document.getElementById('bg');
+    photos.forEach(src=>{const img=new Image();img.src=src}); // preload
+    let slideIndex=0,posIndex=0;
+    bg.style.backgroundImage=`url(${photos[0]})`;
+    bg.style.backgroundPosition=positions[0];
+    setTimeout(()=>bg.classList.add('kb-zoom'),10);
+    function nextBg(){
+      slideIndex=(slideIndex+1)%photos.length;
+      posIndex=(posIndex+1)%positions.length;
+      bg.style.transition='opacity 1s, transform 18s ease, background-position 18s ease, background-image 600ms ease';
+      bg.style.opacity=.3;
+      setTimeout(()=>{
+        bg.classList.remove('kb-zoom');
+        bg.style.backgroundImage=`url(${photos[slideIndex]})`;
+        bg.style.backgroundPosition=positions[posIndex];
+        void bg.offsetWidth; // reflow
+        bg.classList.add('kb-zoom');
+        bg.style.transition='opacity 1.2s, transform 18s ease, background-position 18s ease, background-image 600ms ease';
+        bg.style.opacity=1;
+      },400);
+    }
+    const interval=setInterval(nextBg,15000);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      clearInterval(interval);
+      bg.classList.remove('kb-zoom');
+    }
+
+    // ===== Year =====
+    document.getElementById('year').textContent=new Date().getFullYear();
+
+    // ===== Members dynamic rows =====
+    const members=document.getElementById('members');
+    const addMemberBtn=document.getElementById('add-member');
+    const membersLabel=document.getElementById('members-label');
+    let memberKey=1;
+
+    function newMember(indexForName){
+      memberKey+=1; const key=memberKey;
+      const wrap=document.createElement('div');
+      wrap.className='member'; wrap.dataset.key=String(key);
+      wrap.innerHTML=`
+        <div class="member-row">
+          <div>
+            <label class="sr-only" for="member-${key}-fn">First name</label>
+            <input id="member-${key}-fn" name="members[${indexForName}].firstName" type="text" placeholder="First name" />
+          </div>
+          <div>
+            <label class="sr-only" for="member-${key}-ln">Last name</label>
+            <input id="member-${key}-ln" name="members[${indexForName}].lastName" type="text" placeholder="Last name" />
+          </div>
+          <label class="chk" for="member-${key}-child">
+            <input type="checkbox" id="member-${key}-child" name="members[${indexForName}].child" /> Child
+          </label>
+          <button type="button" class="btn secondary icon remove-btn" aria-label="Remove person" title="Remove">×</button>
+        </div>`;
+      return wrap;
+    }
+
+    function renumberNames(){
+      const rows=Array.from(document.querySelectorAll('.members .member'));
+      rows.forEach((row,idx)=>{
+        row.querySelectorAll('input').forEach(inp=>{
+          if (inp.name && inp.name.includes('members[')){
+            const suffix=inp.name.split('].').pop();
+            inp.name=`members[${idx}].${suffix}`;
+          }
+        });
+      });
+      if(membersLabel){membersLabel.style.display=rows.length===0?'none':''}
+    }
+
+    function removeMember(node){ if(!node) return; node.remove(); renumberNames(); }
+
+    addMemberBtn.addEventListener('click',()=>{ const current=members.querySelectorAll('.member').length; const row=newMember(current); members.appendChild(row); renumberNames(); });
+    members.addEventListener('click', (e)=>{ const btn=e.target.closest('.remove-btn'); if(!btn) return; const node=btn.closest('.member'); removeMember(node); });
+    document.addEventListener('DOMContentLoaded', renumberNames);
+
+    // ===== Submission (front-end only) =====
+    const FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbw2fzKTHn9hdWClRQaopSRz4B2YAT-NYW08e4h22vrepHXszNFnzS64oC2QrDuVbHg7/exec";
+    const form=document.getElementById('contact-form');
+    const status=document.getElementById('inline-status');
+    function setStatus(type,msg){
+      if(!status) return;
+      status.textContent = msg || '';
+      status.classList.remove('error','success');
+      if(type) status.classList.add(type);
+    }
+
+    function collectData(){
+      const membersData = Array.from(document.querySelectorAll('.members .member')).map((el)=>({
+        firstName: (el.querySelector('input[name$=".firstName"]').value || '').trim(),
+        lastName: (el.querySelector('input[name$=".lastName"]').value || '').trim(),
+        isChild: !!el.querySelector('input[name$=".child"]').checked,
+      })).filter(m => m.firstName || m.lastName);
+
+      // === Derived values for backend ===
+      const namedMembers = membersData; // already filtered for non-empty names
+      const adultMembers = namedMembers.filter(m => !m.isChild);
+      const childMembers = namedMembers.filter(m => m.isChild);
+      const adultCount = 1 + adultMembers.length; // includes principal as an adult
+      const childCount = childMembers.length;
+      const othersNames = namedMembers
+        .map(m => `${m.firstName} ${m.lastName}`.trim())
+        .filter(Boolean)
+        .join(', ');
+
+      return {
+        ts: new Date().toISOString(),
+        source: 'oaxaca-contact-capture',
+        couple: { bride: 'Umangi', groom: 'Zach' },
+        principal: {
+          firstName: document.getElementById('firstName').value.trim(),
+          lastName: document.getElementById('lastName').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          address1: document.getElementById('address1').value.trim(),
+          address2: document.getElementById('address2').value.trim(),
+          city: document.getElementById('city').value.trim(),
+          state: document.getElementById('state').value.trim(),
+          zip: document.getElementById('zip').value.trim(),
+          country: document.getElementById('country').value.trim(),
+        },
+        members: membersData,
+        // derived fields to help the Apps Script map to columns directly
+        adultCount,
+        childCount,
+        othersNames,
+        likelihood: Number(document.getElementById('likelihood').value),
+        note: document.getElementById('note').value.trim(),
+        notRSVP: true,
+      };
+    }
+
+    function validate(){
+      const required=['firstName','lastName','email','address1','city','state','zip','country'];
+      for(const id of required){ const el=document.getElementById(id); if(!el.value.trim()){ el.focus(); return false; } }
+      const email=document.getElementById('email').value.trim();
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ document.getElementById('email').focus(); return false; }
+      if(document.getElementById('company').value){ return false; } // honeypot
+      return true;
+    }
+
+    async function postData(data){
+      if(!FORM_ENDPOINT){
+        console.warn('FORM_ENDPOINT is missing');
+        return false;
+      }
+      try{
+        const res = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          // Use a CORS-safelisted content type + no-cors to avoid preflight and CORS blocking
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(data)
+        });
+        // In no-cors mode, the response is opaque; treat successful resolution as success
+        console.log('Posted to GAS (opaque response expected in no-cors mode):', res && res.type);
+        return true;
+      }catch(err){
+        console.error('POST failed:', err);
+        return false;
+      }
+    }
+
+    if (location.protocol === 'file:') {
+      console.warn('Running from file:// origin. Using no-cors POST to avoid CORS errors. For full responses, serve via http(s) (e.g., VS Code Live Server).');
+    }
+
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      setStatus('', '');
+      if(!validate()){
+        setStatus('error','Please complete required fields.');
+        return;
+      }
+      const payload=collectData();
+      const sent=await postData(payload);
+      if(sent){
+        setStatus('success','Thank you! We’ve saved your info. 🎉');
+        form.reset();
+        members.innerHTML='';
+        const fallback=newMember(0);
+        members.appendChild(fallback);
+        renumberNames();
+      } else {
+        setStatus('error','Something went wrong. Please try again.');
+      }
+    });
+
+    // ===== Tiny self-tests (console only) =====
+    (function runSelfTests(){
+      const results=[]; const ok=(n,p)=>results.push({n,p});
+      try{
+        ok('Stacked layout', getComputedStyle(document.querySelector('.hero')).flexDirection==='column');
+        ok('Slider default is numeric', Number(document.getElementById('likelihood').value)===3);
+        ok('Child checkbox present', !!document.querySelector('input[name$=".child"]'));
+        ok('Remove buttons present', document.querySelectorAll('.remove-btn').length>=1);
+      }catch(e){ console.error('Self-tests crashed:', e); }
+      console.groupCollapsed('Contact-capture self-tests');
+      results.forEach(r=>console.log(`${r.p ? '✅' : '❌'} ${r.n}`));
+      console.groupEnd();
+    })();
+  })();
+  </script>
+</body>
+</html>
