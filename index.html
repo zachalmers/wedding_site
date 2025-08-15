@@ -150,9 +150,9 @@
     .scale-grid{position:relative;height:18px;font-size:clamp(10px,2.6vw,12px);color:var(--muted);margin-top:6px}
     .scale-grid span{position:absolute;top:0;white-space:nowrap;line-height:1.1}
     .s0{left:0}
-    .s25{left:25%;transform:translateX(-50%);text-align:center}
+    .s25{left:27%;transform:translateX(-50%);text-align:center}
     .s50{left:50%;transform:translateX(-50%);text-align:center}
-    .s75{left:75%;transform:translateX(-50%);text-align:center}
+    .s75{left:73%;transform:translateX(-50%);text-align:center}
     .s100{right:0}
 
     /* Range slider (match inputs) */
@@ -183,6 +183,10 @@
 
     /* ===== Footer ===== */
     footer{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;margin:38px 0 50px;color:#e5e7eb;font-size:12px;text-align:center}
+
+    /* Spacer to lift footer visually (acts like a third-panel offset) */
+    .footer-spacer{height:16vh}
+    @media (max-width:780px){ .footer-spacer{height:12vh} }
 
     /* ===== Responsive ===== */
     @media (max-width:780px){
@@ -321,7 +325,7 @@
                 <span class="s0">Unlikely</span>
                 <span class="s25">Maybe</span>
                 <span class="s50">Probably</span>
-                <span class="s75">Very likely</span>
+                <span class="s75">Likely</span>
                 <span class="s100">Definitely</span>
               </div>
             </div>
@@ -367,12 +371,17 @@
         <summary>Where to Stay?</summary>
         <div class="answer tiny">Oaxaca City is a town full of stunning boutique hotels and haciendas plucked from the pages of Architectural Digest. They offer incredible value at every price point. We'll highlight some of our faves.</div>
       </details>
+            <details>
+        <summary>More questions?</summary>
+        <div class="answer tiny">Shoot us a message! Zach - zachalmers@gmail.com Umangi - umangipatel7@gmail.com </div>
+      </details>
     </section>
   </section>
 
   <footer>
     <span>© <span id="year"></span> Umangi &amp; Zach | Designed with ❤️ in SF</span>
   </footer>
+  <div class="footer-spacer" aria-hidden="true"></div>
 
   <script>
   (()=>{
