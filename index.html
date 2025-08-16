@@ -519,14 +519,14 @@
           if (submitLabel) submitLabel.textContent = 'Submit';
           submitBtn.disabled = false;
           setStatus('success', 'Thank you! We’ve saved your info. 🎉');
-        }, 800);
 
-        // Reset fields immediately in the background; does not affect timing above
-        form.reset();
-        members.innerHTML = '';
-        const fallback = newMember(0);
-        members.appendChild(fallback);
-        renumberNames();
+          // Reset the form at the same moment as the UI flip for perfect sync
+          form.reset();
+          members.innerHTML = '';
+          const fallback = newMember(0);
+          members.appendChild(fallback);
+          renumberNames();
+        }, 800);
       }
       else {
         setStatus('error','Something went wrong. Please try again.');
