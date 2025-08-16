@@ -35,6 +35,7 @@
 <body>
   <span class="sr-only">Oaxaca destination wedding — Umangi Patel &amp; Zachary Chalmers — Zach Chalmers.</span>
   <div class="bg" id="bg"></div>
+  <div class="bg" id="bg2" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
   <section class="hero" aria-label="Oaxaca City — background slideshow">
     <!-- Splash header stacked above the form -->
@@ -203,7 +204,10 @@
   <script>
   (()=>{
     // ===== Background Slideshow (Ken Burns-style) using local assets =====
-    const bg = document.getElementById('bg');
+    const bgA = document.getElementById('bg');
+    const bgB = document.getElementById('bg2');
+    let front = bgA;   // currently visible layer
+    let back  = bgB;   // currently hidden layer;
 
     // Preload a single image and resolve true/false
     function preloadOne(src){
@@ -249,11 +253,11 @@
       function setSlide(idx){
         const src = photos[idx % photos.length];
         const pos = POSITIONS[Math.floor(Math.random()*POSITIONS.length)];
-        bg.style.backgroundImage = `url(${src})`;
-        bg.style.backgroundPosition = pos;
+        front.style.backgroundImage = `url(${src})`;
+        front.style.backgroundPosition = pos;
       }
       setSlide(slideIndex);
-      setTimeout(()=> bg.classList.add('kb-zoom'), 10);
+      setTimeout(()=> front.classList.add('kb-zoom'), 10);
 
       // Background discovery + preload of the rest
       (async ()=>{
@@ -268,18 +272,23 @@
 
       // Advance frame (wrap at end)
       function nextBg(){
-        if (photos.length <= 1) return; // nothing else yet
+        if (photos.length <= 1) return;
         slideIndex = (slideIndex + 1) % photos.length;
-        bg.style.transition = 'opacity 1s, transform 18s ease, background-position 18s ease, background-image 600ms ease';
-        bg.style.opacity = 0.3;
-        setTimeout(()=>{
-          bg.classList.remove('kb-zoom');
-          setSlide(slideIndex);
-          void bg.offsetWidth; // restart animation
-          bg.classList.add('kb-zoom');
-          bg.style.transition = 'opacity 1.2s, transform 18s ease, background-position 18s ease, background-image 600ms ease';
-          bg.style.opacity = 1;
-        }, 350);
+
+        // Prepare next image on the hidden layer
+        const src = photos[slideIndex];
+        const pos = POSITIONS[Math.floor(Math.random()*POSITIONS.length)];
+        back.style.backgroundImage = `url(${src})`;
+        back.style.backgroundPosition = pos;
+
+        // Animate: new layer fades in while old fades out; toggle Ken Burns
+        front.classList.remove('kb-zoom');
+        back.classList.add('kb-zoom');
+        back.style.opacity = 1;
+        front.style.opacity = 0;
+
+        // After the crossfade completes (~500ms), swap references
+        setTimeout(()=>{ const t = front; front = back; back = t; }, 520);
       }
 
       // Only start cycling once we have more than one photo
@@ -290,10 +299,44 @@
           interval = setInterval(nextBg, INTERVAL_MS);
         }
       }
+
+      // === Power-saving: pause slideshow when tab is hidden ===
+      function pauseSlideshow(){
+        if (interval){
+          clearInterval(interval);
+          interval = null;
+        }
+        // Stop the Ken Burns animation while hidden
+        front.classList.remove('kb-zoom');
+        back.classList.remove('kb-zoom');
+      }
+
+      function resumeSlideshow(){
+        // Only resume if we actually have multiple photos ready
+        if (photos.length > 1 && !interval){
+          // Re-enable animation and timer
+          front.classList.add('kb-zoom');
+          interval = setInterval(nextBg, INTERVAL_MS);
+        }
+      }
+
+      document.addEventListener('visibilitychange', ()=>{
+        if (document.hidden) {
+          pauseSlideshow();
+        } else {
+          resumeSlideshow();
+        }
+      });
+
+      // If the page loads in a background tab, ensure we start paused
+      if (document.hidden) {
+        pauseSlideshow();
+      }
       // In case reduced motion is requested
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
         if (interval) clearInterval(interval);
-        bg.classList.remove('kb-zoom');
+        front.classList.remove('kb-zoom');
+        back.classList.remove('kb-zoom');
       }
     })();
 
