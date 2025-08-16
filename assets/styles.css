@@ -163,10 +163,32 @@ html{ -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     .btn .spinner[hidden]{display:none !important}
     @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* Inline status text (replaces alert boxes) */
-    .status-text{font-size:14px;color:#e5e7eb;min-height:1.2em}
-    .status-text.error{color:#fca5a5}
-    .status-text.success{color:#86efac}
+    /* Inline status text (fades in only on success/error) */
+    .status-text {
+      font-size:14px;
+      color:#e5e7eb;
+      min-height:1.2em;
+      opacity:0;
+      transition:opacity .25s ease;
+    }
+    .status-text.error {
+      color:#fca5a5;
+      opacity:1;
+    }
+    .status-text.success {
+      color:#86efac;
+      opacity:1;
+    }
+
+    /* Keep button width stable as label text changes (Submit ↔ Submitting…) */
+    .btn {
+      white-space:nowrap;
+    }
+    .btn .btn-label {
+      display:inline-block;
+      min-width:12ch;
+      text-align:center;
+    }
 
     /* Form label & slider column utilities (refactor inline styles) */
     .field-label-lg{font-size:18px;font-weight:500;color:var(--text);letter-spacing:.1px}

@@ -511,19 +511,24 @@
       const payload = collectData();
       const sent = await postData(payload);
 
-      if(sent){
-        setStatus('success','Thank you! We’ve saved your info. 🎉');
-        if (submitLabel) submitLabel.textContent = 'Submitted';
-        if (submitSpin) submitSpin.hidden = true;
-        submitBtn.removeAttribute('aria-busy');
-        // optional: keep disabled briefly to avoid more clicks, then re-enable
-        setTimeout(()=>{ submitBtn.disabled = false; if (submitLabel) submitLabel.textContent = 'Submit'; }, 1200);
+      if (sent) {
+        // Keep visual state as "Submitting…" briefly; then flip back & show success together
+        setTimeout(() => {
+          if (submitSpin) submitSpin.hidden = true;
+          submitBtn.removeAttribute('aria-busy');
+          if (submitLabel) submitLabel.textContent = 'Submit';
+          submitBtn.disabled = false;
+          setStatus('success', 'Thank you! We’ve saved your info. 🎉');
+        }, 600);
+
+        // Reset fields immediately in the background; does not affect timing above
         form.reset();
-        members.innerHTML='';
-        const fallback=newMember(0);
+        members.innerHTML = '';
+        const fallback = newMember(0);
         members.appendChild(fallback);
         renumberNames();
-      } else {
+      }
+      else {
         setStatus('error','Something went wrong. Please try again.');
         // unlock UI on failure
         if (submitLabel) submitLabel.textContent = 'Submit';
