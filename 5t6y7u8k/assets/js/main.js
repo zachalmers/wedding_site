@@ -1,22 +1,41 @@
 (() => {
-  // Floating menu
-  const toggle = document.querySelector(".menu__toggle");
-  const menu = document.querySelector(".menu__panel");
-  if (toggle && menu) {
-    toggle.addEventListener("click", () => {
-      const isOpen = menu.classList.toggle("is-open");
-      toggle.setAttribute("aria-expanded", String(isOpen));
+  // Footer year
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+  // Scroll cue: hide on scroll
+  const scrollCue = document.querySelector(".scroll-cue");
+  if (scrollCue) {
+    const updateCue = () => {
+      scrollCue.classList.toggle("is-hidden", window.scrollY > 20);
+    };
+    updateCue();
+    window.addEventListener("scroll", updateCue, { passive: true });
+  }
+
+  // Mobile ToC toggle
+  const toc = document.querySelector(".toc");
+  const tocToggle = document.querySelector(".toc__toggle");
+  const tocPanel = document.getElementById("tocPanel");
+  if (toc && tocToggle && tocPanel) {
+    // Ensure default open state reflects aria
+    tocToggle.setAttribute("aria-expanded", String(toc.classList.contains("is-open")));
+    tocToggle.addEventListener("click", () => {
+      const isOpen = toc.classList.toggle("is-open");
+      tocToggle.setAttribute("aria-expanded", String(isOpen));
     });
 
-    menu.querySelectorAll("a").forEach(a => {
-      a.addEventListener("click", () => {
-        if (menu.classList.contains("is-open")) {
-          menu.classList.remove("is-open");
-          toggle.setAttribute("aria-expanded", "false");
+    tocPanel.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        if (toc.classList.contains("is-open")) {
+          toc.classList.remove("is-open");
+          tocToggle.setAttribute("aria-expanded", "false");
         }
       });
     });
   }
+
+  // No auto-scroll nudge on load
 
   // Reveal on scroll
   const reveals = Array.from(document.querySelectorAll(".reveal"));

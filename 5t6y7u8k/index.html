@@ -4,8 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0f1210" />
-  <title>Umangi & Zach — Oaxaca, Mexico</title>
+  <title>#ChalmedByPatel</title>
   <meta name="description" content="Umangi & Zach — Oaxaca, Mexico. Wedding weekend details, travel, and RSVP." />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">💍</text></svg>' />
 
   <!-- Fonts: swap if you prefer -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,25 +17,23 @@
 </head>
 
 <body>
+  <div id="top" class="page-top" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <div class="menu" id="top" aria-label="Site menu">
-    <button class="menu__toggle" type="button" aria-expanded="false" aria-controls="menuPanel">
-      <span class="menu__bar"></span>
-      <span class="menu__bar"></span>
-      <span class="menu__bar"></span>
-      <span class="sr-only">Open menu</span>
+  <nav class="toc" aria-label="Site menu">
+    <button class="toc__toggle" type="button" aria-expanded="false" aria-controls="tocPanel">
+      <span class="toc__toggle-icon" aria-hidden="true"></span>
+      <span class="toc__toggle-label">Menu</span>
     </button>
-
-    <div class="menu__panel" id="menuPanel">
-      <p class="menu__title">Umangi & Zach</p>
+    <div class="toc__panel" id="tocPanel">
       <a href="#story">Story</a>
-      <a href="#events">Events</a>
+      <a href="#events">Schedule</a>
       <a href="#travel">Travel</a>
+      <a href="#activities">Activities</a>
       <a href="#stay">Stay</a>
-      <a class="menu__cta" href="#rsvp">RSVP</a>
+      <a class="toc__cta" href="#rsvp">RSVP</a>
     </div>
-  </div>
+  </nav>
 
   <main id="main">
     <!-- HERO -->
@@ -69,8 +68,11 @@
             </div>
           </div>
         </div>
-
- 
+        <a class="scroll-cue" href="#story" aria-label="Scroll for more">
+          <svg class="scroll-cue__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
       </div>
     </section>
 
@@ -125,7 +127,7 @@
     </section>
 
     <!-- EVENTS -->
-    <section class="section section--transition" id="events">
+    <section class="section section--dark" id="events">
       <div class="container">
         <div class="section__header">
           <h2 class="section__title reveal">Weekend schedule</h2>
@@ -143,7 +145,7 @@
                 </a>
               </div>
               <p class="event-card__meta"><span class="event-card__pin" aria-hidden="true"></span>TBA</p>
-              <p class="event-card__dress"><span>Dress</span> Light, playful, and comfortable</p>
+              <p class="event-card__dress"><span>Dress</span> Casual yellows</p>
             </div>
             <div class="event-card__body">
               <button class="event-card__details-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-haldi">
@@ -162,7 +164,7 @@
                 </a>
               </div>
               <p class="event-card__meta"><span class="event-card__pin" aria-hidden="true"></span>Proyecto Murguia, Oaxaca, Mexico</p>
-              <p class="event-card__dress"><span>Dress</span> Festive formal with bright color</p>
+              <p class="event-card__dress"><span>Dress</span> Colorful festive semi-formal</p>
             </div>
             <div class="event-card__body">
               <button class="event-card__details-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-sangeet">
@@ -181,7 +183,7 @@
                 </a>
               </div>
               <p class="event-card__meta"><span class="event-card__pin" aria-hidden="true"></span>Groom’s residence</p>
-              <p class="event-card__dress"><span>Dress</span> Light formal; comfortable shoes</p>
+              <p class="event-card__dress"><span>Dress</span> Formal; Indian encouraged</p>
             </div>
             <div class="event-card__body">
               <button class="event-card__details-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-baraat">
@@ -200,7 +202,7 @@
                 </a>
               </div>
               <p class="event-card__meta"><span class="event-card__pin" aria-hidden="true"></span>Proyecto Murguia, Oaxaca, Mexico</p>
-              <p class="event-card__dress"><span>Dress</span> Light formal with respectful coverage</p>
+              <p class="event-card__dress"><span>Dress</span> Formal; Indian encouraged</p>
             </div>
             <div class="event-card__body">
               <button class="event-card__details-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-ceremony">
@@ -219,7 +221,7 @@
                 </a>
               </div>
               <p class="event-card__meta"><span class="event-card__pin" aria-hidden="true"></span>Loma Nobles, Oaxaca, Mexico</p>
-              <p class="event-card__dress"><span>Dress</span> Elevated festive; bring a layer</p>
+              <p class="event-card__dress"><span>Dress</span> Formal; Indowestern</p>
             </div>
             <div class="event-card__body">
               <button class="event-card__details-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-reception">
@@ -238,7 +240,7 @@
                 </a>
               </div>
               <p class="event-card__meta"><span class="event-card__pin" aria-hidden="true"></span>TBA</p>
-              <p class="event-card__dress"><span>Dress</span> Casual chic</p>
+              <p class="event-card__dress"><span>Dress</span> Casual</p>
             </div>
             <div class="event-card__body">
               <button class="event-card__details-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-brunch">
@@ -253,7 +255,7 @@
     </section>
 
     <!-- TRAVEL -->
-    <section class="section section--dark" id="travel">
+    <section class="section section--light" id="travel">
       <div class="container">
         <div class="section__header">
           <h2 class="section__title reveal">Travel</h2>
@@ -309,7 +311,7 @@
     </section>
 
     <!-- LOCAL ACTIVITIES -->
-    <section class="section section--light" id="activities">
+    <section class="section section--dark" id="activities">
       <div class="container">
         <div class="section__header">
           <h2 class="section__title reveal">Local favorites</h2>
@@ -347,7 +349,7 @@
     </section>
 
     <!-- STAY -->
-    <section class="section section--dark" id="stay">
+    <section class="section section--light" id="stay">
       <div class="container">
         <div class="section__header">
           <h2 class="section__title reveal">Where to stay</h2>
@@ -409,7 +411,7 @@
     </section>
 
     <!-- RSVP -->
-    <section class="section section--light" id="rsvp">
+    <section class="section section--dark" id="rsvp">
       <div class="container">
         <div class="section__header">
           <h2 class="section__title reveal">RSVP</h2>
@@ -487,8 +489,7 @@
     <!-- FOOTER -->
     <footer class="footer">
       <div class="container footer-inner">
-        <p class="footer__names">Umangi & Zach</p>
-        <p class="footer__meta">Oaxaca, Mexico · December 2026</p>
+        <p class="footer__line">© <span id="year"></span> Umangi & Zach | Designed with ❤️ in SF</p>
         <a class="footer__top" href="#top">Back to top</a>
       </div>
     </footer>
@@ -505,6 +506,10 @@
           Haldi is a pre-wedding celebration where loved ones apply turmeric paste as a blessing for health and good fortune.
           Expect a lighthearted, family-forward gathering with music and plenty of color.
         </p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Dress</h4>
+        <p>Bright, light, and comfortable. White is welcome (turmeric gets messy).</p>
       </div>
       <div class="event-modal__section">
         <h4>Food</h4>
@@ -525,6 +530,10 @@
         </p>
       </div>
       <div class="event-modal__section">
+        <h4>Dress</h4>
+        <p>Festive formal with bold color. Comfortable shoes encouraged.</p>
+      </div>
+      <div class="event-modal__section">
         <h4>Food</h4>
         <p>Dinner and drinks will be served. Details to come.</p>
       </div>
@@ -540,6 +549,10 @@
         <p>
           Procession from groom’s residence to Proyecto Murguia—music, drums, and celebratory energy as the wedding party arrives.
         </p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Dress</h4>
+        <p>Light formal; breathable fabrics and comfortable shoes.</p>
       </div>
       <div class="event-modal__section">
         <h4>Food</h4>
@@ -559,6 +572,10 @@
         </p>
       </div>
       <div class="event-modal__section">
+        <h4>Dress</h4>
+        <p>Formal wedding attire. Rich colors welcome.</p>
+      </div>
+      <div class="event-modal__section">
         <h4>Food</h4>
         <p>Post-ceremony refreshments to follow.</p>
       </div>
@@ -576,6 +593,10 @@
         </p>
       </div>
       <div class="event-modal__section">
+        <h4>Dress</h4>
+        <p>Formal / black-tie optional. Bring a light layer for evening.</p>
+      </div>
+      <div class="event-modal__section">
         <h4>Food</h4>
         <p>Seated dinner and late-night bites.</p>
       </div>
@@ -591,6 +612,10 @@
         <p>
           Drop in anytime and refuel before travel. We’ll share timing and location once confirmed.
         </p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Dress</h4>
+        <p>Casual and comfy travel-day attire.</p>
       </div>
       <div class="event-modal__section">
         <h4>Food</h4>
