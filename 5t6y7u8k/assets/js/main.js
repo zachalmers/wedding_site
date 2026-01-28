@@ -149,6 +149,8 @@
         LAX: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDTEFYcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNMQVhAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
         EUG: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDRVVHcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNFVUdAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
         PHX: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDUEhYcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNQSFhAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        AMD: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDQU1EcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNBTURAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        SJU: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDU0pVcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNTSlVAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
       };
 
       const useHardcoded =
