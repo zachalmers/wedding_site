@@ -356,7 +356,7 @@ img{ max-width: 100%; display: block; }
 .grid-3--spaced{ margin-top: 18px; }
 .grid-4{
   display:grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 18px;
 }
 
@@ -378,6 +378,20 @@ img{ max-width: 100%; display: block; }
 .card p:last-child{ margin-bottom: 0; }
 .muted{ color: var(--surface-muted); }
 
+.inline-link{
+  color: inherit;
+  text-decoration: underline;
+}
+
+.card-image{
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.45);
+}
+
 .card--dark{
   background: var(--surface-bg);
   border: 1px solid var(--surface-border);
@@ -394,6 +408,68 @@ img{ max-width: 100%; display: block; }
   display:grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px;
+  align-items: stretch;
+}
+.image-row--dark{
+  --travel-tile: 350px;
+}
+
+.flight-tool{
+  border-radius: var(--radius);
+  border: 1px solid var(--surface-border);
+  background: var(--surface-bg);
+  box-shadow: var(--surface-shadow);
+  padding: 18px;
+  display:flex;
+  flex-direction:column;
+  gap: 12px;
+  height: var(--travel-tile, 350px);
+}
+.flight-tool__form{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.flight-tool__form .field{
+  margin: 0;
+}
+.flight-tool__form .field:last-child{
+  grid-column: 1 / -1;
+}
+.flight-tool__form button{
+  grid-column: 2 / 3;
+  justify-self: center;
+  align-self: end;
+  margin-top: 0;
+  padding: 4;
+  font-size: 12px;
+  line-height: 1;
+}
+.flight-tool__cta{
+  border: 1px solid var(--surface-border);
+  background: transparent;
+  color: var(--surface-text);
+  height: 36px;
+  padding: 0 14px;
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1;
+}
+.flight-tool__cta:hover{
+  background: var(--surface-soft-bg);
+}
+.flight-tool__header h3{
+  margin: 0 0 4px;
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--surface-text);
+}
+.flight-tool__header p{
+  margin: 0;
+  color: var(--surface-muted);
+  font-size: 13px;
 }
 .image-card{
   border-radius: var(--radius);
@@ -401,19 +477,36 @@ img{ max-width: 100%; display: block; }
   border: 1px solid var(--surface-border);
   background: var(--surface-bg);
   box-shadow: var(--surface-shadow);
+  height: var(--travel-tile, 340px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+.image-card__btn{
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: zoom-in;
 }
 .image-card img{
   width: 100%;
-  height: 340px;
+  height: 100%;
   object-fit: cover;
   transform: scale(1.02);
   transition: transform 900ms ease;
 }
 .image-card:hover img{ transform: scale(1.06); }
 .image-card figcaption{
-  padding: 12px 14px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 8px 12px;
   font-size: 12px;
   color: var(--surface-muted);
+  background: transparent;
 }
 
 .image-row--dark .image-card{
@@ -422,6 +515,47 @@ img{ max-width: 100%; display: block; }
   box-shadow: var(--surface-shadow);
 }
 .image-row--dark figcaption{ color: var(--surface-muted); }
+
+/* Image modal */
+.image-modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(15,18,16,.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 95;
+}
+.image-modal.is-open{ display: flex; }
+.image-modal__panel{
+  width: min(1200px, 96vw);
+  border-radius: 18px;
+  background: #0f0f0f;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 24px 70px rgba(0,0,0,.35);
+  padding: 14px;
+  position: relative;
+}
+.image-modal__panel img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+.image-modal__close{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.35);
+  color: rgba(255,255,255,.9);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 11px;
+  cursor: pointer;
+}
+.image-modal__close:hover{ background: rgba(0,0,0,.55); }
 
 /* Event cards */
 .event-card{
@@ -464,6 +598,10 @@ img{ max-width: 100%; display: block; }
   display:flex;
   align-items:center;
   gap: 6px;
+}
+.event-card__meta a{
+  color: inherit;
+  text-decoration: underline;
 }
 .event-card__dress{
   margin: 6px 0 0;
@@ -639,6 +777,75 @@ img{ max-width: 100%; display: block; }
   height: 1px;
   background: var(--surface-border);
   margin: 38px 0 22px;
+}
+
+/* Map embed */
+.map-embed{
+  margin: 24px 0 10px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  background: var(--surface-bg);
+  box-shadow: var(--surface-shadow);
+  aspect-ratio: 16 / 8;
+}
+.map-embed iframe{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* Map link card */
+.map-link{
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--surface-border);
+  background: transparent;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 16px;
+}
+.map-link__eyebrow{
+  display:inline-block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--surface-muted);
+}
+.map-link h3{
+  margin: 0 0 6px;
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--surface-text);
+}
+.map-link p{
+  margin: 0;
+  color: var(--surface-muted);
+}
+.map-link__cta{
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--surface-border);
+  background: var(--surface-bg);
+  color: var(--surface-text);
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.map-link__cta:hover{
+  background: var(--surface-soft-bg);
+}
+@media (max-width: 980px){
+  .map-link{
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 /* FAQ */
@@ -850,6 +1057,33 @@ input:focus, select:focus, textarea:focus{
   .faq__grid{ grid-template-columns: 1fr; }
   .rsvp{ grid-template-columns: 1fr; }
   .grid-4{ grid-template-columns: 1fr; }
+  .flight-tool__form{ grid-template-columns: 1fr; }
+  .flight-tool__form button{
+    grid-column: 1 / -1;
+    padding: 4;
+    font-size: 12px;
+    line-height: 1;
+  }
+  .flight-tool__cta{
+    height: 36px;
+    padding: 0 14px;
+    font-size: 12px;
+    letter-spacing: 0;
+    text-transform: none;
+    line-height: 1;
+  }
+  .flight-tool{
+    height: auto;
+  }
+  .image-row--dark{
+    --travel-tile: auto;
+  }
+  .image-card{
+    height: auto;
+  }
+  .image-card img{
+    height: auto;
+  }
   .toc{
     left: auto;
     right: 12px;
