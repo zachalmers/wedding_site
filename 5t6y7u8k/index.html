@@ -20,6 +20,22 @@
   <div id="top" class="page-top" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
 
+  <div class="gate" id="gate" aria-hidden="false">
+    <div class="gate__panel" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+      <div class="gate__logo" aria-hidden="true">
+        <img src="assets/monogram.png" alt="" />
+      </div>
+      <p class="gate__eyebrow">Welcome</p>
+      <h1 id="gate-title">Umangi &amp; Zach</h1>
+      <p class="gate__lead">Enter the password to view our wedding site.</p>
+      <form id="gate-form" class="gate__form" autocomplete="off">
+        <input id="gate-pass" type="password" placeholder="Password" required />
+        <button class="btn btn--ghost gate__cta" type="submit">Enter</button>
+        <p id="gate-error" class="gate__error" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
   <nav class="toc" aria-label="Site menu">
     <button class="toc__toggle" type="button" aria-expanded="false" aria-controls="tocPanel">
       <span class="toc__toggle-icon" aria-hidden="true"></span>
@@ -36,6 +52,7 @@
     </div>
   </nav>
 
+  <div id="site">
   <main id="main">
     <!-- HERO -->
     <section class="hero" aria-label="Hero">
@@ -309,7 +326,11 @@
             <form id="flightSearchForm" class="flight-tool__form" autocomplete="on">
               <div class="field">
                 <label for="flight-origin">From</label>
-                <input id="flight-origin" name="origin" type="text" placeholder="SFO or city" list="flight-airports" required autocomplete="off" />
+                <input id="flight-origin" name="origin" type="text" placeholder="SFO or city" value="SFO" list="flight-airports" required autocomplete="off" />
+              </div>
+              <div class="field">
+                <label for="flight-dest">To</label>
+                <input id="flight-dest" name="dest" type="text" value="OAX" readonly aria-readonly="true" />
               </div>
               <div class="field">
                 <label for="flight-depart">Depart</label>
@@ -318,19 +339,6 @@
               <div class="field">
                 <label for="flight-return">Return</label>
                 <input id="flight-return" name="return" type="date" value="2026-12-06" />
-              </div>
-              <div class="field">
-                <label for="flight-pax">Passengers</label>
-                <input id="flight-pax" name="pax" type="number" min="1" max="9" value="1" />
-              </div>
-              <div class="field">
-                <label for="flight-cabin">Cabin</label>
-                <select id="flight-cabin" name="cabin">
-                  <option value="economy" selected>Economy</option>
-                  <option value="premium">Premium economy</option>
-                  <option value="business">Business</option>
-                  <option value="first">First</option>
-                </select>
               </div>
               <button class="btn btn--ghost flight-tool__cta" type="submit">Search Google Flights</button>
               <datalist id="flight-airports"></datalist>
@@ -525,17 +533,16 @@
           <div class="rsvp-aside reveal">
             <div class="card">
               <h3>Quick contact</h3>
-              <p class="muted">Add your preferred contact email here when ready.</p>
-              <a class="btn btn--ghost" href="mailto:your-email@example.com">Email us</a>
+              <a class="btn btn--ghost" href="mailto:info@umangiandzach.love">info@umangiandzach.love</a>
             </div>
 
             <div class="card">
               <h3>Updates</h3>
               <p>
-                We’ll keep this page current as we finalize timing and logistics.
+                We’ll keep this page current as we finalize logistics.
               </p>
               <p class="muted">
-                Tip: consider adding a “last updated” date here.
+                Last updated: Jan. 27, 2026.
               </p>
             </div>
           </div>
@@ -553,6 +560,7 @@
       </div>
     </footer>
   </main>
+  </div>
 
   <!-- Event modals -->
   <div class="event-modal" id="modal-haldi" role="dialog" aria-modal="true" aria-labelledby="modal-haldi-title" aria-hidden="true">

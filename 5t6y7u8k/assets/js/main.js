@@ -1,4 +1,44 @@
 (() => {
+  // Password gate (client-side)
+  const gate = document.getElementById("gate");
+  const gateForm = document.getElementById("gate-form");
+  const gatePass = document.getElementById("gate-pass");
+  const gateError = document.getElementById("gate-error");
+  const site = document.getElementById("site");
+  const ACCESS_KEY = "wedding-site-access";
+  const PASSWORD = "currytacos";
+
+  const unlockSite = () => {
+    if (gate) gate.classList.add("is-hidden");
+    if (site) site.classList.remove("is-locked");
+  };
+
+  const lockSite = () => {
+    if (gate) gate.classList.remove("is-hidden");
+    if (site) site.classList.add("is-locked");
+  };
+
+  if (localStorage.getItem(ACCESS_KEY) === "ok") {
+    unlockSite();
+  } else {
+    lockSite();
+  }
+
+  if (gateForm) {
+    gateForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const val = (gatePass && gatePass.value ? gatePass.value : "").trim();
+      if (val === PASSWORD) {
+        localStorage.setItem(ACCESS_KEY, "ok");
+        if (gateError) gateError.textContent = "";
+        unlockSite();
+      } else {
+        if (gateError) gateError.textContent = "Incorrect password.";
+        if (gatePass) gatePass.focus();
+      }
+    });
+  }
+
   // Footer year
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
@@ -101,6 +141,15 @@
     }
 
     const originInput = document.getElementById("flight-origin");
+    if (originInput) {
+      const defaultOrigin = originInput.value;
+      originInput.addEventListener("focus", () => {
+        if (originInput.value === defaultOrigin) originInput.value = "";
+      });
+      originInput.addEventListener("blur", () => {
+        if (!originInput.value.trim()) originInput.value = defaultOrigin;
+      });
+    }
     const coerceOriginToCode = () => {
       if (!originInput) return;
       const raw = (originInput.value || "").trim();
@@ -128,18 +177,12 @@
       const origin = (document.getElementById("flight-origin").value || "").trim().toUpperCase();
       const depart = (document.getElementById("flight-depart").value || "").trim();
       const ret = (document.getElementById("flight-return").value || "").trim();
-      const pax = (document.getElementById("flight-pax").value || "").trim();
-      const cabin = (document.getElementById("flight-cabin").value || "").trim();
 
       if (!origin || !depart) return;
-
-      const paxNum = pax ? Number(pax) : 1;
 
       const defaults = {
         depart: "2026-12-03",
         ret: "2026-12-06",
-        cabin: "economy",
-        pax: 1,
       };
 
       const hardcodedLinks = {
@@ -156,9 +199,7 @@
       const useHardcoded =
         origin in hardcodedLinks &&
         depart === defaults.depart &&
-        ret === defaults.ret &&
-        cabin === defaults.cabin &&
-        paxNum === defaults.pax;
+        ret === defaults.ret;
 
       if (useHardcoded) {
         window.open(hardcodedLinks[origin], "_blank", "noopener,noreferrer");
@@ -167,8 +208,6 @@
 
       let query = `flights ${origin} to OAX ${depart}`;
       if (ret) query += ` ${ret}`;
-      if (cabin) query += ` ${cabin} class`;
-      if (paxNum) query += ` ${paxNum} passengers`;
       const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
       window.open(url, "_blank", "noopener,noreferrer");
     });
