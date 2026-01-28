@@ -248,7 +248,7 @@
   reveals.forEach(el => io.observe(el));
 
   // Event modals
-  const modalTriggers = Array.from(document.querySelectorAll(".event-card__details-trigger"));
+  const modalTriggers = Array.from(document.querySelectorAll(".event-card__details-trigger, .modal-trigger"));
   const modals = Array.from(document.querySelectorAll(".event-modal"));
 
   const closeModal = (modal) => {
