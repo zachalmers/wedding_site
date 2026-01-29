@@ -187,22 +187,46 @@
 
       const hardcodedLinks = {
         SFO: "https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI2LTEyLTAzagwIAhIIL20vMGQ2bHByBwgBEgNPQVgaIxIKMjAyNi0xMi0wNmoHCAESA09BWHIMCAISCC9tLzBkNmxwQAFIAXABggELCP___________wGYAQE",
-        ORD: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDT1JEcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNPUkRAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        ORD: "https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI2LTEyLTAzagwIAxIIL20vMDFfZDRyBwgBEgNPQVgaIxIKMjAyNi0xMi0wNmoHCAESA09BWHIMCAMSCC9tLzAxX2Q0QAFIAXABggELCP___________wGYAQE&tfu=EgYIABAAGAA",
         NYC: "https://www.google.com/travel/flights/search?tfs=CBwQAhokEgoyMDI2LTEyLTAzag0IAxIJL20vMDJfMjg2cgcIARIDT0FYGiQSCjIwMjYtMTItMDZqBwgBEgNPQVhyDQgDEgkvbS8wMl8yODZAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
         LAX: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDTEFYcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNMQVhAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
         EUG: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDRVVHcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNFVUdAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
         PHX: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDUEhYcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNQSFhAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
         AMD: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDQU1EcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNBTURAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        ATL: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDQVRMcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNBVExAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        BOM: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDQk9NcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNCT01AAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        CLT: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDQ0xUcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNDTFRAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        BWI: "https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI2LTEyLTAzagwIAxIIL20vMHJoNmtyBwgBEgNPQVgaIxIKMjAyNi0xMi0wNmoHCAESA09BWHIMCAMSCC9tLzByaDZrQAFIAXABggELCP___________wGYAQE&tfu=EgYIABAAGAA",
+        DCA: "https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI2LTEyLTAzagwIAxIIL20vMHJoNmtyBwgBEgNPQVgaIxIKMjAyNi0xMi0wNmoHCAESA09BWHIMCAMSCC9tLzByaDZrQAFIAXABggELCP___________wGYAQE&tfu=EgYIABAAGAA",
+        IAD: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDSUFEcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNJQURAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        MSP: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDTVNQcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNNU1BAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        MDW: "https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI2LTEyLTAzagwIAxIIL20vMDFfZDRyBwgBEgNPQVgaIxIKMjAyNi0xMi0wNmoHCAESA09BWHIMCAMSCC9tLzAxX2Q0QAFIAXABggELCP___________wGYAQE&tfu=EgYIABAAGAA",
+        BOS: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDQk9TcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNCT1NAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        PDX: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDUERYcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNQRFhAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        MIA: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDTUlBcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNNSUFAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        DFW: "https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI2LTEyLTAzagwIAxIIL20vMGYycnFyBwgBEgNPQVgaIxIKMjAyNi0xMi0wNmoHCAESA09BWHIMCAMSCC9tLzBmMnJxQAFIAXABggELCP___________wGYAQE&tfu=EgYIABAAGAA",
+        DAL: "https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI2LTEyLTAzagwIAxIIL20vMGYycnFyBwgBEgNPQVgaIxIKMjAyNi0xMi0wNmoHCAESA09BWHIMCAMSCC9tLzBmMnJxQAFIAXABggELCP___________wGYAQE&tfu=EgYIABAAGAA",
+        IAH: "https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI2LTEyLTAzagwIAxIIL20vMDNsMm5yBwgBEgNPQVgaIxIKMjAyNi0xMi0wNmoHCAESA09BWHIMCAMSCC9tLzAzbDJuQAFIAXABggELCP___________wGYAQE&tfu=EgYIABAAGAA",
+        HOU: "https://www.google.com/travel/flights/search?tfs=CBwQAhojEgoyMDI2LTEyLTAzagwIAxIIL20vMDNsMm5yBwgBEgNPQVgaIxIKMjAyNi0xMi0wNmoHCAESA09BWHIMCAMSCC9tLzAzbDJuQAFIAXABggELCP___________wGYAQE&tfu=EgYIABAAGAA",
+        AUS: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDQVVTcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNBVVNAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        DEN: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDREVOcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNERU5AAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        DEL: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDREVMcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNERUxAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        SEA: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDU0VBcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNTRUFAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        YYZ: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDWVlacgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNZWVpAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        SLC: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDU0xDcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNTTENAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        RDU: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDUkRVcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNSRFVAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
+        PHL: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDUEhMcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNQSExAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
         SJU: "https://www.google.com/travel/flights/search?tfs=CBwQAhoeEgoyMDI2LTEyLTAzagcIARIDU0pVcgcIARIDT0FYGh4SCjIwMjYtMTItMDZqBwgBEgNPQVhyBwgBEgNTSlVAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA",
       };
 
+      const originKey = ["JFK", "EWR", "LGA"].includes(origin) ? "NYC" : origin;
       const useHardcoded =
-        origin in hardcodedLinks &&
+        originKey in hardcodedLinks &&
         depart === defaults.depart &&
         ret === defaults.ret;
 
       if (useHardcoded) {
-        window.open(hardcodedLinks[origin], "_blank", "noopener,noreferrer");
+        window.open(hardcodedLinks[originKey], "_blank", "noopener,noreferrer");
         return;
       }
 
