@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f1210" />
+  <title>#ChalmedByPatel</title>
+  <meta name="description" content="RSVP for Umangi & Zach — Oaxaca, Mexico." />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">💍</text></svg>' />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260128" />
+</head>
+<body>
+  <div class="gate" id="gate" aria-hidden="false">
+    <div class="gate__panel" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+      <div class="gate__logo" aria-hidden="true">
+        <img src="assets/monogram.png" alt="" />
+      </div>
+      <p class="gate__eyebrow">Welcome</p>
+      <h1 id="gate-title">Umangi &amp; Zach</h1>
+      <p class="gate__lead">Enter the password to view the RSVP.</p>
+      <form id="gate-form" class="gate__form" autocomplete="off">
+        <label class="gate__label" for="gate-pass">Password</label>
+        <input id="gate-pass" type="password" placeholder="Password" required />
+        <button class="btn btn--ghost gate__cta" type="submit">Enter</button>
+        <p id="gate-error" class="gate__error" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="site" class="rsvp-page">
+    <main class="rsvp-shell">
+      <header class="rsvp-header">
+        <div class="rsvp-logo" aria-hidden="true">
+          <img src="assets/monogram.png" alt="" />
+        </div>
+        <p class="rsvp-kicker">RSVP</p>
+        <h1>Umangi &amp; Zach</h1>
+        <p class="rsvp-meta">Dec 4–6, 2026 | Oaxaca, Mexico</p>
+        <p class="rsvp-lead">Find your invitation by email, then submit your party’s RSVP.</p>
+      </header>
+
+      <section class="rsvp-card">
+        <h2>Find your invitation</h2>
+        <form id="rsvp-lookup" class="rsvp-lookup">
+          <div class="field">
+            <label for="lookup-email">Email</label>
+            <input id="lookup-email" type="email" placeholder="you@example.com" required />
+          </div>
+          <button class="btn btn--ghost" type="submit">Search</button>
+          <p id="lookup-status" class="rsvp-status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="rsvp-card is-hidden" id="rsvp-form-card">
+        <h2 class="rsvp-title">Your party: <span class="rsvp-title__value" id="household-label"></span></h2>
+
+        <form id="rsvp-form" class="rsvp-form-v2">
+          <div id="guest-list" class="guest-list"></div>
+
+          <div class="field field--full">
+            <label for="rsvp-notes">Notes for the couple</label>
+            <textarea id="rsvp-notes" name="notes" rows="4" placeholder="Anything you want us to know?"></textarea>
+          </div>
+
+          <div class="rsvp-actions">
+            <button id="add-plus-one" class="btn btn--ghost" type="button">Add plus-one</button>
+            <button class="btn btn--primary" type="submit">Submit RSVP</button>
+          </div>
+
+          <p class="rsvp-note">Dietary needs are required for everyone attending.</p>
+          <p id="submit-status" class="rsvp-status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="rsvp-card is-hidden" id="rsvp-confirmation">
+        <h2>RSVP received</h2>
+        <p id="confirmation-text"></p>
+        <p class="rsvp-subtle">You can update your RSVP anytime using the edit link in your confirmation email.</p>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/js/main.js?v=20260128"></script>
+  <script src="assets/js/rsvp.js?v=20260128"></script>
+</body>
+</html>

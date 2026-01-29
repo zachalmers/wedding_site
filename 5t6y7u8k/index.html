@@ -483,51 +483,18 @@
         <div class="section__header">
           <h2 class="section__title reveal">RSVP</h2>
           <p class="section__lead reveal">
-            This form is wired as a placeholder. Replace with Google Forms / Formspree / etc. when ready.
+            Use your email to open the RSVP form in a new window.
           </p>
         </div>
 
         <div class="rsvp">
-          <form class="rsvp-form reveal" id="rsvpForm">
+          <form class="rsvp-form reveal" id="rsvp-lookup-form">
             <div class="field">
-              <label for="name">Full name</label>
-              <input id="name" name="name" type="text" autocomplete="name" placeholder="First Last" required />
+              <label for="rsvp-email">Email</label>
+              <input id="rsvp-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
             </div>
-
-            <div class="field">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
-            </div>
-
-            <div class="field">
-              <label for="attending">Will you attend?</label>
-              <select id="attending" name="attending" required>
-                <option value="" selected disabled>Select one</option>
-                <option value="yes">Yes, can’t wait</option>
-                <option value="no">No, celebrating from afar</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="eventsSelect">Events (placeholder)</label>
-              <select id="eventsSelect" name="events">
-                <option value="all" selected>All weekend events</option>
-                <option value="fri-sat">Friday + Saturday</option>
-                <option value="sat-only">Saturday only</option>
-              </select>
-              <p class="hint">Replace with your actual RSVP logic later.</p>
-            </div>
-
-            <div class="field">
-              <label for="notes">Notes</label>
-              <textarea id="notes" name="notes" rows="4" placeholder="Dietary restrictions, accessibility, anything else"></textarea>
-            </div>
-
-            <button class="btn btn--primary btn--full" type="submit">Submit RSVP</button>
-
-            <p class="fineprint">
-              Placeholder submission behavior: shows a confirmation toast only.
-            </p>
+            <button class="btn btn--primary btn--full" type="submit">Open RSVP</button>
+            <p class="fineprint">We’ll open your RSVP in a new window and prefill your email.</p>
           </form>
 
           <div class="rsvp-aside reveal">
@@ -548,7 +515,6 @@
           </div>
         </div>
 
-        <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
       </div>
     </section>
 

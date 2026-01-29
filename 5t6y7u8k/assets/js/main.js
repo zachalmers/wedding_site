@@ -363,36 +363,15 @@
     }
   }
 
-  // RSVP placeholder submission
-  const form = document.getElementById("rsvpForm");
-  const toast = document.getElementById("toast");
-
-  function showToast(message) {
-    if (!toast) return;
-    toast.textContent = message;
-    toast.classList.add("is-visible");
-    window.setTimeout(() => toast.classList.remove("is-visible"), 2800);
-  }
-
-  if (form) {
-    form.addEventListener("submit", (e) => {
+  // RSVP lookup (opens dedicated page)
+  const rsvpLookupForm = document.getElementById("rsvp-lookup-form");
+  if (rsvpLookupForm) {
+    rsvpLookupForm.addEventListener("submit", (e) => {
       e.preventDefault();
-
-      // Minimal “success” behavior (placeholder)
-      const data = new FormData(form);
-      const name = (data.get("name") || "").toString().trim();
-      const attending = (data.get("attending") || "").toString();
-
-      if (attending === "yes") {
-        showToast(`RSVP saved (placeholder). Thank you${name ? ", " + name : ""}.`);
-      } else if (attending === "no") {
-        showToast(`Noted (placeholder). We’ll miss you${name ? ", " + name : ""}.`);
-      } else {
-        showToast("Please complete the RSVP fields.");
-        return;
-      }
-
-      form.reset();
+      const email = (document.getElementById("rsvp-email").value || "").trim();
+      if (!email) return;
+      const url = `rsvp.html?email=${encodeURIComponent(email)}`;
+      window.open(url, "_blank", "noopener,noreferrer");
     });
   }
 
