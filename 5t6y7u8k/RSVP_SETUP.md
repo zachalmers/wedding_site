@@ -12,7 +12,7 @@ This site uses a lightweight Google Sheets backend with Apps Script. Follow thes
 
 **Households**
 ```
-householdId | email | householdLabel | maxPlusOnes | editToken | lastSubmitted
+householdId | email | householdLabel | maxPlusOnes | notes | editToken | lastSubmitted
 ```
 
 **Guests**
@@ -26,6 +26,7 @@ submittedAt | householdId | email | notes | payload
 ```
 
 If you already created the sheet, insert the new `events` column between `attending` and `dietary` on the `Guests` tab, and insert the `notes` column on the `Submissions` tab.
+For notes prefill, insert the `notes` column in the `Households` tab between `maxPlusOnes` and `editToken`.
 
 4. Populate `Households` and `Guests` with your invite list.
    - `householdId` can be any unique ID you choose (e.g., `UMZ-001`).

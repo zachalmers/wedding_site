@@ -8,7 +8,7 @@ const SETTINGS = {
 const SHEETS = {
   households: {
     name: "Households",
-    headers: ["householdId", "email", "householdLabel", "maxPlusOnes", "editToken", "lastSubmitted"],
+    headers: ["householdId", "email", "householdLabel", "maxPlusOnes", "notes", "editToken", "lastSubmitted"],
   },
   guests: {
     name: "Guests",
@@ -57,6 +57,7 @@ function lookup_(payload) {
     token: householdMatch.editToken || token || "",
     household: { householdId: householdMatch.householdId },
     householdLabel: householdMatch.householdLabel,
+    notes: householdMatch.notes || "",
     maxPlusOnes: householdMatch.maxPlusOnes,
     guests,
   };
@@ -105,10 +106,9 @@ function submit_(payload) {
   removeGuestRows_(guestsSheet, householdId);
   appendGuests_(guestsSheet, householdId, guests, householdMatch.email || email);
 
-  const editToken = householdMatch.editToken || Utilities.getUuid();
-  updateHouseholdMeta_(householdSheet, householdMatch.rowIndex, editToken);
-
   const notes = String(payload.notes || "").trim();
+  const editToken = householdMatch.editToken || Utilities.getUuid();
+  updateHouseholdMeta_(householdSheet, householdMatch.rowIndex, editToken, notes);
   logSubmission_(householdId, email || householdMatch.email, notes, guests);
   sendConfirmationEmail_(householdMatch.email || email, editToken, guests, notes);
 
@@ -194,6 +194,7 @@ function formatHousehold_(row, map, rowIndex) {
     email: normalizeEmail_(row[map.email]),
     householdLabel: String(row[map.householdLabel] || "").trim(),
     maxPlusOnes: Number(row[map.maxPlusOnes] || 0),
+    notes: String(row[map.notes] || "").trim(),
     editToken: String(row[map.editToken] || "").trim(),
   };
 }
@@ -254,9 +255,12 @@ function appendGuests_(sheet, householdId, guests, householdEmail) {
   sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, rows[0].length).setValues(rows);
 }
 
-function updateHouseholdMeta_(sheet, rowIndex, editToken) {
+function updateHouseholdMeta_(sheet, rowIndex, editToken, notes) {
   const map = headerMap_(sheet);
   const now = new Date();
+  if (map.notes != null) {
+    sheet.getRange(rowIndex, map.notes + 1).setValue(notes || "");
+  }
   if (map.editToken != null) {
     sheet.getRange(rowIndex, map.editToken + 1).setValue(editToken);
   }

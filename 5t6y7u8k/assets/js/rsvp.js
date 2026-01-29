@@ -1,5 +1,5 @@
 (() => {
-  const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbyVvtQOu5-U012F4QA4SM4r8-E7-2CwL0W3whnoBCz03qR-a99QoJHIlAlPtzQRofcm1g/exec";
+  const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbyU_zfMLvGk6no5nL8zCh_uKxIsWrJKM1F_DgA4Cf8HeWRVnXsX6JO9-0TggdwxsfS_Sw/exec";
   const EVENT_OPTIONS = [
     { id: "haldi", label: "Haldi (Fri morning)" },
     { id: "sangeet", label: "Sangeet (Fri evening)" },
@@ -258,6 +258,9 @@
       householdLabel.textContent = data.householdLabel || "";
       if (data.email && lookupEmail) {
         lookupEmail.value = data.email;
+      }
+      if (notesField) {
+        notesField.value = data.notes || "";
       }
       renderGuests(data.guests || []);
       showCard(formCard);
