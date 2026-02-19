@@ -677,7 +677,8 @@ img{ max-width: 100%; display: block; }
   object-fit: cover;
   object-position: top center;
   border-radius: 12px;
-  border: 1px solid rgba(0,0,0,.45);
+  border: 2px solid rgba(255,255,255,.55);
+  box-shadow: 0 6px 18px rgba(0,0,0,.16), inset 0 0 0 1px rgba(255,255,255,.24);
 }
 
 .card--dark{
@@ -760,9 +761,9 @@ img{ max-width: 100%; display: block; }
 .image-card{
   border-radius: var(--radius);
   overflow:hidden;
-  border: 1px solid var(--surface-border);
+  border: 2px solid rgba(255,255,255,.55);
   background: var(--surface-bg);
-  box-shadow: var(--surface-shadow);
+  box-shadow: 0 8px 20px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.22);
   height: var(--travel-tile, 340px);
   position: relative;
   display: flex;
@@ -780,6 +781,8 @@ img{ max-width: 100%; display: block; }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border: 2px solid rgba(255,255,255,.55);
+  box-shadow: 0 6px 18px rgba(0,0,0,.16), inset 0 0 0 1px rgba(255,255,255,.24);
   transform: scale(1.02);
   transition: transform 900ms ease;
 }
@@ -796,9 +799,9 @@ img{ max-width: 100%; display: block; }
 }
 
 .image-row--dark .image-card{
-  border-color: var(--surface-border);
+  border: 2px solid rgba(255,255,255,.55);
   background: var(--surface-bg);
-  box-shadow: var(--surface-shadow);
+  box-shadow: 0 8px 20px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.22);
 }
 .image-row--dark figcaption{ color: var(--surface-muted); }
 
@@ -1054,14 +1057,32 @@ img{ max-width: 100%; display: block; }
   box-shadow: var(--surface-shadow);
   padding: 22px;
   color: var(--surface-text);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 .stay-card h3{
   font-family: var(--serif);
   margin: 0 0 8px;
   font-size: 24px;
 }
+.stay-card__image{
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid rgba(255,255,255,.55);
+  box-shadow: 0 6px 18px rgba(0,0,0,.16), inset 0 0 0 1px rgba(255,255,255,.24);
+  margin: 0 0 12px;
+}
+.stay-card__image--parador{
+  object-position: center bottom;
+}
 .stay-card p{ margin: 0 0 10px; color: var(--surface-text); }
 .stay-card .muted{ color: var(--surface-muted); }
+.stay-card .stay-card__bottom{
+  margin-top: auto;
+}
 .stay-card a{
   color: #7a4e2e;
   text-decoration: none;
