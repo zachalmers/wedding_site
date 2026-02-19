@@ -605,6 +605,20 @@ img{ max-width: 100%; display: block; }
   grid-template-columns: 1fr 1fr;
   gap: 18px;
 }
+.story-layout{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "why expect"
+    "why photo";
+  gap: 18px;
+}
+.story-layout__why{ grid-area: why; }
+.story-layout__expect{ grid-area: expect; }
+.story-layout__photo{
+  grid-area: photo;
+  margin: 0;
+}
 .grid-3{
   display:grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1048,6 +1062,16 @@ img{ max-width: 100%; display: block; }
 }
 .stay-card p{ margin: 0 0 10px; color: var(--surface-text); }
 .stay-card .muted{ color: var(--surface-muted); }
+.stay-card a{
+  color: #7a4e2e;
+  text-decoration: none;
+  font-weight: 600;
+}
+.stay-card a:hover,
+.stay-card a:focus-visible{
+  color: #5f3a20;
+  text-decoration: underline;
+}
 
 .divider{
   height: 1px;
@@ -1350,6 +1374,13 @@ body::after{
 @media (max-width: 980px){
   .grid-3{ grid-template-columns: 1fr; }
   .two-col{ grid-template-columns: 1fr; }
+  .story-layout{
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "why"
+      "expect"
+      "photo";
+  }
   .image-row{ grid-template-columns: 1fr; }
   .faq__grid{ grid-template-columns: 1fr; }
   .rsvp{ grid-template-columns: 1fr; }
