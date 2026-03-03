@@ -230,32 +230,72 @@ img{ max-width: 100%; display: block; }
   gap: 12px;
   align-items: end;
 }
+.rsvp-lookup .field{
+  margin-bottom: 0;
+}
 .rsvp-lookup .btn{
   height: 44px;
   padding: 0 18px;
+  align-self: end;
 }
 .rsvp-form-v2{
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
+.rsvp-lookup .field > label,
+.rsvp-form-v2 .field > label{
+  font-size: 14px;
+  letter-spacing: .06em;
+  color: rgba(42,26,18,.72);
+}
+.rsvp-page input,
+.rsvp-page select,
+.rsvp-page textarea{
+  font-size: 16px;
+  line-height: 1.35;
+  color: rgba(42,26,18,.90);
+}
 .guest-list{
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 0;
 }
 .guest-row{
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.9fr) minmax(220px, 1.25fr);
+  column-gap: 12px;
+  row-gap: 8px;
+  padding: 10px 0 14px;
+}
+.guest-row + .guest-row{
+  border-top: 1px solid rgba(42,26,18,.14);
 }
 .field--full{
   grid-column: 1 / -1;
+}
+.guest-row .field{
+  margin-bottom: 6px;
+}
+.guest-row .field--events{
+  margin-top: 0;
+  margin-bottom: 2px;
 }
 .field-hint{
   margin: 6px 0 0;
   font-size: 11px;
   color: var(--field-hint);
+}
+.field.is-disabled label{
+  color: rgba(52, 57, 54, 0.55);
+}
+.field.is-disabled select,
+.field.is-disabled input,
+.field.is-disabled textarea{
+  background: rgba(220, 224, 221, 0.55);
+  border-color: rgba(146, 154, 149, 0.5);
+  color: rgba(52, 57, 54, 0.55);
+  cursor: not-allowed;
 }
 .choices{
   display: flex;
@@ -266,8 +306,31 @@ img{ max-width: 100%; display: block; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 13px;
+  line-height: 1.35;
   color: var(--surface-text);
+}
+.field--events .label--sentence{
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.35;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.field--events .choice{
+  font-size: 14px;
+  line-height: 1.35;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.dietary-other{
+  margin-top: 8px;
+  min-height: 42px;
+  resize: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 .choice input{
   width: 16px;
@@ -607,17 +670,78 @@ img{ max-width: 100%; display: block; }
 }
 .story-layout{
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas:
-    "why expect"
-    "why photo";
+  grid-template-columns: repeat(20, minmax(0, 1fr));
   gap: 18px;
+  align-items: start;
 }
-.story-layout__why{ grid-area: why; }
-.story-layout__expect{ grid-area: expect; }
-.story-layout__photo{
-  grid-area: photo;
+.story-layout__intro{
+  grid-column: 1 / 14;
+  grid-row: 1;
+}
+.story-layout__why{
+  grid-column: 8 / 21;
+  grid-row: 2;
+}
+.story-layout__expect{
+  grid-column: 1 / 10;
+  grid-row: 3;
+}
+.story-layout__photo1{
+  grid-column: 14 / 21;
+  grid-row: 1;
+  align-self: stretch;
+  min-height: 100%;
+}
+.story-layout__photo2{
+  grid-column: 1 / 8;
+  grid-row: 2;
+  align-self: stretch;
+  min-height: 100%;
+}
+.story-layout__photo3{
+  grid-column: 10 / 15;
+  grid-row: 3;
+  min-height: 170px;
+}
+.story-layout__photo4{
+  grid-column: 15 / 21;
+  grid-row: 3;
+  min-height: 170px;
+}
+.story-layout__expect,
+.story-layout__photo3,
+.story-layout__photo4{
+  align-self: stretch;
+}
+.story-photo-card{
   margin: 0;
+  border-radius: var(--radius);
+  border: 1px solid var(--surface-border);
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.55), rgba(255,255,255,.15) 35%, transparent 60%),
+    linear-gradient(160deg, rgba(214,123,70,.22), rgba(250,232,181,.78));
+  box-shadow: var(--surface-shadow);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.story-photo-card__eyebrow{
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(42,26,18,.62);
+}
+.story-photo-card figcaption{
+  font-family: var(--serif);
+  font-size: 24px;
+  line-height: 1.05;
+  color: rgba(42,26,18,.88);
+  max-width: 12ch;
+}
+.story-prose{
+  font-size: 15px;
+  line-height: 1.72;
 }
 .grid-3{
   display:grid;
@@ -1397,10 +1521,10 @@ body::after{
   .two-col{ grid-template-columns: 1fr; }
   .story-layout{
     grid-template-columns: 1fr;
-    grid-template-areas:
-      "why"
-      "expect"
-      "photo";
+  }
+  .story-layout > *{
+    grid-column: 1;
+    grid-row: auto;
   }
   .image-row{ grid-template-columns: 1fr; }
   .faq__grid{ grid-template-columns: 1fr; }

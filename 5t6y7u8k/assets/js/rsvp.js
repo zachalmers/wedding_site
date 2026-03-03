@@ -55,10 +55,12 @@
     }).join("");
     const dietaryValue = dietary || "";
     const dietaryLower = dietaryValue.toLowerCase();
-    const dietaryPreset = dietaryLower === "veg" || dietaryLower === "vegetarian"
-      ? "veg"
-      : dietaryLower === "non-veg" || dietaryLower === "nonveg" || dietaryLower === "omnivore"
-        ? "non-veg"
+    const dietaryPreset = dietaryLower === "vegan"
+      ? "vegan"
+      : dietaryLower === "veg" || dietaryLower === "vegetarian"
+        ? "vegetarian"
+        : dietaryLower === "non-veg" || dietaryLower === "nonveg" || dietaryLower === "omnivore"
+          ? "omnivore"
         : dietaryValue
           ? "other"
           : "";
@@ -88,14 +90,15 @@
         <label>Dietary needs</label>
         <select name="dietarySelect" ${attending === "yes" ? "required" : ""}>
           <option value="" ${dietaryPreset ? "" : "selected"} disabled>Select one</option>
-          <option value="veg" ${dietaryPreset === "veg" ? "selected" : ""}>Veg</option>
-          <option value="non-veg" ${dietaryPreset === "non-veg" ? "selected" : ""}>Non-veg</option>
-          <option value="other" ${dietaryPreset === "other" ? "selected" : ""}>Other</option>
+          <option value="vegetarian" ${dietaryPreset === "vegetarian" ? "selected" : ""}>Vegetarian</option>
+          <option value="vegan" ${dietaryPreset === "vegan" ? "selected" : ""}>Vegan</option>
+          <option value="omnivore" ${dietaryPreset === "omnivore" ? "selected" : ""}>Omnivore</option>
+          <option value="other" ${dietaryPreset === "other" ? "selected" : ""}>Other (provide details)</option>
         </select>
-        <input type="text" name="dietaryOther" value="${safeDietaryOther}" placeholder="Tell us more" class="dietary-other is-hidden" ${attending === "yes" && dietaryPreset === "other" ? "required" : ""} />
+        <textarea name="dietaryOther" rows="1" placeholder="Tell us more" class="dietary-other is-hidden" ${attending === "yes" && dietaryPreset === "other" ? "required" : ""}>${safeDietaryOther}</textarea>
       </div>
       <div class="field field--full field--events" aria-hidden="true">
-        <label class="label--sentence">Please uncheck if you anticipate missing Haldi or Sangeet.</label>
+        <label class="label--sentence">Please uncheck if you are unable to attend the Haldi or Sangeet.</label>
         <div class="choices">
           ${eventMarkup}
         </div>
@@ -105,14 +108,38 @@
 
     const attendingSelect = row.querySelector("select[name='attending']");
     const dietarySelect = row.querySelector("select[name='dietarySelect']");
-    const dietaryOther = row.querySelector("input[name='dietaryOther']");
-    const syncDietaryOther = () => {
+    const dietaryOther = row.querySelector("[name='dietaryOther']");
+    const dietaryField = dietarySelect ? dietarySelect.closest(".field") : null;
+    const autosizeDietaryOther = () => {
+      if (!dietaryOther) return;
+      dietaryOther.style.height = "auto";
+      dietaryOther.style.height = `${dietaryOther.scrollHeight}px`;
+    };
+    const syncDietaryState = () => {
       if (!dietarySelect || !dietaryOther) return;
+      const enabled = attendingSelect.value === "yes";
       const isOther = dietarySelect.value === "other";
-      dietaryOther.classList.toggle("is-hidden", !isOther);
-      if (attendingSelect.value === "yes" && isOther) {
-        dietaryOther.setAttribute("required", "required");
+
+      dietarySelect.disabled = !enabled;
+
+      if (enabled) {
+        dietarySelect.setAttribute("required", "required");
+        if (dietaryField) dietaryField.classList.remove("is-disabled");
+        dietaryOther.disabled = !isOther;
+        dietaryOther.classList.toggle("is-hidden", !isOther);
+        if (isOther) {
+          dietaryOther.setAttribute("required", "required");
+          autosizeDietaryOther();
+        } else {
+          dietaryOther.removeAttribute("required");
+        }
       } else {
+        dietarySelect.removeAttribute("required");
+        dietarySelect.value = "";
+        if (dietaryField) dietaryField.classList.add("is-disabled");
+        dietaryOther.value = "";
+        dietaryOther.classList.add("is-hidden");
+        dietaryOther.disabled = true;
         dietaryOther.removeAttribute("required");
       }
     };
@@ -145,22 +172,16 @@
       }
     };
     attendingSelect.addEventListener("change", () => {
-      if (attendingSelect.value === "yes") {
-        dietarySelect.setAttribute("required", "required");
-      } else {
-        dietarySelect.removeAttribute("required");
-        dietaryOther.classList.add("is-hidden");
-        dietaryOther.removeAttribute("required");
-      }
-      syncDietaryOther();
+      syncDietaryState();
       syncEventState();
     });
     if (dietarySelect) {
       dietarySelect.addEventListener("change", () => {
-        syncDietaryOther();
+        syncDietaryState();
       });
     }
-    syncDietaryOther();
+    dietaryOther.addEventListener("input", autosizeDietaryOther);
+    syncDietaryState();
     syncEventState();
 
     if (isPlusOne) {
@@ -204,7 +225,7 @@
     return rows.map((row) => {
       const get = (name) => row.querySelector(`[name='${name}']`).value.trim();
       const dietarySelect = row.querySelector("select[name='dietarySelect']");
-      const dietaryOther = row.querySelector("input[name='dietaryOther']");
+      const dietaryOther = row.querySelector("[name='dietaryOther']");
       let dietary = "";
       if (dietarySelect) {
         if (dietarySelect.value === "other") {
