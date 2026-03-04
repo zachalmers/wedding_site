@@ -6,7 +6,7 @@
   const gateError = document.getElementById("gate-error");
   const site = document.getElementById("site");
   const ACCESS_KEY = "wedding-site-access";
-  const PASSWORD = "currytacos";
+  const PASSWORD = "curryandmole";
 
   const unlockSite = () => {
     if (gate) gate.classList.add("is-hidden");
