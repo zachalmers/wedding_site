@@ -12,7 +12,7 @@ const SHEETS = {
   },
   guests: {
     name: "Guests",
-    headers: ["householdId", "firstName", "lastName", "email", "isPlusOne", "attending", "events", "dietary", "updatedAt"],
+    headers: ["householdId", "firstName", "lastName", "email", "whatsappPhone", "isPlusOne", "attending", "events", "dietary", "updatedAt"],
   },
   submissions: {
     name: "Submissions",
@@ -135,6 +135,12 @@ function getOrCreateSheet_(config) {
     sheet = ss.insertSheet(config.name);
     sheet.getRange(1, 1, 1, config.headers.length).setValues([config.headers]);
     sheet.setFrozenRows(1);
+  } else if (config.headers && config.headers.length) {
+    const existingHeaders = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map((header) => String(header || "").trim());
+    const missingHeaders = config.headers.filter((header) => !existingHeaders.includes(header));
+    if (missingHeaders.length) {
+      sheet.getRange(1, existingHeaders.length + 1, 1, missingHeaders.length).setValues([missingHeaders]);
+    }
   }
   return sheet;
 }
@@ -216,7 +222,8 @@ function getGuestsByHousehold_(sheet, householdId) {
     .map((row) => ({
       firstName: String(row[map.firstName] || "").trim(),
       lastName: String(row[map.lastName] || "").trim(),
-      email: String(row[map.email] || "").trim(),
+      email: map.email != null ? String(row[map.email] || "").trim() : "",
+      whatsappPhone: map.whatsappPhone != null ? String(row[map.whatsappPhone] || "").trim() : "",
       attending: String(row[map.attending] || "").trim(),
       events: String(row[map.events] || "")
         .split(",")
@@ -240,17 +247,25 @@ function removeGuestRows_(sheet, householdId) {
 
 function appendGuests_(sheet, householdId, guests, householdEmail) {
   const now = new Date();
-  const rows = guests.map((guest) => [
-    householdId,
-    String(guest.firstName || "").trim(),
-    String(guest.lastName || "").trim(),
-    String(guest.email || householdEmail || "").trim(),
-    guest.isPlusOne ? "TRUE" : "FALSE",
-    String(guest.attending || "").trim(),
-    Array.isArray(guest.events) ? guest.events.join(", ") : "",
-    String(guest.dietary || "").trim(),
-    now,
-  ]);
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map((header) => String(header || "").trim());
+  const rows = guests.map((guest) => {
+    const row = headers.map(() => "");
+    const assign = (header, value) => {
+      const index = headers.indexOf(header);
+      if (index !== -1) row[index] = value;
+    };
+    assign("householdId", householdId);
+    assign("firstName", String(guest.firstName || "").trim());
+    assign("lastName", String(guest.lastName || "").trim());
+    assign("email", String(guest.email || "").trim());
+    assign("whatsappPhone", String(guest.whatsappPhone || "").trim());
+    assign("isPlusOne", guest.isPlusOne ? "TRUE" : "FALSE");
+    assign("attending", String(guest.attending || "").trim());
+    assign("events", Array.isArray(guest.events) ? guest.events.join(", ") : "");
+    assign("dietary", String(guest.dietary || "").trim());
+    assign("updatedAt", now);
+    return row;
+  });
   if (!rows.length) return;
   sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, rows[0].length).setValues(rows);
 }

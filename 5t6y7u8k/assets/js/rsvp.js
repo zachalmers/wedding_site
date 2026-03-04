@@ -1,5 +1,5 @@
 (() => {
-  const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbyU_zfMLvGk6no5nL8zCh_uKxIsWrJKM1F_DgA4Cf8HeWRVnXsX6JO9-0TggdwxsfS_Sw/exec";
+  const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxVXXVv62576T6A7hTDh1DQ7gUQiTkoiJe0OGfH3eh29U1p_1JZxTeJn8UBJ328bj2Rnw/exec";
   const EVENT_OPTIONS = [
     { id: "haldi", label: "Haldi (Fri morning)" },
     { id: "sangeet", label: "Sangeet (Fri evening)" },
@@ -40,7 +40,7 @@
   const showCard = (el) => el && el.classList.remove("is-hidden");
   const hideCard = (el) => el && el.classList.add("is-hidden");
 
-  const createGuestRow = ({ firstName = "", lastName = "", email = "", attending = "", dietary = "", events = [], isPlusOne = false } = {}) => {
+  const createGuestRow = ({ firstName = "", lastName = "", email = "", whatsappPhone = "", attending = "", dietary = "", events = [], isPlusOne = false, isPrimaryGuest = false, householdEmail = "" } = {}) => {
     const row = document.createElement("div");
     row.className = "guest-row";
     row.dataset.plusOne = isPlusOne ? "1" : "0";
@@ -67,6 +67,9 @@
     const dietaryOtherValue = dietaryPreset === "other" ? dietaryValue : "";
     const safeFirstName = escapeAttr(firstName);
     const safeLastName = escapeAttr(lastName);
+    const effectiveEmail = isPrimaryGuest ? (householdEmail || email || "") : (email || "");
+    const safeEmail = escapeAttr(effectiveEmail);
+    const safeWhatsapp = escapeAttr(whatsappPhone);
     const safeDietaryOther = escapeAttr(dietaryOtherValue);
 
     row.innerHTML = `
@@ -96,6 +99,14 @@
           <option value="other" ${dietaryPreset === "other" ? "selected" : ""}>Other (provide details)</option>
         </select>
         <textarea name="dietaryOther" rows="1" placeholder="Tell us more" class="dietary-other is-hidden" ${attending === "yes" && dietaryPreset === "other" ? "required" : ""}>${safeDietaryOther}</textarea>
+      </div>
+      <div class="field">
+        <label>${isPrimaryGuest ? "Email" : "Guest email (optional)"}</label>
+        <input type="email" name="guestEmail" value="${safeEmail}" placeholder="${isPrimaryGuest ? "" : "guest@example.com"}" autocomplete="email" inputmode="email" ${isPrimaryGuest ? "readonly aria-readonly='true'" : ""} />
+      </div>
+      <div class="field">
+        <label>WhatsApp (optional)</label>
+        <input type="tel" name="whatsappPhone" value="${safeWhatsapp}" placeholder="+1 415 555 0123" autocomplete="tel" inputmode="tel" />
       </div>
       <div class="field field--full field--events" aria-hidden="true">
         <label class="label--sentence">Please uncheck if you are unable to attend the Haldi or Sangeet.</label>
@@ -204,8 +215,15 @@
   const renderGuests = (guests) => {
     if (!guestList) return;
     guestList.innerHTML = "";
+    let primaryAssigned = false;
     guests.forEach((guest) => {
-      guestList.appendChild(createGuestRow(guest));
+      const isPrimaryGuest = !primaryAssigned && !guest.isPlusOne;
+      if (isPrimaryGuest) primaryAssigned = true;
+      guestList.appendChild(createGuestRow({
+        ...guest,
+        isPrimaryGuest,
+        householdEmail: household && household.email ? household.email : (lookupEmail ? lookupEmail.value.trim() : ""),
+      }));
     });
   };
 
@@ -217,7 +235,7 @@
 
   const addPlusOne = () => {
     if (!canAddPlusOne()) return;
-    guestList.appendChild(createGuestRow({ isPlusOne: true }));
+    guestList.appendChild(createGuestRow({ isPlusOne: true, email: "", whatsappPhone: "" }));
   };
 
   const collectGuests = () => {
@@ -238,6 +256,8 @@
       return {
         firstName: get("firstName"),
         lastName: get("lastName"),
+        email: get("guestEmail"),
+        whatsappPhone: get("whatsappPhone"),
         attending: get("attending"),
         dietary,
         events,
@@ -274,6 +294,7 @@
     try {
       const data = await post({ action: "lookup", email, token });
       household = data.household;
+      household.email = data.email || "";
       maxPlusOnes = Number(data.maxPlusOnes || 0);
       activeToken = data.token || token || "";
       householdLabel.textContent = data.householdLabel || "";
