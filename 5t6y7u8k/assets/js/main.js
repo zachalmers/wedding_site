@@ -332,10 +332,7 @@
   });
 
   if (imageModal) {
-    imageModal.addEventListener("click", (event) => {
-      const target = event.target;
-      if (target === imageModal) closeImageModal();
-    });
+    imageModal.addEventListener("click", closeImageModal);
   }
   if (imageModalClose) {
     imageModalClose.addEventListener("click", closeImageModal);
