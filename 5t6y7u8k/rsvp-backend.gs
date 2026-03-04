@@ -1,14 +1,29 @@
 const SETTINGS = {
   RSVP_PUBLIC_URL: "https://umangiandzach.love/5t6y7u8k/rsvp.html",
+  WEDDING_SITE_URL: "https://umangiandzach.love/5t6y7u8k/",
+  SITE_PASSWORD: "curryandmole",
   FROM_EMAIL: "info@umangiandzach.love",
   REPLY_TO: "info@umangiandzach.love",
+  INVITE_SUBJECT: "You're invited to our wedding in Oaxaca - Umangi & Zach",
   LODGING_FORM_URL: "",
 };
 
 const SHEETS = {
   households: {
     name: "Households",
-    headers: ["householdId", "email", "householdLabel", "maxPlusOnes", "notes", "editToken", "lastSubmitted"],
+    headers: [
+      "householdId",
+      "email",
+      "householdLabel",
+      "maxPlusOnes",
+      "notes",
+      "editToken",
+      "lastSubmitted",
+      "sendInvite",
+      "inviteSentAt",
+      "inviteStatus",
+      "inviteError",
+    ],
   },
   guests: {
     name: "Guests",
@@ -344,6 +359,239 @@ function sendConfirmationEmail_(recipient, token, guests, notes) {
     };
     GmailApp.sendEmail(recipient, "RSVP received — Umangi & Zach", textBody, fallback);
   }
+}
+
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu("Invites")
+    .addItem("Preview queued invites (dry run)", "previewQueuedInvites")
+    .addItem("Send queued invites", "sendQueuedInvites")
+    .addToUi();
+}
+
+function previewQueuedInvites() {
+  const summary = processInviteQueue_({ dryRun: true, limit: 500 });
+  const ui = SpreadsheetApp.getUi();
+  ui.alert(
+    "Invite preview",
+    [
+      `Queued rows scanned: ${summary.scanned}`,
+      `Eligible invites: ${summary.eligible}`,
+      `Would send: ${summary.wouldSend}`,
+      `Skipped: ${summary.skipped}`,
+      `Errors: ${summary.errors}`,
+    ].join("\n"),
+    ui.ButtonSet.OK
+  );
+}
+
+function sendQueuedInvites() {
+  const summary = processInviteQueue_({ dryRun: false, limit: 500 });
+  const ui = SpreadsheetApp.getUi();
+  ui.alert(
+    "Invite send complete",
+    [
+      `Queued rows scanned: ${summary.scanned}`,
+      `Eligible invites: ${summary.eligible}`,
+      `Sent: ${summary.sent}`,
+      `Skipped: ${summary.skipped}`,
+      `Errors: ${summary.errors}`,
+    ].join("\n"),
+    ui.ButtonSet.OK
+  );
+}
+
+function processInviteQueue_(options) {
+  const opts = options || {};
+  const dryRun = opts.dryRun !== false;
+  const limit = Number(opts.limit || 500);
+
+  const sheet = getOrCreateSheet_(SHEETS.households);
+  const data = sheet.getDataRange().getValues();
+  if (data.length < 2) {
+    return { scanned: 0, eligible: 0, wouldSend: 0, sent: 0, skipped: 0, errors: 0 };
+  }
+
+  const headers = data[0];
+  const map = toMap_(headers);
+  const summary = { scanned: 0, eligible: 0, wouldSend: 0, sent: 0, skipped: 0, errors: 0 };
+
+  for (let i = 1; i < data.length; i++) {
+    if (summary.scanned >= limit) break;
+    summary.scanned += 1;
+    const row = data[i];
+    const rowIndex = i + 1;
+
+    const queued = isInviteQueued_(rowValue_(row, map, "sendInvite"));
+    if (!queued) {
+      summary.skipped += 1;
+      continue;
+    }
+
+    const alreadySent = rowValue_(row, map, "inviteSentAt");
+    if (alreadySent) {
+      summary.skipped += 1;
+      continue;
+    }
+
+    const recipient = normalizeEmail_(rowValue_(row, map, "email"));
+    const householdLabel = String(rowValue_(row, map, "householdLabel") || "").trim() || "friend";
+    if (!recipient) {
+      summary.errors += 1;
+      writeInviteAudit_(sheet, rowIndex, map, {
+        status: "error",
+        error: "Missing recipient email",
+      });
+      continue;
+    }
+
+    summary.eligible += 1;
+    if (dryRun) {
+      summary.wouldSend += 1;
+      writeInviteAudit_(sheet, rowIndex, map, {
+        status: "queued-preview",
+        error: "",
+      });
+      continue;
+    }
+
+    try {
+      sendInviteEmail_(recipient, householdLabel);
+      summary.sent += 1;
+      writeInviteAudit_(sheet, rowIndex, map, {
+        status: "sent",
+        error: "",
+        sentAt: new Date(),
+      });
+    } catch (err) {
+      summary.errors += 1;
+      writeInviteAudit_(sheet, rowIndex, map, {
+        status: "error",
+        error: String(err && err.message ? err.message : err).slice(0, 500),
+      });
+    }
+  }
+
+  return summary;
+}
+
+function sendInviteEmail_(recipient, householdLabel) {
+  const invite = buildInviteEmail_(householdLabel);
+  const options = {
+    htmlBody: invite.htmlBody,
+    name: "Umangi & Zach",
+    replyTo: SETTINGS.REPLY_TO || SETTINGS.FROM_EMAIL || "",
+  };
+
+  try {
+    if (SETTINGS.FROM_EMAIL) options.from = SETTINGS.FROM_EMAIL;
+    GmailApp.sendEmail(recipient, SETTINGS.INVITE_SUBJECT, invite.textBody, options);
+  } catch (err) {
+    const fallback = {
+      htmlBody: invite.htmlBody,
+      name: "Umangi & Zach",
+      replyTo: SETTINGS.REPLY_TO || "",
+    };
+    GmailApp.sendEmail(recipient, SETTINGS.INVITE_SUBJECT, invite.textBody, fallback);
+  }
+}
+
+function buildInviteEmail_(householdLabel) {
+  const websiteUrl = SETTINGS.WEDDING_SITE_URL || "";
+  const password = SETTINGS.SITE_PASSWORD || "";
+  const monogramUrl = "https://umangiandzach.love/5t6y7u8k/assets/monogram.png";
+  const safeLabel = escapeHtml_(householdLabel || "friend");
+
+  const textBody = [
+    `Dear ${householdLabel || "friend"},`,
+    "",
+    "We’re so excited to celebrate with you in Oaxaca and would love for you to join us for our wedding weekend.",
+    "",
+    "Our website has the full schedule, travel details, and hotel information.",
+    websiteUrl ? `Website: ${websiteUrl}` : "",
+    password ? `Password: ${password}` : "",
+    "",
+    "Please RSVP by August 1, 2026.",
+    "",
+    "Love,",
+    "Umangi + Zach",
+    "",
+    "Questions? Reply to this email or contact info@umangiandzach.love",
+  ].filter(Boolean).join("\n");
+
+  const htmlBody = `
+    <div style="margin:0;padding:0;background:#b8572d;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#b8572d;padding:24px 0;">
+        <tr>
+          <td align="center">
+            <table role="presentation" width="640" cellspacing="0" cellpadding="0" style="max-width:640px;width:100%;background:#ffe8d6;border:1px solid #e8dfd4;border-radius:14px;overflow:hidden;font-family:Georgia,'Times New Roman',serif;color:#1f1f1f;">
+              <tr>
+                <td style="padding:36px 36px 12px 36px;text-align:center;">
+                  <img src="${escapeHtml_(monogramUrl)}" alt="Umangi and Zach monogram" width="96" style="display:block;margin:0 auto 14px auto;width:96px;height:auto;" />
+                  <div style="font-size:13px;letter-spacing:1.6px;text-transform:uppercase;color:#8a7b6a;">WE'RE GETTING MARRIED!</div>
+                  <h1 style="margin:10px 0 6px 0;font-size:42px;line-height:1.1;font-weight:600;">Umangi &amp; Zach</h1>
+                  <p style="margin:0;font-family:Arial,sans-serif;font-size:15px;color:#5f5b56;">Oaxaca, Mexico • December 4–6, 2026</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:18px 36px 8px 36px;">
+                  <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">Dear ${safeLabel},</p>
+                  <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
+                    We’re so excited to celebrate with you in Oaxaca and would love for you to join us for our wedding weekend.
+                  </p>
+                  <p style="margin:0 0 18px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
+                    Our website has the full schedule, travel details, and hotel information.
+                  </p>
+                  <p style="margin:0 0 8px 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;">
+                    ${websiteUrl ? `<strong>Website:</strong> <a href="${escapeHtml_(websiteUrl)}" style="color:#b8572d;">${escapeHtml_(websiteUrl)}</a><br/>` : ""}
+                    ${password ? `<strong>Password:</strong> ${escapeHtml_(password)}` : ""}
+                  </p>
+                  <p style="margin:16px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;">
+                    Please RSVP by <strong>August 1, 2026</strong>.
+                  </p>
+                  <p style="margin:10px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1f1f1f;">
+                    Love,<br/>Umangi + Zach
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:24px 36px 36px 36px;text-align:center;">
+                  ${websiteUrl ? `<a href="${escapeHtml_(websiteUrl)}" style="display:inline-block;background:#b8572d;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:.4px;padding:12px 20px;border-radius:999px;">Open Wedding Website</a>` : ""}
+                  <p style="margin:18px 0 0 0;font-family:Arial,sans-serif;font-size:13px;color:#7a7268;">
+                    Questions? Reply to this email or reach us at info@umangiandzach.love
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  `;
+
+  return { textBody, htmlBody };
+}
+
+function writeInviteAudit_(sheet, rowIndex, map, values) {
+  if (map.inviteStatus != null && values.status != null) {
+    sheet.getRange(rowIndex, map.inviteStatus + 1).setValue(values.status);
+  }
+  if (map.inviteError != null && values.error != null) {
+    sheet.getRange(rowIndex, map.inviteError + 1).setValue(values.error);
+  }
+  if (map.inviteSentAt != null && values.sentAt) {
+    sheet.getRange(rowIndex, map.inviteSentAt + 1).setValue(values.sentAt);
+  }
+}
+
+function rowValue_(row, map, key) {
+  if (map[key] == null) return "";
+  return row[map[key]];
+}
+
+function isInviteQueued_(value) {
+  const normalized = String(value || "").trim().toLowerCase();
+  return normalized === "yes" || normalized === "y" || normalized === "true" || normalized === "1" || normalized === "send";
 }
 
 function formatEvents_(events) {

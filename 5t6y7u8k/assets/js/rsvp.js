@@ -1,5 +1,5 @@
 (() => {
-  const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxVXXVv62576T6A7hTDh1DQ7gUQiTkoiJe0OGfH3eh29U1p_1JZxTeJn8UBJ328bj2Rnw/exec";
+  const RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbytencCmCLM-Rk_ckS-DhiQgVqyQ_3qn1_kUrXSxGqS5S_tEUpxkenI2hHe9rWQxox8Bw/exec";
   const EVENT_OPTIONS = [
     { id: "haldi", label: "Haldi (Fri morning)" },
     { id: "sangeet", label: "Sangeet (Fri evening)" },
