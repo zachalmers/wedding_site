@@ -109,7 +109,7 @@
         <input type="tel" name="whatsappPhone" value="${safeWhatsapp}" placeholder="+1 415 555 0123" autocomplete="tel" inputmode="tel" />
       </div>
       <div class="field field--full field--events" aria-hidden="true">
-        <label class="label--sentence">Please uncheck if you are unable to attend the Haldi or Sangeet.</label>
+        <label class="label--sentence">Please <strong>uncheck</strong> if you are unable to attend an event.</label>
         <div class="choices">
           ${eventMarkup}
         </div>
