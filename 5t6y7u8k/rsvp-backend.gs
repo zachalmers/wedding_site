@@ -727,7 +727,7 @@ function buildReminderEmail_(householdLabel) {
   const textBody = [
     `Dear ${householdLabel || "friend"},`,
     "",
-    "Quick RSVP reminder from us - we would love to celebrate with you in Oaxaca.",
+    "Quick RSVP reminder from us — we would love to celebrate with you in Oaxaca.",
     "If you have not submitted yet, please RSVP when you have a moment.",
     "",
     rsvpUrl ? `RSVP: ${rsvpUrl}` : "",
@@ -760,7 +760,7 @@ function buildReminderEmail_(householdLabel) {
                 <td style="padding:18px 36px 8px 36px;">
                   <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">Dear ${safeLabel},</p>
                   <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
-                    Quick RSVP reminder from us - we would love to celebrate with you in Oaxaca.
+                    Quick RSVP reminder from us — we would love to celebrate with you in Oaxaca.
                   </p>
                   <p style="margin:0 0 18px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
                     If you have not submitted yet, please RSVP when you have a moment.
