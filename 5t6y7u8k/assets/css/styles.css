@@ -1436,6 +1436,12 @@ main#main{
   display:grid;
   grid-template-columns: 1fr 1fr;
   gap: 14px;
+  align-items: start;
+}
+.faq__col{
+  display: grid;
+  gap: 14px;
+  align-content: start;
 }
 .faq__item{
   padding: 16px 16px;
@@ -1453,6 +1459,14 @@ main#main{
   margin: 0;
   color: var(--surface-muted);
   font-size: 13px;
+}
+.packing-checklist{
+  margin: 0;
+  padding-left: 18px;
+  color: var(--surface-muted);
+  font-size: 13px;
+  display: grid;
+  gap: 5px;
 }
 
 /* Callout */
@@ -1655,6 +1669,9 @@ body::after{
 }
 
 @media (max-width: 980px){
+  .faq__grid{
+    grid-template-columns: 1fr;
+  }
   .grid-3{ grid-template-columns: 1fr; }
   .two-col{ grid-template-columns: 1fr; }
   .story-layout{
@@ -1668,7 +1685,6 @@ body::after{
     min-height: 240px;
   }
   .image-row{ grid-template-columns: 1fr; }
-  .faq__grid{ grid-template-columns: 1fr; }
   .rsvp{ grid-template-columns: 1fr; }
   .grid-4{ grid-template-columns: 1fr; }
   .flight-tool__form{ grid-template-columns: 1fr; }
