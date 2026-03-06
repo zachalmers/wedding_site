@@ -398,11 +398,35 @@
 
   // Optional: parallax-ish hero background (very subtle)
   const heroMedia = document.querySelector(".hero__media");
+  const heroVideo = document.querySelector(".hero__video");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (heroVideo) {
+    // Keep autoplay behavior consistent across Safari/iOS and desktop.
+    heroVideo.muted = true;
+    heroVideo.defaultMuted = true;
+
+    if (reduceMotion) {
+      heroVideo.pause();
+      heroVideo.currentTime = 0;
+    } else {
+      const startHeroVideo = () => {
+        heroVideo.play().catch(() => {});
+      };
+      startHeroVideo();
+      heroVideo.addEventListener("canplay", startHeroVideo, { once: true });
+    }
+  }
+
   if (heroMedia && !reduceMotion) {
+    const hasVideo = Boolean(heroVideo);
+    const baseScale = hasVideo ? 1.03 : 1.06;
+    const drift = hasVideo ? -0.012 : -0.02;
+    const maxShift = hasVideo ? 12 : 18;
     window.addEventListener("scroll", () => {
       const y = window.scrollY || 0;
-      heroMedia.style.transform = `scale(1.06) translateY(${Math.min(y * -0.02, 18)}px)`;
+      const shift = Math.max(y * drift, -maxShift);
+      heroMedia.style.transform = `scale(${baseScale}) translateY(${shift}px)`;
     }, { passive: true });
   }
 })();

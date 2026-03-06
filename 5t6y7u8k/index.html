@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="assets/css/styles.css?v=20260219" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260306" />
 </head>
 
 <body>
@@ -55,8 +55,12 @@
   <div id="site">
   <main id="main">
     <!-- HERO -->
-    <section class="hero" aria-label="Hero">
-      <div class="hero__media" role="img" aria-label="Oaxaca landscape placeholder background"></div>
+    <section class="hero hero--video" aria-label="Hero">
+      <div class="hero__media hero__media--video" aria-hidden="true">
+        <video class="hero__video" autoplay muted loop playsinline preload="metadata" poster="assets/hero.jpg">
+          <source src="assets/hero-video.mp4" type="video/mp4" />
+        </video>
+      </div>
       <div class="hero__overlay"></div>
 
       <div class="container hero__content">
@@ -986,6 +990,6 @@
     </div>
   </div>
 
-  <script src="assets/js/main.js?v=20260219"></script>
+  <script src="assets/js/main.js?v=20260306"></script>
 </body>
 </html>
