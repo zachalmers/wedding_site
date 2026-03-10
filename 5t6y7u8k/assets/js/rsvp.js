@@ -23,6 +23,7 @@
   let household = null;
   let maxPlusOnes = 0;
   let activeToken = "";
+  let guestRowCounter = 0;
 
   const setStatus = (el, msg, type) => {
     if (!el) return;
@@ -44,6 +45,14 @@
     const row = document.createElement("div");
     row.className = "guest-row";
     row.dataset.plusOne = isPlusOne ? "1" : "0";
+    const rowId = `guest-${++guestRowCounter}`;
+    const firstNameId = `${rowId}-first-name`;
+    const lastNameId = `${rowId}-last-name`;
+    const attendingId = `${rowId}-attending`;
+    const dietarySelectId = `${rowId}-dietary-select`;
+    const dietaryOtherId = `${rowId}-dietary-other`;
+    const emailId = `${rowId}-email`;
+    const whatsappId = `${rowId}-whatsapp`;
     const eventMarkup = EVENT_OPTIONS.map((event) => {
       const checked = events.includes(event.id) ? "checked" : "";
       return `
@@ -74,39 +83,39 @@
 
     row.innerHTML = `
       <div class="field">
-        <label>First name</label>
-        <input type="text" name="firstName" value="${safeFirstName}" placeholder="${isPlusOne ? "First name" : ""}" required />
+        <label for="${firstNameId}">First name</label>
+        <input id="${firstNameId}" type="text" name="firstName" value="${safeFirstName}" placeholder="${isPlusOne ? "First name" : ""}" required />
       </div>
       <div class="field">
-        <label>Last name</label>
-        <input type="text" name="lastName" value="${safeLastName}" placeholder="${isPlusOne ? "Last name" : ""}" required />
+        <label for="${lastNameId}">Last name</label>
+        <input id="${lastNameId}" type="text" name="lastName" value="${safeLastName}" placeholder="${isPlusOne ? "Last name" : ""}" required />
       </div>
       <div class="field">
-        <label>Attending</label>
-        <select name="attending" required>
+        <label for="${attendingId}">Attending</label>
+        <select id="${attendingId}" name="attending" required>
           <option value="" ${attending ? "" : "selected"} disabled>Select one</option>
           <option value="yes" ${attending === "yes" ? "selected" : ""}>Yes</option>
           <option value="no" ${attending === "no" ? "selected" : ""}>No</option>
         </select>
       </div>
       <div class="field">
-        <label>Dietary needs</label>
-        <select name="dietarySelect" ${attending === "yes" ? "required" : ""}>
+        <label for="${dietarySelectId}">Dietary needs</label>
+        <select id="${dietarySelectId}" name="dietarySelect" ${attending === "yes" ? "required" : ""}>
           <option value="" ${dietaryPreset ? "" : "selected"} disabled>Select one</option>
           <option value="vegetarian" ${dietaryPreset === "vegetarian" ? "selected" : ""}>Vegetarian</option>
           <option value="vegan" ${dietaryPreset === "vegan" ? "selected" : ""}>Vegan</option>
           <option value="omnivore" ${dietaryPreset === "omnivore" ? "selected" : ""}>Omnivore</option>
           <option value="other" ${dietaryPreset === "other" ? "selected" : ""}>Other (provide details)</option>
         </select>
-        <textarea name="dietaryOther" rows="1" placeholder="Tell us more" class="dietary-other is-hidden" ${attending === "yes" && dietaryPreset === "other" ? "required" : ""}>${safeDietaryOther}</textarea>
+        <textarea id="${dietaryOtherId}" name="dietaryOther" rows="1" placeholder="Tell us more" class="dietary-other is-hidden" ${attending === "yes" && dietaryPreset === "other" ? "required" : ""}>${safeDietaryOther}</textarea>
       </div>
       <div class="field">
-        <label>${isPrimaryGuest ? "Email" : "Guest email (optional)"}</label>
-        <input type="email" name="guestEmail" value="${safeEmail}" placeholder="${isPrimaryGuest ? "" : "guest@example.com"}" autocomplete="email" inputmode="email" ${isPrimaryGuest ? "readonly aria-readonly='true'" : ""} />
+        <label for="${emailId}">${isPrimaryGuest ? "Email" : "Guest email (optional)"}</label>
+        <input id="${emailId}" type="email" name="guestEmail" value="${safeEmail}" placeholder="${isPrimaryGuest ? "" : "guest@example.com"}" autocomplete="email" inputmode="email" ${isPrimaryGuest ? "readonly aria-readonly='true'" : ""} />
       </div>
       <div class="field">
-        <label>WhatsApp (optional)</label>
-        <input type="tel" name="whatsappPhone" value="${safeWhatsapp}" placeholder="+1 415 555 0123" autocomplete="tel" inputmode="tel" />
+        <label for="${whatsappId}">WhatsApp (optional)</label>
+        <input id="${whatsappId}" type="tel" name="whatsappPhone" value="${safeWhatsapp}" placeholder="+1 415 555 0123" autocomplete="tel" inputmode="tel" />
       </div>
       <div class="field field--full field--events" aria-hidden="true">
         <label class="label--sentence">Please <strong>uncheck</strong> if you are unable to attend an event.</label>

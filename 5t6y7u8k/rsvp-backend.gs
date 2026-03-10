@@ -314,39 +314,10 @@ function sendConfirmationEmail_(recipient, token, guests, notes) {
   const editLink = SETTINGS.RSVP_PUBLIC_URL
     ? `${SETTINGS.RSVP_PUBLIC_URL}?token=${encodeURIComponent(token)}`
     : "";
-  const summaryLines = guests.map((guest) => {
-    const status = guest.attending === "yes" ? "Attending" : "Not attending";
-    const dietary = guest.attending === "yes" ? ` • Dietary: ${guest.dietary || "None"}` : "";
-    const events = guest.attending === "yes" && Array.isArray(guest.events) && guest.events.length
-      ? ` • Events: ${formatEvents_(guest.events)}`
-      : "";
-    return `- ${guest.firstName} ${guest.lastName}: ${status}${events}${dietary}`;
-  });
-
-  const textBody = [
-    "Thanks for your RSVP! We can't wait to celebrate with you in Oaxaca!",
-    "",
-    "Your details:",
-    ...summaryLines,
-    "",
-    editLink ? `Edit your RSVP: ${editLink}` : "",
-    notes ? `Notes for the couple: ${notes}` : "",
-    "Please reply to this email with flight and hotel details once you've made arrangements.",
-  ].filter(Boolean).join("\n");
-
-  const htmlSummary = summaryLines.map((line) => `<li>${escapeHtml_(line.replace(/^- /, ""))}</li>`).join("");
-  const notesHtml = notes ? `<p><strong>Notes for the couple:</strong> ${escapeHtml_(notes)}</p>` : "";
-  const htmlBody = `
-    <p>Thanks for your RSVP!</p>
-    <p><strong>Your details:</strong></p>
-    <ul>${htmlSummary}</ul>
-    ${notesHtml}
-    ${editLink ? `<p><a href="${editLink}">Edit your RSVP</a></p>` : ""}
-    <p>Please reply to this email with flight and hotel details once you've made arrangements.</p>
-  `;
+  const confirmation = buildConfirmationEmail_(guests, notes, editLink);
 
   const options = {
-    htmlBody,
+    htmlBody: confirmation.htmlBody,
     name: "Umangi & Zach",
     replyTo: SETTINGS.REPLY_TO || SETTINGS.FROM_EMAIL || "",
   };
@@ -355,15 +326,155 @@ function sendConfirmationEmail_(recipient, token, guests, notes) {
     if (SETTINGS.FROM_EMAIL) {
       options.from = SETTINGS.FROM_EMAIL;
     }
-    GmailApp.sendEmail(recipient, "RSVP received — Umangi & Zach", textBody, options);
+    GmailApp.sendEmail(recipient, "RSVP received — Umangi & Zach", confirmation.textBody, options);
   } catch (err) {
     const fallback = {
-      htmlBody,
+      htmlBody: confirmation.htmlBody,
       name: "Umangi & Zach",
       replyTo: SETTINGS.REPLY_TO || "",
     };
-    GmailApp.sendEmail(recipient, "RSVP received — Umangi & Zach", textBody, fallback);
+    GmailApp.sendEmail(recipient, "RSVP received — Umangi & Zach", confirmation.textBody, fallback);
   }
+}
+
+function buildConfirmationEmail_(guests, notes, editLink) {
+  const monogramUrl = "https://umangiandzach.love/5t6y7u8k/assets/monogram.png";
+  const websiteUrl = SETTINGS.WEDDING_SITE_URL || "";
+  const summary = (Array.isArray(guests) ? guests : []).map((guest) => {
+    const firstName = String(guest.firstName || "").trim();
+    const lastName = String(guest.lastName || "").trim();
+    const fullName = `${firstName} ${lastName}`.trim() || "Guest";
+    const attending = String(guest.attending || "").trim().toLowerCase() === "yes";
+    const status = attending ? "Attending" : "Not attending";
+    const events = attending && Array.isArray(guest.events) && guest.events.length
+      ? formatEvents_(guest.events)
+      : "";
+    const dietaryRaw = String(guest.dietary || "").trim();
+    const dietary = attending ? (formatDietary_(dietaryRaw) || "None") : "";
+    return { fullName, status, events, dietary, attending };
+  });
+
+  const textRows = summary.map((row) => {
+    const parts = [`- ${row.fullName}: ${row.status}`];
+    if (row.attending && row.events) parts.push(`Events: ${row.events}`);
+    if (row.attending) parts.push(`Dietary: ${row.dietary}`);
+    return parts.join(" | ");
+  });
+  const allDeclined = summary.length > 0 && summary.every((row) => !row.attending);
+  const textLead = allDeclined
+    ? "Thank you so much for letting us know your plans. We’ll miss celebrating with you in Oaxaca, and we’re so grateful for your love and support."
+    : "Thanks for sending your RSVP. We can’t wait to celebrate with you in Oaxaca!";
+  const textTravelPrompt = allDeclined
+    ? ""
+    : "Please reply to this email with your flight and hotel details once you’ve made arrangements. December is busy season in Oaxaca, so we strongly encourage booking your hotel soon.";
+
+  const textBody = [
+    "RSVP received — thank you!",
+    "",
+    textLead,
+    textTravelPrompt,
+    "",
+    "Your details:",
+    ...textRows,
+    "",
+    notes ? `Notes for the couple: ${notes}` : "",
+    editLink ? `Edit your RSVP: ${editLink}` : "",
+    websiteUrl ? `Wedding website: ${websiteUrl}` : "",
+    "",
+    "Love,",
+    "Umangi & Zach",
+  ].filter(Boolean).join("\n");
+
+  const htmlRows = summary.map((row) => {
+    return `
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:14px;color:#2a2927;">${escapeHtml_(row.fullName)}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:14px;color:#2a2927;">${escapeHtml_(row.status)}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:14px;color:#2a2927;">${escapeHtml_(row.attending ? (row.events || "—") : "—")}</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:14px;color:#2a2927;">${escapeHtml_(row.attending ? row.dietary : "—")}</td>
+      </tr>
+    `;
+  }).join("");
+
+  const notesHtml = notes
+    ? `<p style="margin:14px 0 0 0;font-family:Arial,sans-serif;font-size:14px;line-height:1.6;color:#2f2d2a;"><strong>Notes for the couple:</strong> ${escapeHtml_(notes)}</p>`
+    : "";
+  const htmlLead = allDeclined
+    ? "Thank you so much for letting us know your plans. We&rsquo;ll miss celebrating with you in Oaxaca, and we&rsquo;re so grateful for your love and support."
+    : "Thanks for sending your RSVP. We can’t wait to celebrate with you in Oaxaca!";
+  const htmlTravelPrompt = allDeclined
+    ? ""
+    : `<p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#2f2d2a;">
+                    <strong>Please reply to this email with your flight and hotel details once you&rsquo;ve made arrangements.</strong> December is busy season in Oaxaca, so we strongly encourage booking your hotel soon.
+                  </p>`;
+
+  const htmlBody = `
+    <div style="margin:0;padding:0;background:#b8572d;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#b8572d;padding:24px 0;">
+        <tr>
+          <td align="center">
+            <table role="presentation" width="640" cellspacing="0" cellpadding="0" style="max-width:640px;width:100%;background:#ffe8d6;border:1px solid #e8dfd4;border-radius:14px;overflow:hidden;font-family:Georgia,'Times New Roman',serif;color:#1f1f1f;">
+              <tr>
+                <td style="padding:36px 36px 12px 36px;text-align:center;">
+                  <img src="${escapeHtml_(monogramUrl)}" alt="Umangi and Zach monogram" width="96" style="display:block;margin:0 auto 14px auto;width:96px;height:auto;" />
+                  <div style="font-size:13px;letter-spacing:1.6px;text-transform:uppercase;color:#8a7b6a;">RSVP RECEIVED</div>
+                  <h1 style="margin:10px 0 6px 0;font-size:42px;line-height:1.1;font-weight:600;">Umangi &amp; Zach</h1>
+                  <p style="margin:0;font-family:Arial,sans-serif;font-size:15px;color:#5f5b56;">Oaxaca, Mexico • December 4–6, 2026</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:18px 36px 8px 36px;">
+                  <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
+                    ${htmlLead}
+                  </p>
+                  ${htmlTravelPrompt}
+                  <p style="margin:0 0 12px 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;"><strong>Your party details:</strong></p>
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;border:1px solid #eadfce;border-radius:10px;overflow:hidden;background:#fff9f2;">
+                    <tr>
+                      <th align="left" style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#7a7268;">Guest</th>
+                      <th align="left" style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#7a7268;">Status</th>
+                      <th align="left" style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#7a7268;">Events</th>
+                      <th align="left" style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#7a7268;">Dietary</th>
+                    </tr>
+                    ${htmlRows}
+                  </table>
+                  ${notesHtml}
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:24px 36px 36px 36px;text-align:center;">
+                  ${editLink ? `<a href="${escapeHtml_(editLink)}" style="display:inline-block;background:#b8572d;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:.4px;padding:12px 20px;border-radius:999px;">Edit RSVP</a>` : ""}
+                  ${websiteUrl ? `<p style="margin:14px 0 0 0;font-family:Arial,sans-serif;font-size:13px;color:#7a7268;">Wedding website: <a href="${escapeHtml_(websiteUrl)}" style="color:#b8572d;">${escapeHtml_(websiteUrl)}</a></p>` : ""}
+                  <p style="margin:16px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1f1f1f;">
+                    Love,<br/>Umangi & Zach
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  `;
+
+  return { textBody, htmlBody };
+}
+
+function formatDietary_(value) {
+  const normalized = String(value || "").trim().toLowerCase();
+  const map = {
+    veg: "Veg",
+    vegetarian: "Vegetarian",
+    vegan: "Vegan",
+    omnivore: "Omnivore",
+    "non veg": "Non-Veg",
+    "non-veg": "Non-Veg",
+    nonveg: "Non-Veg",
+    none: "None",
+  };
+  if (map[normalized]) return map[normalized];
+  if (!normalized) return "";
+  return String(value || "").trim();
 }
 
 function onOpen() {
@@ -659,7 +770,7 @@ function buildInviteEmail_(householdLabel) {
     "Please RSVP by August 1, 2026.",
     "",
     "Love,",
-    "Umangi + Zach",
+    "Umangi & Zach",
     "",
     "Questions? Reply to this email or contact info@umangiandzach.love",
   ].filter(Boolean).join("\n");
@@ -695,7 +806,7 @@ function buildInviteEmail_(householdLabel) {
                     Please RSVP by <strong>August 1, 2026</strong>.
                   </p>
                   <p style="margin:10px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1f1f1f;">
-                    Love,<br/>Umangi + Zach
+                    Love,<br/>Umangi & Zach
                   </p>
                 </td>
               </tr>
@@ -737,7 +848,7 @@ function buildReminderEmail_(householdLabel) {
     "Please RSVP by August 1, 2026.",
     "",
     "Love,",
-    "Umangi + Zach",
+    "Umangi & Zach",
     "",
     "Questions? Reply to this email or contact info@umangiandzach.love",
   ].filter(Boolean).join("\n");
@@ -774,7 +885,7 @@ function buildReminderEmail_(householdLabel) {
                     Please RSVP by <strong>August 1, 2026</strong>.
                   </p>
                   <p style="margin:10px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1f1f1f;">
-                    Love,<br/>Umangi + Zach
+                    Love,<br/>Umangi & Zach
                   </p>
                 </td>
               </tr>

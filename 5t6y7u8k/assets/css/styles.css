@@ -1268,6 +1268,39 @@ main#main{
   font-size: 14px;
   color: rgba(27,31,29,.80);
 }
+.event-modal__outfit-inspo{
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: rgba(27,31,29,.72);
+}
+.event-modal__outfit-inspo a{
+  color: #7a4e2e;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.event-modal__outfit-inspo .pinterest-link{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.event-modal__outfit-inspo .pinterest-link::before{
+  content: "P";
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  display: inline-grid;
+  place-items: center;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 700;
+  font-family: Georgia, "Times New Roman", serif;
+  color: #fff;
+  background: #e60023;
+}
+.event-modal__outfit-inspo a:hover,
+.event-modal__outfit-inspo a:focus-visible{
+  color: #5f3a20;
+}
 .event-modal__close{
   position: absolute;
   top: 12px;
