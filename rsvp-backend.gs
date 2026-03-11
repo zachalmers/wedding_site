@@ -1,6 +1,6 @@
 const SETTINGS = {
-  RSVP_PUBLIC_URL: "https://umangiandzach.love/5t6y7u8k/rsvp.html",
-  WEDDING_SITE_URL: "https://umangiandzach.love/5t6y7u8k/",
+  RSVP_PUBLIC_URL: "https://umangiandzach.love/rsvp.html",
+  WEDDING_SITE_URL: "https://umangiandzach.love/",
   SITE_PASSWORD: "curryandmole",
   FROM_EMAIL: "info@umangiandzach.love",
   REPLY_TO: "info@umangiandzach.love",
@@ -338,7 +338,7 @@ function sendConfirmationEmail_(recipient, token, guests, notes) {
 }
 
 function buildConfirmationEmail_(guests, notes, editLink) {
-  const monogramUrl = "https://umangiandzach.love/5t6y7u8k/assets/monogram.png";
+  const monogramUrl = "https://umangiandzach.love/assets/monogram.png";
   const websiteUrl = SETTINGS.WEDDING_SITE_URL || "";
   const summary = (Array.isArray(guests) ? guests : []).map((guest) => {
     const firstName = String(guest.firstName || "").trim();
@@ -755,7 +755,7 @@ function sendReminderEmail_(recipient, householdLabel) {
 function buildInviteEmail_(householdLabel) {
   const websiteUrl = SETTINGS.WEDDING_SITE_URL || "";
   const password = SETTINGS.SITE_PASSWORD || "";
-  const monogramUrl = "https://umangiandzach.love/5t6y7u8k/assets/monogram.png";
+  const monogramUrl = "https://umangiandzach.love/assets/monogram.png";
   const safeLabel = escapeHtml_(householdLabel || "friend");
 
   const textBody = [
@@ -832,7 +832,7 @@ function buildReminderEmail_(householdLabel) {
   const websiteUrl = SETTINGS.WEDDING_SITE_URL || "";
   const rsvpUrl = SETTINGS.RSVP_PUBLIC_URL || "";
   const password = SETTINGS.SITE_PASSWORD || "";
-  const monogramUrl = "https://umangiandzach.love/5t6y7u8k/assets/monogram.png";
+  const monogramUrl = "https://umangiandzach.love/assets/monogram.png";
   const safeLabel = escapeHtml_(householdLabel || "friend");
 
   const textBody = [

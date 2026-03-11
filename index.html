@@ -1,559 +1,1004 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f1210" />
   <title>#ChalmedByPatel</title>
-  <meta name="description" content="Share your contact details for Umangi & Zach's wedding on December 4–6, 2026." />
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://umangiandzach.love/" />
-
-  <!-- Theming -->
-  <meta name="theme-color" content="#0b0c0f" />
-
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Umangi &amp; Zach" />
-  <meta property="og:title" content="#ChalmedByPatel | December 4–6, 2026" />
-  <meta property="og:description" content="Save the date: Oaxaca City, Mexico. Please share your contact details!" />
-  <meta property="og:url" content="https://umangiandzach.love/" />
-  <meta property="og:image" content="https://umangiandzach.love/assets/bg1.jpeg" />
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="#ChalmedByPatel — December 4–6, 2026" />
-  <meta name="twitter:description" content="Save the date: Oaxaca City, Mexico. Please share your contact details!" />
-  <meta name="twitter:image" content="https://umangiandzach.love/assets/bg1.jpeg" />
-
-  <!-- Cute emoji favicon (SVG data URI). Change the emoji if you like!) -->
+  <meta name="description" content="Umangi & Zach — Oaxaca, Mexico. Wedding weekend details, travel, and RSVP." />
   <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">💍</text></svg>' />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/styles.css?v=20250814" />
+
+  <!-- Fonts: swap if you prefer -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/styles.css?v=20260306" />
 </head>
+
 <body>
-  <span class="sr-only">Oaxaca destination wedding — Umangi Patel &amp; Zachary Chalmers — Zach Chalmers.</span>
-  <div class="bg" id="bg"></div>
-  <div class="bg" id="bg2" aria-hidden="true"></div>
-  <div class="grain" aria-hidden="true"></div>
-  <section class="hero" aria-label="Oaxaca City — background slideshow">
-    <!-- Splash header stacked above the form -->
-    <div class="splash" aria-label="Save the Date">
-      <div class="line1">Save the Date</div>
-      <div class="line2">December 4–6, 2026</div>
-      <div class="line3">Oaxaca City, Mexico</div>
-    </div>
+  <div id="top" class="page-top" aria-hidden="true"></div>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <main class="card" role="main" aria-labelledby="title">
-      <header>
-        <div class="brand">
-          <div class="monogram" aria-hidden="true">U · Z</div>
-          <div>
-            <h1 id="title">Share your contact details</h1>
-            <div class="sub">for <strong>Umangi & Zach’s</strong> wedding</div>
-          </div>
-        </div>
-      </header>
-
-      <form id="contact-form" novalidate autocomplete="on">
-        <input type="text" name="company" id="company" autocomplete="organization" style="position:absolute;left:-9999px;top:-9999px" tabindex="-1" aria-hidden="true" />
-
-        <div>
-          <label class="sr-only" for="firstName">Your first name *</label>
-          <input id="firstName" name="firstName" type="text" autocomplete="given-name" autocapitalize="words" placeholder="First name *" required />
-        </div>
-        <div>
-          <label class="sr-only" for="lastName">Your last name *</label>
-          <input id="lastName" name="lastName" type="text" autocomplete="family-name" autocapitalize="words" placeholder="Last name *" required />
-        </div>
-
-        <div>
-          <label class="sr-only" for="email">Email *</label>
-          <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="Email *" required />
-        </div>
-        <div>
-          <label class="sr-only" for="phone">Mobile phone</label>
-          <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="Mobile phone" />
-        </div>
-
-        <div class="full">
-          <label class="sr-only" for="address1">Street address *</label>
-          <input id="address1" name="address1" type="text" autocomplete="street-address" placeholder="Street address *" required />
-        </div>
-        <div>
-          <label class="sr-only" for="address2">Apt / Unit</label>
-          <input id="address2" name="address2" type="text" autocomplete="address-line2" placeholder="Apt / Unit" />
-        </div>
-        <div>
-          <label class="sr-only" for="city">City *</label>
-          <input id="city" name="city" type="text" autocomplete="address-level2" placeholder="City *" required />
-        </div>
-        <div>
-          <label class="sr-only" for="state">State / Province *</label>
-          <input id="state" name="state" type="text" autocomplete="address-level1" placeholder="State / Province *" required />
-        </div>
-        <div>
-          <label class="sr-only" for="zip">Postal code *</label>
-          <input id="zip" name="zip" type="text" autocomplete="postal-code" placeholder="Postal code *" required />
-        </div>
-        <div>
-          <label class="sr-only" for="country">Country *</label>
-                    <input id="country" name="country-name" type="text" autocomplete="country-name" placeholder="Country *" value="United States" required />
-        </div>
-
-        <div class="full">
-          <label id="members-label" class="field-label-lg">
-            Other members of your party? <span class="tiny">(Optional)</span>
-          </label>
-          <div class="members" id="members">
-            <div class="member" data-key="1">
-              <div class="member-row">
-                <div>
-                  <label class="sr-only" for="member-1-fn">First name</label>
-                  <input id="member-1-fn" name="members[0].firstName" type="text" placeholder="First name" />
-                </div>
-                <div>
-                  <label class="sr-only" for="member-1-ln">Last name</label>
-                  <input id="member-1-ln" name="members[0].lastName" type="text" placeholder="Last name" />
-                </div>
-                <label class="chk" for="member-1-child">
-                  <input type="checkbox" id="member-1-child" name="members[0].child" /> Child
-                </label>
-                <button type="button" class="btn secondary icon remove-btn" aria-label="Remove person" title="Remove">×</button>
-              </div>
-            </div>
-          </div>
-          <div class="actions actions-right">
-            <button class="btn secondary" id="add-member" type="button">+ Add another person</button>
-          </div>
-        </div>
-
-        <div class="full">
-          <label for="likelihood" style="font-size:18px;font-weight:500;color:var(--text);letter-spacing:.1px">Do you think you’ll be able to attend? <span class="tiny">(Not an RSVP, vibes only)</span></label>
-          <div class="slider-row">
-            <span class="tiny emoji">🤷</span>
-            <div class="slider-col">
-              <input id="likelihood" name="likelihood" type="range" min="1" max="5" step="1" value="3" aria-label="Likelihood to attend (1-5)" />
-              <!-- Lock labels to exact slider percentages -->
-              <div class="scale-grid" aria-hidden="true">
-                <span class="s0">Unlikely</span>
-                <span class="s25">Maybe</span>
-                <span class="s50">Probably</span>
-                <span class="s75">Likely</span>
-                <span class="s100">Definitely</span>
-              </div>
-            </div>
-            <span class="tiny emoji">🎉</span>
-          </div>
-        </div>
-
-
-        <div class="full">
-          <label class="sr-only" for="note">Anything we should know?</label>
-          <textarea id="note" name="note" rows="3" placeholder="Anything we should know? (dietary needs, travel constraints, etc.)"></textarea>
-        </div>
-
-        <div class="full actions actions-right">
-          <span id="inline-status" class="status-text" aria-live="polite"></span>
-          <button class="btn secondary" type="submit" id="submit" aria-live="polite">
-            <span class="btn-label">Submit</span>
-            <span class="spinner" aria-hidden="true" hidden></span>
-          </button>
-        </div>
+  <div class="gate" id="gate" aria-hidden="false">
+    <div class="gate__panel" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+      <div class="gate__logo" aria-hidden="true">
+        <img src="assets/monogram.png" alt="" />
+      </div>
+      <p class="gate__eyebrow">Welcome</p>
+      <h1 id="gate-title">Umangi &amp; Zach</h1>
+      <p class="gate__lead">Enter the password to view our wedding site.</p>
+      <form id="gate-form" class="gate__form" autocomplete="off">
+        <label class="sr-only" for="gate-pass">Site password</label>
+        <input id="gate-pass" name="password" type="password" autocomplete="current-password" placeholder="Password" required />
+        <button class="btn btn--ghost gate__cta" type="submit">Enter</button>
+        <p id="gate-error" class="gate__error" aria-live="polite"></p>
       </form>
+    </div>
+  </div>
 
-    </main>
-  </section>
+  <nav class="toc" aria-label="Site menu">
+    <button class="toc__toggle" type="button" aria-expanded="false" aria-controls="tocPanel">
+      <span class="toc__toggle-icon" aria-hidden="true"></span>
+      <span class="toc__toggle-label">Menu</span>
+    </button>
+    <div class="toc__panel" id="tocPanel">
+      <a href="#events">Events</a>
+      <a class="toc__cta" href="#rsvp">RSVP</a>
+      <a href="#story">Story</a>
+      <a href="#travel">Travel</a>
+      <a href="#stay">Stay</a>
+      <a href="#activities">Eat + Do</a>
+      <a href="#practical">FAQ</a>
+    </div>
+  </nav>
 
-  <section class="faq-card">
-    <section class="faq" aria-labelledby="faq-title">
-      <h2 id="faq-title">FAQs</h2>
-      <details>
-        <summary>Is this an RSVP?</summary>
-        <div class="answer tiny">Nope! This is to collect your contact details and get a rough headcount to help us plan! Formal invites + RSVP to follow.</div>
-      </details>
-      <details>
-        <summary>Are kids welcome?</summary>
-        <div class="answer tiny">While a parents’ getaway is encouraged, children and families are warmly welcomed. For those traveling as a family, we’ll share childcare suggestions and kid-friendly ideas to make the trip enjoyable for everyone.</div>
-      </details>
-      <details>
-        <summary>When and where?</summary>
-        <div class="answer tiny">Festivities will begin in Oaxaca City the evening of Friday December 4th, 2026 and conclude Sunday morning.</div>
-      </details>
-      <details>
-        <summary>Getting to Oaxaca?</summary>
-        <div class="answer tiny"><strong>OAX</strong> can be reached via nonstop flights from <strong>LAX</strong>, <strong>IAH</strong>, and <strong>DFW</strong> in the U.S., and via <strong>MEX</strong> or <strong>MTY</strong> in Mexico. We encourage you to explore Mexico before or after the wedding, and we’ll share some personal travel recommendations!</div>
-      </details>
-      <details>
-        <summary>Where to Stay?</summary>
-        <div class="answer tiny">Oaxaca City is a town full of stunning boutique hotels and haciendas plucked from the pages of Architectural Digest. They offer incredible value at every price point. We'll highlight some of our faves.</div>
-      </details>
-            <details>
-        <summary>More questions?</summary>
-        <div class="answer tiny">Shoot us a message! <a href="mailto:info@umangiandzach.love"><strong>info@umangiandzach.love</strong></a></div>
-      </details>
+  <div id="site">
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero hero--video" aria-label="Hero">
+      <div class="hero__media hero__media--video" aria-hidden="true">
+        <video class="hero__video" autoplay muted loop playsinline preload="metadata" poster="assets/hero.jpg">
+          <source src="assets/hero-video.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="hero__overlay"></div>
+
+      <div class="container hero__content">
+        <p class="kicker reveal">We’re getting married!</p>
+        <h1 class="hero__title reveal">Umangi & Zach</h1>
+        <p class="hero__subtitle reveal">
+          Oaxaca, Mexico · December 4–6, 2026
+        </p>
+
+        <div class="countdown reveal" aria-live="polite">
+          <div class="countdown__grid" id="countdown" data-date="2026-12-04T09:00:00-06:00">
+            <div class="countdown__cell">
+              <span class="countdown__value" data-part="days">--</span>
+              <span class="countdown__unit">Days</span>
+            </div>
+            <div class="countdown__cell">
+              <span class="countdown__value" data-part="hours">--</span>
+              <span class="countdown__unit">Hours</span>
+            </div>
+            <div class="countdown__cell">
+              <span class="countdown__value" data-part="minutes">--</span>
+              <span class="countdown__unit">Minutes</span>
+            </div>
+            <div class="countdown__cell">
+              <span class="countdown__value" data-part="seconds">--</span>
+              <span class="countdown__unit">Seconds</span>
+            </div>
+          </div>
+        </div>
+        <p class="hero__rsvp-note reveal">
+          Please RSVP by August 1st. <a href="#rsvp">RSVP here</a>
+        </p>
+        <a class="scroll-cue" href="#events" aria-label="Scroll for more">
+          <svg class="scroll-cue__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
     </section>
-  </section>
 
-  <footer>
-    <span>© <span id="year"></span> Umangi &amp; Zach | Designed with ❤️ in SF</span>
-  </footer>
-  <div class="footer-spacer" aria-hidden="true"></div>
+    <!-- STORY -->
+    <section class="section section--light" id="story">
+      <div class="container">
+        <div class="section__header">
+          <h2 class="section__title reveal">Our Story</h2>
+        </div>
 
-  <script>
-  (()=>{
-    // ===== Background Slideshow (Ken Burns-style) using local assets =====
-    const bgA = document.getElementById('bg');
-    const bgB = document.getElementById('bg2');
-    let front = bgA;   // currently visible layer
-    let back  = bgB;   // currently hidden layer;
-
-    // Preload a single image and resolve true/false
-    function preloadOne(src){
-      return new Promise(res => {
-        const img = new Image();
-        img.onload = () => res(true);
-        img.onerror = () => res(false);
-        img.src = src;
-      });
-    }
-
-    // Discover bg1.jpeg, bg2.jpeg, ... contiguously until the first miss
-    async function discoverPhotos(){
-      const out = [];
-      for (let i = 1; ; i++) {
-        const url = `./assets/bg${i}.jpeg`;
-        if (await preloadOne(url)) out.push(url); else break;
-      }
-      return out;
-    }
-
-    // In-place Fisher–Yates shuffle
-    function shuffle(arr){
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
-    }
-
-    // Initialize slideshow
-    (async function initSlideshow(){
-      const FIRST = './assets/bg1.jpeg';
-      const INTERVAL_MS = 10000; // 10s
-      const POSITIONS = ['center top','left center','center bottom','right center','center center'];
-
-      // Start with FIRST immediately; discover the rest in the background
-      let photos = [FIRST];
-      await preloadOne(FIRST); // ensure first paint
-
-      // Render + start Ken Burns
-      let slideIndex = 0;
-      function setSlide(idx){
-        const src = photos[idx % photos.length];
-        const pos = POSITIONS[Math.floor(Math.random()*POSITIONS.length)];
-        front.style.backgroundImage = `url(${src})`;
-        front.style.backgroundPosition = pos;
-      }
-      setSlide(slideIndex);
-      setTimeout(()=> front.classList.add('kb-zoom'), 10);
-
-      // Background discovery + preload of the rest
-      (async ()=>{
-        const found = await discoverPhotos();
-        let rest = found.filter(p => p !== FIRST);
-        shuffle(rest);
-        // Warm the cache for smoother transitions
-        rest.forEach(src => { const im = new Image(); im.src = src; });
-        photos = [FIRST, ...rest];
-        maybeStart();
-      })();
-
-      // Advance frame (wrap at end)
-      function nextBg(){
-        if (photos.length <= 1) return;
-        slideIndex = (slideIndex + 1) % photos.length;
-
-        // Prepare next image on the hidden layer
-        const src = photos[slideIndex];
-        const pos = POSITIONS[Math.floor(Math.random()*POSITIONS.length)];
-        back.style.backgroundImage = `url(${src})`;
-        back.style.backgroundPosition = pos;
-
-        // Animate: new layer fades in while old fades out; toggle Ken Burns
-        front.classList.remove('kb-zoom');
-        back.classList.add('kb-zoom');
-        back.style.opacity = 1;
-        front.style.opacity = 0;
-
-        // After the crossfade completes (~500ms), swap references
-        setTimeout(()=>{ const t = front; front = back; back = t; }, 520);
-      }
-
-      // Only start cycling once we have more than one photo
-      let started = false; let interval = null;
-      function maybeStart(){
-        if (!started && photos.length > 1) {
-          started = true;
-          interval = setInterval(nextBg, INTERVAL_MS);
-        }
-      }
-
-      // === Power-saving: pause slideshow when tab is hidden ===
-      function pauseSlideshow(){
-        if (interval){
-          clearInterval(interval);
-          interval = null;
-        }
-        // Stop the Ken Burns animation while hidden
-        front.classList.remove('kb-zoom');
-        back.classList.remove('kb-zoom');
-      }
-
-      function resumeSlideshow(){
-        // Only resume if we actually have multiple photos ready
-        if (photos.length > 1 && !interval){
-          // Re-enable animation and timer
-          front.classList.add('kb-zoom');
-          interval = setInterval(nextBg, INTERVAL_MS);
-        }
-      }
-
-      document.addEventListener('visibilitychange', ()=>{
-        if (document.hidden) {
-          pauseSlideshow();
-        } else {
-          resumeSlideshow();
-        }
-      });
-
-      // If the page loads in a background tab, ensure we start paused
-      if (document.hidden) {
-        pauseSlideshow();
-      }
-      // In case reduced motion is requested
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-        if (interval) clearInterval(interval);
-        front.classList.remove('kb-zoom');
-        back.classList.remove('kb-zoom');
-      }
-    })();
-
-
-    // ===== Year =====
-    document.getElementById('year').textContent=new Date().getFullYear();
-
-    // ===== Members dynamic rows =====
-    const members=document.getElementById('members');
-    const addMemberBtn=document.getElementById('add-member');
-    const membersLabel=document.getElementById('members-label');
-    let memberKey=1;
-
-    function newMember(indexForName){
-      memberKey+=1; const key=memberKey;
-      const wrap=document.createElement('div');
-      wrap.className='member'; wrap.dataset.key=String(key);
-      wrap.innerHTML=`
-        <div class="member-row">
-          <div>
-            <label class="sr-only" for="member-${key}-fn">First name</label>
-            <input id="member-${key}-fn" name="members[${indexForName}].firstName" type="text" placeholder="First name" />
+        <div class="story-layout">
+          <div class="card reveal story-layout__intro">
+            <p class="story-prose">
+              A fated story - two mid-20-year-olds trying to find themselves and finding each other along the way. A first date at the Willow Room, Zach&rsquo;s introduction to Bad Bunny (on repeat on a long road trip through the South), a whirlwind year in Miami long-distance during Covid, a return to Chicago for Umangi&rsquo;s residency. Since then, our love story has traversed the globe, from Guatemala to Sicily to New Zealand. After many moons of residency, music shows, and countless restaurants, Zach popped the question in Istanbul, Turkey on a boat in the Bosphorus strait. Where the East and West (metaphorically and literally) meet, he proposed with a ring rooted in love, lore, and family.
+            </p>
+            <p class="story-prose">
+              We&rsquo;re so excited to have our loved ones with us on this special weekend! We thank you from the bottom of our hearts for making the effort to celebrate us and our families.
+            </p>
           </div>
-          <div>
-            <label class="sr-only" for="member-${key}-ln">Last name</label>
-            <input id="member-${key}-ln" name="members[${indexForName}].lastName" type="text" placeholder="Last name" />
+
+          <figure class="story-photo-card reveal story-layout__photo1">
+            <button class="story-photo-card__btn" type="button" data-lightbox="assets/photo1.jpg" data-lightbox-alt="Umangi and Zachary">
+              <img src="assets/photo1.jpg" alt="Umangi and Zachary" width="4098" height="4966" loading="lazy" />
+            </button>
+          </figure>
+
+          <div class="card reveal story-layout__why">
+            <h3>Why Oaxaca</h3>
+            <p class="story-prose">
+              On a serendipitous trip to Oaxaca, Zach and his now best man Karthik discovered the wealth of culinary yumminess, rich artisanal culture, and the overall sense of place in this historical city. When deciding the wedding location, Umangi came around to the idea and wholly trusted Zach in choosing this city as our wedding destination (and she&rsquo;s thrilled she did!).
+            </p>
+            <p class="story-prose">
+              For us, Oaxaca is a place where our values integrate, with appreciation of culture, cuisine, and community in a beautifully sunny location with the backdrop of the Sierra Madre Mountains. (also moles, mezcal, tlayudas, and tostadas galore)
+            </p>
+            <p class="story-prose">
+              Oaxaca is known for its indigenous culture, 16th century colonial architecture, rich art scene, and as the culinary soul of Mexican gastronomy. We hope you enjoy this city as much as we do!
+            </p>
           </div>
-          <label class="chk" for="member-${key}-child">
-            <input type="checkbox" id="member-${key}-child" name="members[${indexForName}].child" /> Child
-          </label>
-          <button type="button" class="btn secondary icon remove-btn" aria-label="Remove person" title="Remove">×</button>
-        </div>`;
-      return wrap;
-    }
 
-    function renumberNames(){
-      const rows=Array.from(document.querySelectorAll('.members .member'));
-      rows.forEach((row,idx)=>{
-        row.querySelectorAll('input').forEach(inp=>{
-          if (inp.name && inp.name.includes('members[')){
-            const suffix=inp.name.split('].').pop();
-            inp.name=`members[${idx}].${suffix}`;
-          }
-        });
-      });
-      if(membersLabel){membersLabel.style.display=rows.length===0?'none':''}
-    }
+          <figure class="story-photo-card reveal story-layout__photo2">
+            <button class="story-photo-card__btn" type="button" data-lightbox="assets/photo2.jpg" data-lightbox-alt="Umangi and Zachary together">
+              <img src="assets/photo2.jpg" alt="Umangi and Zachary together" width="2448" height="3264" loading="lazy" />
+            </button>
+          </figure>
 
-    function removeMember(node){ if(!node) return; node.remove(); renumberNames(); }
+          <figure class="story-photo-card reveal story-layout__photo3">
+            <button class="story-photo-card__btn" type="button" data-lightbox="assets/photo3.jpg" data-lightbox-alt="Umangi and Zachary on their travels">
+              <img src="assets/photo3.jpg" alt="Umangi and Zachary on their travels" width="3092" height="4178" loading="lazy" />
+            </button>
+          </figure>
 
-    addMemberBtn.addEventListener('click',()=>{ const current=members.querySelectorAll('.member').length; const row=newMember(current); members.appendChild(row); renumberNames(); });
-    members.addEventListener('click', (e)=>{ const btn=e.target.closest('.remove-btn'); if(!btn) return; const node=btn.closest('.member'); removeMember(node); });
-    document.addEventListener('DOMContentLoaded', renumberNames);
+          <div class="card reveal story-layout__expect">
+            <h3>What to Expect</h3>
+            <p class="story-prose">
+              We are excited to bring our family, friends, and loved ones to join us for the merging of two families, Indian wedding style, in beautiful Oaxaca! In keeping with Hindu wedding traditions, our wedding will have four events: Haldi/Pithi, Sangeet, the Wedding Ceremony, and the Reception. Bring your Indian lehengas, bright colorful clothes, and open hearts for a weekend full of joy, tradition, and cultural experiences.
+            </p>
+          </div>
 
-    // ===== Submission (front-end only) =====
-    const FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbw2fzKTHn9hdWClRQaopSRz4B2YAT-NYW08e4h22vrepHXszNFnzS64oC2QrDuVbHg7/exec";
-    const form=document.getElementById('contact-form');
-    const status=document.getElementById('inline-status');
-    const submitBtn = document.getElementById('submit');
-    const submitLabel = submitBtn.querySelector('.btn-label');
-    const submitSpin = submitBtn.querySelector('.spinner');
-    let isSubmitting = false;
-    function setStatus(type,msg){
-      if(!status) return;
-      status.textContent = msg || '';
-      status.classList.remove('error','success');
-      if(type) status.classList.add(type);
-    }
+          <figure class="story-photo-card reveal story-layout__photo4">
+            <button class="story-photo-card__btn" type="button" data-lightbox="assets/photo4.jpg" data-lightbox-alt="Umangi and Zachary celebrating together">
+              <img src="assets/photo4.jpg" alt="Umangi and Zachary celebrating together" width="2316" height="2506" loading="lazy" />
+            </button>
+          </figure>
+        </div>
+      </div>
+    </section>
 
-    // Build payload from form controls, plus derived counts for the sheet.
-    function collectData(){
-      const membersData = Array.from(document.querySelectorAll('.members .member')).map((el)=>({
-        firstName: (el.querySelector('input[name$=".firstName"]').value || '').trim(),
-        lastName: (el.querySelector('input[name$=".lastName"]').value || '').trim(),
-        isChild: !!el.querySelector('input[name$=".child"]').checked,
-      })).filter(m => m.firstName || m.lastName);
+    <!-- EVENTS -->
+    <section class="section section--light" id="events">
+      <div class="container">
+        <div class="section__header">
+          <h2 class="section__title reveal">Weekend schedule</h2>
+          <p class="section__lead reveal">You'll find more details under each event; click the calendar icon to add to Google Calendar.</p>
+        </div>
 
-      // === Derived values for backend ===
-      const namedMembers = membersData; // already filtered for non-empty names
-      const adultMembers = namedMembers.filter(m => !m.isChild);
-      const childMembers = namedMembers.filter(m => m.isChild);
-      const adultCount = 1 + adultMembers.length; // includes principal as an adult
-      const childCount = childMembers.length;
-      const othersNames = namedMembers
-        .map(m => `${m.firstName} ${m.lastName}`.trim())
-        .filter(Boolean)
-        .join(', ');
+        <div class="grid-4">
+          <article class="event-card reveal">
+            <div class="event-card__top">
+              <p class="event-card__day">Friday · Dec 4 · 10:00 AM</p>
+              <div class="event-card__title-row">
+                <h3 class="event-card__title">Haldi/Pithi</h3>
+                <a class="event-card__cta event-card__cta--inline" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Haldi%2FPithi&dates=20261204T100000%2F20261204T120000&details=About%3A%20The%20haldi%20is%20a%20wedding%20ritual%20where%20relatives%20and%20friends%20apply%20a%20paste%20composed%20of%20turmeric%20and%20sandalwood%20to%20the%20bride%20and%20groom.%20The%20purpose%20is%20to%20rid%20the%20couple%20of%20nazar%20%28evil%20eye%29%2C%20offer%20blessings%2C%20and%20to%20cleanse%20the%20couple%20before%20the%20religious%20ceremony.%0A%0ADress%3A%20Yellow%20is%20traditional%20and%20encouraged%2C%20but%20any%20cheerful%20colors%20are%20welcome.%0A%0ATimes%20may%20shift%20slightly%3B%20please%20check%20the%20website%20for%20updates.&location=Oaxaca%2C%20Mexico&ctz=America%2FMexico_City" target="_blank" rel="noreferrer">
+                  Add to <span class="event-card__cta-icon" aria-hidden="true"></span>
+                </a>
+              </div>
+              <p class="event-card__meta"><span class="event-card__pin" aria-hidden="true"></span>TBA</p>
+              <p class="event-card__dress"><span>Dress</span> Casual; yellow encouraged</p>
+            </div>
+            <div class="event-card__body">
+              <button class="event-card__details-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-haldi">
+                More details
+              </button>
+            </div>
+          </article>
 
-      return {
-        ts: new Date().toISOString(),
-        source: 'oaxaca-contact-capture',
-        couple: { bride: 'Umangi', groom: 'Zach' },
-        principal: {
-          firstName: document.getElementById('firstName').value.trim(),
-          lastName: document.getElementById('lastName').value.trim(),
-          email: document.getElementById('email').value.trim(),
-          phone: document.getElementById('phone').value.trim(),
-          address1: document.getElementById('address1').value.trim(),
-          address2: document.getElementById('address2').value.trim(),
-          city: document.getElementById('city').value.trim(),
-          state: document.getElementById('state').value.trim(),
-          zip: document.getElementById('zip').value.trim(),
-          country: document.getElementById('country').value.trim(),
-        },
-        members: membersData,
-        // derived fields to help the Apps Script map to columns directly
-        adultCount,
-        childCount,
-        othersNames,
-        likelihood: Number(document.getElementById('likelihood').value),
-        note: document.getElementById('note').value.trim(),
-        notRSVP: true,
-      };
-    }
+          <article class="event-card reveal">
+            <div class="event-card__top">
+              <p class="event-card__day">Friday · Dec 4 · 6:00 PM</p>
+              <div class="event-card__title-row">
+                <h3 class="event-card__title">Sangeet</h3>
+                <a class="event-card__cta event-card__cta--inline" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Sangeet&dates=20261204T180000%2F20261204T220000&details=About%3A%20The%20Sangeet%20is%20a%20pre-wedding%20party%20filled%20with%20music%2C%20dancing%2C%20and%20dance%20performances%20from%20friends%20and%20family.%0A%0ADress%3A%20Indian%20attire%20is%20encouraged%20%E2%80%94%20think%20lehengas%2C%20saris%2C%20or%20festive%20wear.%20Men%20are%20welcome%20to%20wear%20kurtas%20or%20casual%20suits.%20Bold%20colors%20are%20welcome.%20Ladies%20are%20recommended%20to%20wear%20block%20heels%2C%20flats%2C%20or%20sandals%20for%20the%20entirety%20of%20this%20wedding%20weekend%20%E2%80%94%20cobblestone%20streets%20are%20not%20friendly%20to%20stilettos.%0A%0ATimes%20may%20shift%20slightly%3B%20please%20check%20the%20website%20for%20updates.&location=Proyecto%20Murguia%2C%20Oaxaca%2C%20Mexico&ctz=America%2FMexico_City" target="_blank" rel="noreferrer">
+                  Add to <span class="event-card__cta-icon" aria-hidden="true"></span>
+                </a>
+              </div>
+              <p class="event-card__meta">
+                <span class="event-card__pin" aria-hidden="true"></span>
+                <a href="https://www.google.com/maps/d/viewer?mid=1Snk8KBPhDesE367sYU2ruQP3VvQSWo0&ll=17.06374%2C-96.72375&z=18" target="_blank" rel="noreferrer">Proyecto Murguia</a>
+              </p>
+              <p class="event-card__dress"><span>Dress</span> Colorful festive semi-formal</p>
+            </div>
+            <div class="event-card__body">
+              <button class="event-card__details-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-sangeet">
+                More details
+              </button>
+            </div>
+          </article>
 
-    // Minimal client-side validation; honeypot blocks bots.
-    function validate(){
-      const required=['firstName','lastName','email','address1','city','state','zip','country'];
-      for(const id of required){ const el=document.getElementById(id); if(!el.value.trim()){ el.focus(); return false; } }
-      const email=document.getElementById('email').value.trim();
-      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ document.getElementById('email').focus(); return false; }
-      if(document.getElementById('company').value){ return false; } // honeypot
-      return true;
-    }
+          <article class="event-card reveal">
+            <div class="event-card__top">
+              <p class="event-card__day">Saturday · Dec 5 · 8:00 AM</p>
+              <div class="event-card__title-row">
+                <h3 class="event-card__title">Baraat</h3>
+                <a class="event-card__cta event-card__cta--inline" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Baraat&dates=20261205T080000%2F20261205T090000&details=About%3A%20The%20Baraat%20is%20the%20wedding%20procession%20that%20marks%20the%20groom%27s%20arrival%20to%20the%20ceremony.%20Accompanied%20by%20music%20and%20dancing%2C%20the%20groom%27s%20family%20and%20friends%20parade%20together%20to%20the%20wedding%20venue%20%28and%20the%20bride%27s%20family%20will%20also%20join%20in%21%29.%0A%0ADress%3A%20Wear%20ceremony-ready%20attire%20that%20still%20allows%20you%20to%20move%20and%20dance.%20Indian%20formalwear%20or%20festive%20Western%20outfits%20are%20both%20welcome.%20The%20Baraat%20involves%20walking%2C%20standing%2C%20and%20dancing.%20Ladies%20are%20recommended%20to%20wear%20low%2C%20block%20heels%2C%20or%20flats%20%E2%80%94%20RIP%20stilettos.%20Oaxaca%20is%20sunny%20with%20a%20bit%20of%20a%20morning%20desert-chill%2C%20so%20dress%20accordingly.%0A%0ATimes%20may%20shift%20slightly%3B%20please%20check%20the%20website%20for%20updates.&location=Plaza%20Santo%20Domingo%2C%20Oaxaca%2C%20Mexico&ctz=America%2FMexico_City" target="_blank" rel="noreferrer">
+                  Add to <span class="event-card__cta-icon" aria-hidden="true"></span>
+                </a>
+              </div>
+              <p class="event-card__meta">
+                <span class="event-card__pin" aria-hidden="true"></span>
+                <a href="https://www.google.com/maps/d/viewer?mid=1Snk8KBPhDesE367sYU2ruQP3VvQSWo0&ll=17.06538890000002%2C-96.7239103&z=18" target="_blank" rel="noreferrer">Plaza Santo Domingo</a>
+              </p>
+              <p class="event-card__dress"><span>Dress</span> Formal; Indian encouraged</p>
+            </div>
+            <div class="event-card__body">
+              <button class="event-card__details-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-baraat">
+                More details
+              </button>
+            </div>
+          </article>
 
-    // Post to Apps Script endpoint using a CORS-safelisted request.
-    // In no-cors mode the response is opaque; success assumed on resolved fetch.
-    async function postData(data){
-      if(!FORM_ENDPOINT){
-        console.warn('FORM_ENDPOINT is missing');
-        return false;
-      }
-      try{
-        const res = await fetch(FORM_ENDPOINT, {
-          method: 'POST',
-          // Use a CORS-safelisted content type + no-cors to avoid preflight and CORS blocking
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(data)
-        });
-        // In no-cors mode, the response is opaque; treat successful resolution as success
-        console.log('Posted to GAS (opaque response expected in no-cors mode):', res && res.type);
-        return true;
-      }catch(err){
-        console.error('POST failed:', err);
-        return false;
-      }
-    }
+          <article class="event-card reveal">
+            <div class="event-card__top">
+              <p class="event-card__day">Saturday · Dec 5 · 9:00 AM</p>
+              <div class="event-card__title-row">
+                <h3 class="event-card__title">Ceremony</h3>
+                <a class="event-card__cta event-card__cta--inline" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ceremony&dates=20261205T090000%2F20261205T120000&details=About%3A%20The%20Hindu%20wedding%20ceremony%20is%20a%20sacred%20and%20symbolic%20celebration%20of%20love%2C%20commitment%2C%20and%20unity.%20Rooted%20in%20ancient%20Vedic%20tradition%20and%20aligned%20with%20the%20Muhurat%2C%20the%20ceremony%20is%20led%20by%20a%20priest%20through%20a%20series%20of%20pujas%20and%20vows.%20These%20traditions%20symbolize%20the%20spiritual%20merging%20of%20two%20souls%2C%20to%20journey%20together%20through%20the%20ups%20and%20downs%20of%20life.%0A%0ADress%3A%20This%20is%20a%20formal%20and%20traditional%20event.%20Indian%20attire%20is%20encouraged%20%E2%80%94%20saris%2C%20lehengas%2C%20kurtas%20are%20all%20welcome.%20Western%20wear%20such%20as%20lighter-colored%20suits%20and%20midi-%20to%20floor-length%20colorful%20dresses%20are%20also%20options.%20Please%20plan%20for%20an%20outdoor%20setting.%20Respectfully%2C%20please%20do%20not%20wear%20red%20%28bridal%29%2C%20black%20%28inauspicious%29%2C%20or%20white%20%28mourning%29%20to%20this%20event%20%28splashes%20of%20cream%20are%20okay%29.%20Sunglasses%20will%20come%20in%20handy.%0A%0ATimes%20may%20shift%20slightly%3B%20please%20check%20the%20website%20for%20updates.&location=Proyecto%20Murguia%2C%20Oaxaca%2C%20Mexico&ctz=America%2FMexico_City" target="_blank" rel="noreferrer">
+                  Add to <span class="event-card__cta-icon" aria-hidden="true"></span>
+                </a>
+              </div>
+              <p class="event-card__meta">
+                <span class="event-card__pin" aria-hidden="true"></span>
+                <a href="https://www.google.com/maps/d/viewer?mid=1Snk8KBPhDesE367sYU2ruQP3VvQSWo0&ll=17.06374%2C-96.72375&z=18" target="_blank" rel="noreferrer">Proyecto Murguia</a>
+              </p>
+              <p class="event-card__dress"><span>Dress</span> Formal; Indian encouraged</p>
+            </div>
+            <div class="event-card__body">
+              <button class="event-card__details-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-ceremony">
+                More details
+              </button>
+            </div>
+          </article>
 
-    if (location.protocol === 'file:') {
-      console.warn('Running from file:// origin. Using no-cors POST to avoid CORS errors. For full responses, serve via http(s) (e.g., VS Code Live Server).');
-    }
+          <article class="event-card reveal">
+            <div class="event-card__top">
+              <p class="event-card__day">Saturday · Dec 5 · 5:00 PM</p>
+              <div class="event-card__title-row">
+                <h3 class="event-card__title">Reception</h3>
+                <a class="event-card__cta event-card__cta--inline" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Reception&dates=20261205T170000%2F20261206T000000&details=About%3A%20Join%20us%20for%20a%20night%20to%20celebrate%20and%20dance%20away%20after%20the%20ceremony%20in%20a%20beautiful%20wild%20agave%20sanctuary%20on%20the%20outskirts%20of%20town.%0A%0ADress%3A%20Indian%20eveningwear%20or%20Western%20formal%20attire%20are%20both%20welcome.%20Rich%20colors%20and%20statement%20accessories%20are%20welcome.%20This%20is%20an%20outdoor%20event%2C%20heaters%20will%20be%20present%20and%20ladies%20should%20plan%20to%20bring%20shawls%20and%2For%20light%20jackets%20for%20the%20evening.%20Again%2C%20no%20stilettos%2C%20ladies%3B%20this%20is%20an%20agave%20farm%20with%20patches%20of%20gravel%20and%20sand.%0A%0ATransportation%3A%20Transportation%20will%20be%20provided%20to%20and%20from%20the%20venue%20throughout%20the%20evening.%20Details%20on%20pickup%20locations%20will%20be%20shared%20closer%20to%20the%20wedding.%0A%0ATimes%20may%20shift%20slightly%3B%20please%20check%20the%20website%20for%20updates.&location=Loma%20Noble%2C%20Oaxaca%2C%20Mexico&ctz=America%2FMexico_City" target="_blank" rel="noreferrer">
+                  Add to <span class="event-card__cta-icon" aria-hidden="true"></span>
+                </a>
+              </div>
+              <p class="event-card__meta">
+                <span class="event-card__pin" aria-hidden="true"></span>
+                <a href="https://www.google.com/maps/d/viewer?mid=1Snk8KBPhDesE367sYU2ruQP3VvQSWo0&ll=17.15174%2C-96.769&z=18" target="_blank" rel="noreferrer">Loma Noble</a>
+              </p>
+              <p class="event-card__dress"><span>Dress</span> Formal; Indo-Western</p>
+            </div>
+            <div class="event-card__body">
+              <button class="event-card__details-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-reception">
+                More details
+              </button>
+            </div>
+          </article>
 
-    // Submit handler: block double-submits, show spinner, and reset on success.
-    form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      if (isSubmitting) return; // guard against double-clicks
+          <article class="event-card reveal">
+            <div class="event-card__top">
+              <p class="event-card__day">Sunday · Dec 6 · 10:00 AM</p>
+              <div class="event-card__title-row">
+                <h3 class="event-card__title">Farewell Brunch</h3>
+                <a class="event-card__cta event-card__cta--inline" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Farewell%20Brunch&dates=20261206T100000%2F20261206T120000&details=About%3A%20Join%20us%20the%20morning%20after%20the%20wedding%20for%20a%20relaxed%20farewell%20brunch%20before%20everyone%20heads%20home.%20This%20is%20a%20chance%20to%20unwind%2C%20share%20stories%20from%20the%20weekend%2C%20and%20spend%20a%20few%20final%20moments%20together%20before%20departures.%0A%0ADress%3A%20Casual%20and%20comfortable.%20Sunglasses%20encouraged.%0A%0ATimes%20may%20shift%20slightly%3B%20please%20check%20the%20website%20for%20updates.&location=Oaxaca%2C%20Mexico&ctz=America%2FMexico_City" target="_blank" rel="noreferrer">
+                  Add to <span class="event-card__cta-icon" aria-hidden="true"></span>
+                </a>
+              </div>
+              <p class="event-card__meta"><span class="event-card__pin" aria-hidden="true"></span>TBA</p>
+              <p class="event-card__dress"><span>Dress</span> Casual</p>
+            </div>
+            <div class="event-card__body">
+              <button class="event-card__details-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-brunch">
+                More details
+              </button>
+            </div>
+          </article>
+        </div>
 
-      setStatus('', '');
-      if(!validate()){
-        setStatus('error','Please complete required fields.');
-        return;
-      }
 
-      // lock UI
-      isSubmitting = true;
-      submitBtn.disabled = true;
-      submitBtn.setAttribute('aria-busy','true');
-      if (submitLabel) submitLabel.textContent = 'Submitting…';
-      if (submitSpin) submitSpin.hidden = false;
+      </div>
+    </section>
 
-      const payload = collectData();
-      const sent = await postData(payload);
+    <!-- TRAVEL -->
+    <section class="section section--dark" id="travel">
+      <div class="container">
+        <div class="section__header">
+          <h2 class="section__title reveal">Travel</h2>
+          <p class="section__lead reveal">
+            One stop away from most major U.S. cities, Oaxaca is easy to reach with a bit of planning.
+          </p>
+        </div>
 
-      if (sent) {
-        // Keep visual state as "Submitting…" briefly; then flip back & show success together
-        setTimeout(() => {
-          if (submitSpin) submitSpin.hidden = true;
-          submitBtn.removeAttribute('aria-busy');
-          if (submitLabel) submitLabel.textContent = 'Submit';
-          submitBtn.disabled = false;
-          setStatus('success', 'Thank you! We’ve saved your info. 🎉');
+        <div class="two-col">
+          <div class="card card--dark reveal">
+            <h3>Flights</h3>
+            <p>
+              Best option: fly directly into <strong>Oaxaca International Airport (OAX)</strong> or route via <strong>Mexico City (MEX)</strong> and connect onward. We recommend arriving by Thursday evening to enjoy the full celebration.
+            </p>
+            <p class="muted">
+              Mexico City is one of our favorite big cities! Break up the journey with a stopover if you can. <em>Pro Tip: Centurion Lounge at MEX makes a mean carajilo.</em>
+            </p>
+          </div>
 
-          // Reset the form at the same moment as the UI flip for perfect sync
-          form.reset();
-          members.innerHTML = '';
-          const fallback = newMember(0);
-          members.appendChild(fallback);
-          renumberNames();
-        }, 800);
-      }
-      else {
-        setStatus('error','Something went wrong. Please try again.');
-        // unlock UI on failure
-        if (submitLabel) submitLabel.textContent = 'Submit';
-        if (submitSpin) submitSpin.hidden = true;
-        submitBtn.removeAttribute('aria-busy');
-        submitBtn.disabled = false;
-      }
+          <div class="card card--dark reveal">
+            <h3>Getting around</h3>
+            <p>
+              Most guests will be comfortable using their feet or rideshare/taxis within the city. For events outside town,
+              we’ll provide transportation. For airport transfers <button class="inline-button modal-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-airport">click here</button>.
+            </p>
+            <p class="muted">
+              For rideshare, DiDi Rider is widely used and reliable in Oaxaca. Download the app in advance and set up your account.
+            </p>
+          </div>
+        </div>
 
-      isSubmitting = false;
-    });
+        <div class="image-row image-row--dark">
+          <div class="flight-tool reveal">
+            <div class="flight-tool__header">
+              <h3>Search flights to Oaxaca</h3>
+            </div>
+            <form id="flightSearchForm" class="flight-tool__form" autocomplete="on">
+              <div class="field">
+                <label for="flight-origin">From</label>
+                <input id="flight-origin" name="origin" type="text" placeholder="SFO or city" value="SFO" list="flight-airports" required autocomplete="off" />
+              </div>
+              <div class="field">
+                <label for="flight-dest">To</label>
+                <input id="flight-dest" name="dest" type="text" value="OAX" readonly aria-readonly="true" />
+              </div>
+              <div class="field">
+                <label for="flight-depart">Depart</label>
+                <input id="flight-depart" name="depart" type="date" value="2026-12-03" required />
+              </div>
+              <div class="field">
+                <label for="flight-return">Return</label>
+                <input id="flight-return" name="return" type="date" value="2026-12-06" />
+              </div>
+              <button class="btn btn--ghost flight-tool__cta" type="submit">Search Google Flights</button>
+              <datalist id="flight-airports"></datalist>
+            </form>
+          </div>
 
-    // ===== Tiny self-tests (console only) =====
-    (function runSelfTests(){
-      const results=[]; const ok=(n,p)=>results.push({n,p});
-      try{
-        ok('Stacked layout', getComputedStyle(document.querySelector('.hero')).flexDirection==='column');
-        ok('Slider default is numeric', Number(document.getElementById('likelihood').value)===3);
-        ok('Child checkbox present', !!document.querySelector('input[name$=".child"]'));
-        ok('Remove buttons present', document.querySelectorAll('.remove-btn').length>=1);
-      }catch(e){ console.error('Self-tests crashed:', e); }
-      console.groupCollapsed('Contact-capture self-tests');
-      results.forEach(r=>console.log(`${r.p ? '✅' : '❌'} ${r.n}`));
-      console.groupEnd();
-    })();
-  })();
-  </script>
+          <figure class="image-card reveal">
+            <button class="image-card__btn" type="button" data-lightbox="assets/flights.png" data-lightbox-alt="Flights into Oaxaca">
+              <img
+                src="assets/flights.png"
+                alt="Flights into Oaxaca"
+                loading="lazy"
+              />
+            </button>
+            <figcaption>Getting here: Non-stop flight routes</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAY -->
+    <section class="section section--light" id="stay">
+      <div class="container">
+        <div class="section__header">
+          <h2 class="section__title reveal">Where to stay</h2>
+          <p class="section__lead reveal">
+            A few suggested hotels where we have secured special pricing; remember December is busy season so book early! For larger groups there are many beautiful villas available on Airbnb.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="stay-card reveal">
+            <h3>Hotel ABU</h3>
+            <img class="stay-card__image" src="assets/hotel_abu.jpeg" alt="Hotel ABU exterior" width="2000" height="1333" loading="lazy" />
+            <p>
+              A comfortable three-star stay in Centro and one of the best-value options for the wedding weekend.
+            </p>
+            <div class="stay-card__bottom">
+              <p class="muted">Price: $100+</p>
+              <button class="stay-card__details-trigger modal-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-hotel-abu">More details</button>
+            </div>
+          </article>
+
+          <article class="stay-card reveal">
+            <h3>Hotel Parador de Alcalá</h3>
+            <img class="stay-card__image stay-card__image--parador" src="assets/hotelparador.jpeg" alt="Hotel Parador de Alcalá" width="3312" height="2097" loading="lazy" />
+            <p>
+              A polished boutique stay on Oaxaca’s main pedestrian street, close to all the city has to offer.
+            </p>
+            <div class="stay-card__bottom">
+              <p class="muted">Price: $165+</p>
+              <button class="stay-card__details-trigger modal-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-hotel-parador">More details</button>
+            </div>
+          </article>
+
+          <article class="stay-card reveal">
+            <h3>Hotel Sin Nombre</h3>
+            <img class="stay-card__image" src="assets/hotel_sinnombre.jpg" alt="Hotel Sin Nombre interior" width="900" height="500" loading="lazy" />
+            <p>
+              A striking design-forward boutique stay with rooftop breakfast, and the hotel reserved in full for our guests.
+            </p>
+            <div class="stay-card__bottom">
+              <p class="muted">Price: $280+</p>
+              <button class="stay-card__details-trigger modal-trigger" type="button" aria-haspopup="dialog" aria-controls="modal-hotel-sinnombre">More details</button>
+            </div>
+          </article>
+        </div>
+
+        <div class="map-embed reveal" aria-label="Oaxaca recommendations map">
+          <iframe
+            src="https://www.google.com/maps/d/embed?mid=1Snk8KBPhDesE367sYU2ruQP3VvQSWo0&ehbc=2E312F"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+            title="Oaxaca recommendations map"
+          ></iframe>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- LOCAL ACTIVITIES -->
+    <section class="section section--dark" id="activities">
+      <div class="container">
+        <div class="section__header">
+          <h2 class="section__title reveal">Our favorite spots</h2>
+          <p class="section__lead reveal">
+            A few ideas if you have extra time in Oaxaca.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <a class="card card--link reveal" href="https://www.google.com/maps/d/viewer?mid=1KO7G_dN8E0j9KfL0mjCIT1XXXEkfMoM&ll=17.065912754793793%2C-96.7234853503065&z=19" target="_blank" rel="noreferrer">
+            <h3>Wander the Historic Center</h3>
+            <img class="card-image" src="assets/oaxaca_streets.jpeg" alt="Colorful streets in Oaxaca" loading="lazy" />
+          </a>
+
+          <a class="card card--link reveal" href="https://www.google.com/maps/d/viewer?mid=1KO7G_dN8E0j9KfL0mjCIT1XXXEkfMoM&ll=17.056903200000008%2C-96.73284620000001&z=19" target="_blank" rel="noreferrer">
+            <h3>Enjoy a Memela from Doña Vale</h3>
+            <img class="card-image" src="assets/markets.jpg" alt="Oaxaca market scene" loading="lazy" />
+          </a>
+
+          <a class="card card--link reveal" href="https://www.google.com/maps/d/viewer?mid=1KO7G_dN8E0j9KfL0mjCIT1XXXEkfMoM&ll=17.043938630712056%2C-96.76832854942779&z=18" target="_blank" rel="noreferrer">
+            <h3>Hike to Monte Albán</h3>
+            <img class="card-image" src="assets/monte-alban.jpg" alt="Monte Albán ruins near Oaxaca" loading="lazy" />
+          </a>
+        </div>
+
+        <div class="map-link reveal">
+          <div class="map-link__content">
+            <span class="map-link__eyebrow">Local map</span>
+            <p>From bougie restaurants to secret libraries, explore some hidden gems.</p>
+          </div>
+          <a class="map-link__cta" href="https://www.google.com/maps/d/viewer?mid=1KO7G_dN8E0j9KfL0mjCIT1XXXEkfMoM" target="_blank" rel="noreferrer">
+            Open map
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRACTICAL NOTES -->
+    <section class="section section--light" id="practical">
+      <div class="container">
+        <div class="section__header">
+          <h2 class="section__title reveal">Practical notes</h2>
+        </div>
+
+        <div class="faq reveal">
+          <div class="faq__grid">
+            <div class="faq__col">
+              <div class="faq__item">
+                <p class="faq__q">Weather</p>
+                <p class="faq__a">Oaxaca has a dry, sunny desert-like climate. Midday high temperatures are around 80 degrees with evening temperatures dipping to 50s. Bring layers, especially shawls and light jackets for the nighttime events. Sunscreen is a must during the day!</p>
+              </div>
+              <div class="faq__item">
+                <p class="faq__q">Altitude</p>
+                <p class="faq__a">Oaxaca sits at 5,000 ft in elevation. Take it easy on day one, drink water (not mezcal), and keep snacks handy.</p>
+              </div>
+              <div class="faq__item">
+                <p class="faq__q">Kids</p>
+                <p class="faq__a">Kids are welcome. If you need childcare suggestions, please reach out closer to the event.</p>
+              </div>
+              <div class="faq__item">
+                <p class="faq__q">Safety</p>
+                <p class="faq__a">Oaxaca is generally safe and welcoming. Use normal city awareness and consider rideshare at night for longer journeys.</p>
+              </div>
+              <div class="faq__item">
+                <p class="faq__q">Deadlines</p>
+                <p class="faq__a">Please RSVP by August 1st and book hotels early since December is high season in Oaxaca.</p>
+              </div>
+            </div>
+            <div class="faq__col">
+              <div class="faq__item">
+                <p class="faq__q">What to pack</p>
+                <ul class="packing-checklist">
+                  <li>Comfortable shoes for cobblestone streets (no stilettos).</li>
+                  <li>Light layers for warm days and cooler evenings.</li>
+                  <li>Formal outfit for ceremony and reception.</li>
+                  <li>Festive colorful outfits for Haldi and Sangeet.</li>
+                  <li>Sun protection: sunscreen, sunglasses, and a hat.</li>
+                  <li>A light shawl or jacket for nighttime events.</li>
+                  <li>Daytime hydration essentials (especially at altitude).</li>
+                  <li>A small bag for event-to-event outfit accessories.</li>
+                  <li>Any personal medications and basic travel essentials.</li>
+                </ul>
+              </div>
+              <div class="faq__item">
+                <p class="faq__q">Passports</p>
+                <p class="faq__a">Please check your passport now and renew early if needed. At least 6 months of validity beyond your travel dates is required.</p>
+              </div>
+              <div class="faq__item">
+                <p class="faq__q">Registry</p>
+                <p class="faq__a">Your presence is our present. We are so grateful you’re making the trip to celebrate with us in Oaxaca.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RSVP -->
+    <section class="section section--dark" id="rsvp">
+      <div class="container">
+        <div class="section__header">
+          <h2 class="section__title reveal">RSVP</h2>
+          <p class="section__lead reveal">
+            Please RSVP by August 1st. Enter your email to open the RSVP form in a new window.
+          </p>
+        </div>
+
+        <div class="rsvp">
+          <form class="rsvp-form reveal" id="rsvp-lookup-form">
+            <div class="field">
+              <label for="rsvp-email">Email</label>
+              <input id="rsvp-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+            </div>
+            <button class="btn btn--primary btn--full" type="submit">Open RSVP</button>
+          </form>
+
+          <div class="rsvp-aside reveal">
+            <div class="card">
+              <h3>Quick contact</h3>
+              <a class="btn btn--ghost" href="mailto:info@umangiandzach.love">info@umangiandzach.love</a>
+              <p class="muted" style="margin-top:12px;font-size:12px;">
+                For logistical or hotel-related questions, please contact our wedding planners:
+                <a class="inline-link" href="mailto:oaxacadestinationweddings@gmail.com">oaxacadestinationweddings@gmail.com</a>
+              </p>
+            </div>
+
+            <div class="card">
+              <h3>Updates</h3>
+              <p>
+                We’ll keep this page current as we finalize logistics.
+              </p>
+              <p class="muted">
+                Last updated: March 11, 2026.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container footer-inner">
+        <p class="footer__line">© <span id="year"></span> Umangi & Zach | Designed with ❤️ in SF</p>
+        <a class="footer__top" href="#top">Back to top</a>
+      </div>
+    </footer>
+  </main>
+  </div>
+
+  <!-- Event modals -->
+  <div class="event-modal" id="modal-haldi" role="dialog" aria-modal="true" aria-labelledby="modal-haldi-title" aria-hidden="true">
+    <div class="event-modal__panel" role="document">
+      <button class="event-modal__close" type="button" data-close>Close</button>
+      <h3 class="event-modal__title" id="modal-haldi-title">Haldi/Pithi</h3>
+      <div class="event-modal__section">
+        <h4>About</h4>
+        <p>
+          The haldi is a wedding ritual where relatives and friends apply a paste composed of turmeric and sandalwood to the bride and groom. The purpose is to rid the couple of nazar (evil eye <span aria-label="evil eye">🧿</span>), offer blessings, and to cleanse the couple before the religious ceremony.
+        </p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Dress</h4>
+        <p>Yellow is traditional and encouraged, but any cheerful colors are welcome.</p>
+        <p class="event-modal__outfit-inspo"><a class="pinterest-link" href="https://pin.it/6IP63MUgq" target="_blank" rel="noreferrer">Pinterest board</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="event-modal" id="modal-sangeet" role="dialog" aria-modal="true" aria-labelledby="modal-sangeet-title" aria-hidden="true">
+    <div class="event-modal__panel" role="document">
+      <button class="event-modal__close" type="button" data-close>Close</button>
+      <h3 class="event-modal__title" id="modal-sangeet-title">Sangeet</h3>
+      <div class="event-modal__section">
+        <h4>About</h4>
+        <p>
+          The Sangeet is a pre-wedding party filled with music, dancing, and dance performances from friends and family.
+        </p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Dress</h4>
+        <p>Indian attire is encouraged — think lehengas, saris, or festive wear. Men are welcome to wear kurtas or casual suits. Bold colors are welcome. Ladies are recommended to wear block heels, flats, or sandals for the entirety of this wedding weekend — cobblestone streets are not friendly to stilettos.</p>
+        <p class="event-modal__outfit-inspo"><a class="pinterest-link" href="https://pin.it/5YFtoiJFU" target="_blank" rel="noreferrer">Pinterest board</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="event-modal" id="modal-baraat" role="dialog" aria-modal="true" aria-labelledby="modal-baraat-title" aria-hidden="true">
+    <div class="event-modal__panel" role="document">
+      <button class="event-modal__close" type="button" data-close>Close</button>
+      <h3 class="event-modal__title" id="modal-baraat-title">Baraat</h3>
+      <div class="event-modal__section">
+        <h4>About</h4>
+        <p>
+          The Baraat is the wedding procession that marks the groom&rsquo;s arrival to the ceremony. Accompanied by music and dancing, the groom&rsquo;s family and friends parade together to the wedding venue (and the bride&rsquo;s family will also join in!).
+        </p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Dress</h4>
+        <p>Wear ceremony-ready attire that still allows you to move and dance. Indian formalwear or festive Western outfits are both welcome. The Baraat involves walking, standing, and dancing. Ladies are recommended to wear low, block heels, flats — RIP stilettos. Oaxaca is sunny with a bit of a morning desert-chill, dress accordingly.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="event-modal" id="modal-ceremony" role="dialog" aria-modal="true" aria-labelledby="modal-ceremony-title" aria-hidden="true">
+    <div class="event-modal__panel" role="document">
+      <button class="event-modal__close" type="button" data-close>Close</button>
+      <h3 class="event-modal__title" id="modal-ceremony-title">Ceremony</h3>
+      <div class="event-modal__section">
+        <h4>About</h4>
+        <p>
+          The Hindu wedding ceremony is a sacred and symbolic celebration of love, commitment, and unity. Rooted in ancient Vedic tradition and aligned with the Muhurat, the ceremony is led by a priest through a series of pujas and vows. These traditions symbolize the spiritual merging of two souls, to journey together through the ups and downs of life.
+        </p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Dress</h4>
+        <p>This is a formal and traditional event. Indian attire is encouraged — saris, lehengas, kurtas are all welcome. Western wear such as lighter-colored suits and midi- to floor-length colorful dresses are also options. Please plan for an outdoor setting. Respectfully, please do not wear red (bridal), black (inauspicious), or white (mourning) to this event (splashes of cream are okay). Sunglasses will come in handy.</p>
+        <p class="event-modal__outfit-inspo"><a class="pinterest-link" href="https://pin.it/2qSAZyC6r" target="_blank" rel="noreferrer">Pinterest board</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="event-modal" id="modal-reception" role="dialog" aria-modal="true" aria-labelledby="modal-reception-title" aria-hidden="true">
+    <div class="event-modal__panel" role="document">
+      <button class="event-modal__close" type="button" data-close>Close</button>
+      <h3 class="event-modal__title" id="modal-reception-title">Reception</h3>
+      <div class="event-modal__section">
+        <h4>About</h4>
+        <p>
+          Join us for a night to celebrate and dance away after the ceremony in a beautiful wild agave sanctuary on the outskirts of town.
+        </p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Dress</h4>
+        <p>Indian eveningwear or Western formal attire are both welcome. Rich colors and statement accessories are welcome. This is an outdoor event, heaters will be present and ladies should plan to bring shawls and/or light jackets for the evening. Again, no stilettos, ladies; this is an agave farm with patches of gravel and sand.</p>
+        <p class="event-modal__outfit-inspo"><a class="pinterest-link" href="https://pin.it/3LeWzgsSF" target="_blank" rel="noreferrer">Pinterest board</a></p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Transportation</h4>
+        <p>Transportation will be provided to and from the venue throughout the evening. Details on pickup locations will be shared closer to the wedding.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="event-modal" id="modal-brunch" role="dialog" aria-modal="true" aria-labelledby="modal-brunch-title" aria-hidden="true">
+    <div class="event-modal__panel" role="document">
+      <button class="event-modal__close" type="button" data-close>Close</button>
+      <h3 class="event-modal__title" id="modal-brunch-title">Farewell Brunch</h3>
+      <div class="event-modal__section">
+        <h4>About</h4>
+        <p>
+          Join us the morning after the wedding for a relaxed farewell brunch before everyone heads home. This is a chance to unwind, share stories from the weekend, and spend a few final moments together before departures.
+        </p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Dress</h4>
+        <p>Casual and comfortable. Sunglasses encouraged.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="event-modal" id="modal-airport" role="dialog" aria-modal="true" aria-labelledby="modal-airport-title" aria-hidden="true">
+    <div class="event-modal__panel" role="document">
+      <button class="event-modal__close" type="button" data-close>Close</button>
+      <h3 class="event-modal__title" id="modal-airport-title">Arriving in Oaxaca</h3>
+      <div class="event-modal__section">
+        <p>Oaxaca’s airport is small and easy to navigate. Once outside, the surroundings may look simple, but don’t worry — the true charm begins in the Historic Center.</p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Official taxi to your hotel</h4>
+        <ul class="modal-list">
+          <li>Exit the airport and go to the official taxi counter.</li>
+          <li>Tell them your hotel name.</li>
+          <li>Pay a fixed rate.</li>
+          <li>You’ll receive a ticket and your assigned driver.</li>
+          <li>Estimated time: 20–25 minutes to Centro. (These transports are shared, so time varies by passengers.)</li>
+        </ul>
+      </div>
+      <div class="event-modal__section">
+        <h4>Hire private transportation</h4>
+        <p><strong>Transportación en Oaxaca Ejecutiva</strong><br />Tel: +52 (951) 517 2039<br />WhatsApp: <a href="https://wa.me/5219512390762" target="_blank" rel="noreferrer">+52 1 951 239 0762</a><br />Email: conoce_oaxaca@hotmail.com</p>
+        <p><strong>Important:</strong> Rideshare service DiDi is not allowed for airport pickups.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="event-modal" id="modal-hotel-abu" role="dialog" aria-modal="true" aria-labelledby="modal-hotel-abu-title" aria-hidden="true">
+    <div class="event-modal__panel" role="document">
+      <button class="event-modal__close" type="button" data-close>Close</button>
+      <h3 class="event-modal__title" id="modal-hotel-abu-title">Hotel ABU</h3>
+      <div class="event-modal__section">
+        <p>Hotel Abu is a comfortable three-star hotel in Oaxaca’s historic center, just steps from Macedonio Alcalá and an easy walk to both Santo Domingo and the Zócalo. Recently renovated, it blends traditional Oaxacan cantera stone architecture with a more modern interior and offers one of the best value options for the wedding weekend.</p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Room types and rates</h4>
+        <div class="modal-table-wrap">
+          <table class="modal-table">
+            <thead>
+              <tr>
+                <th>Room type</th>
+                <th>Bed type</th>
+                <th>Rate (MXN / night)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Small Interior</td>
+                <td>One double bed</td>
+                <td>$1,784.75 MXN</td>
+              </tr>
+              <tr>
+                <td>Standard</td>
+                <td>King or two double beds</td>
+                <td>$2,157.36 MXN</td>
+              </tr>
+              <tr>
+                <td>Superior</td>
+                <td>King or two double beds</td>
+                <td>$2,756.48 MXN</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="event-modal__section">
+        <h4>Rate notes</h4>
+        <ul class="modal-list">
+          <li>Rates are per room, per night for two adults.</li>
+          <li>Rates include 16% VAT and 3% lodging tax.</li>
+          <li>Rates include daily breakfast.</li>
+          <li>Rooms with two beds can accommodate up to 4 guests.</li>
+        </ul>
+      </div>
+      <div class="event-modal__section">
+        <h4>Additional guest charges</h4>
+        <ul class="modal-list">
+          <li>Additional guest: $350 MXN per night.</li>
+          <li>Children under 11 stay free, with a maximum of one child per room.</li>
+        </ul>
+      </div>
+      <div class="event-modal__section">
+        <h4>Amenities</h4>
+        <ul class="modal-list">
+          <li>Daily breakfast, free Wi-Fi, air conditioning, in-room safe, cable TV, hair dryer, ironing kit, and room service.</li>
+          <li>Elevator, tourist information and concierge assistance, taxi and transfer arrangements, and external laundry service.</li>
+        </ul>
+      </div>
+      <div class="event-modal__section">
+        <h4>How to book</h4>
+        <p>Reserve directly by emailing the hotel and reference the code <strong>ZACHARY &amp; UMANGI</strong>.</p>
+        <p>When booking, please provide your name, requested room type, arrival and departure dates, number of guests, and a credit card to guarantee the reservation.</p>
+        <p>Reservations:<br /><a href="mailto:reservaciones@hotelabu.com">reservaciones@hotelabu.com</a></p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Reservation deadline</h4>
+        <p>Hotels are already filling up, so we recommend making your hotel booking and travel arrangements within the next two to three months.</p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Website</h4>
+        <p><a href="https://www.hotelabu.com" target="_blank" rel="noreferrer">Visit Hotel ABU</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="event-modal" id="modal-hotel-parador" role="dialog" aria-modal="true" aria-labelledby="modal-hotel-parador-title" aria-hidden="true">
+    <div class="event-modal__panel" role="document">
+      <button class="event-modal__close" type="button" data-close>Close</button>
+      <h3 class="event-modal__title" id="modal-hotel-parador-title">Hotel Parador de Alcalá</h3>
+      <div class="event-modal__section">
+        <p>Hotel Parador de Alcalá is a polished boutique stay on Oaxaca’s pedestrian Alcalá corridor, with classic colonial character and an easy Centro location. It is a great option for guests who want to stay in the middle of town, close to restaurants, galleries, and wedding weekend activity.</p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Room types and rates</h4>
+        <div class="modal-table-wrap">
+          <table class="modal-table">
+            <thead>
+              <tr>
+                <th>Room type</th>
+                <th>Bed type</th>
+                <th>Rate (MXN / night)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Clásica</td>
+                <td>Queen bed</td>
+                <td>$2,909 MXN</td>
+              </tr>
+              <tr>
+                <td>Deluxe</td>
+                <td>King bed</td>
+                <td>$3,290 MXN</td>
+              </tr>
+              <tr>
+                <td>Grand Deluxe</td>
+                <td>Two double beds</td>
+                <td>$3,797 MXN</td>
+              </tr>
+              <tr>
+                <td>Superior</td>
+                <td>King or two double beds</td>
+                <td>$4,624 MXN</td>
+              </tr>
+              <tr>
+                <td>Corner Suite</td>
+                <td>King bed</td>
+                <td>$6,144 MXN</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="event-modal__section">
+        <h4>Rate notes</h4>
+        <ul class="modal-list">
+          <li>Rates are per room, per night and apply to single or double occupancy.</li>
+          <li>Rates include 16% VAT and 3% lodging tax.</li>
+          <li>Minimum stay is 2 nights: December 4–6, 2026.</li>
+          <li>Blocked rooms are limited; additional bookings are subject to availability.</li>
+        </ul>
+      </div>
+      <div class="event-modal__section">
+        <h4>Additional guest charges</h4>
+        <ul class="modal-list">
+          <li>Third or fourth guest in a two-bed room: $785 MXN per night.</li>
+          <li>Children ages 0-3: complimentary.</li>
+          <li>Children ages 4-11: $555 MXN per night.</li>
+          <li>Guests ages 12 and up are charged as adults.</li>
+        </ul>
+      </div>
+      <div class="event-modal__section">
+        <h4>Amenities</h4>
+        <ul class="modal-list">
+          <li>Daily breakfast included.</li>
+          <li>Welcome drink upon arrival.</li>
+          <li>Preferential wedding guest rates.</li>
+          <li>Special rate may also be available up to two days before or after the wedding dates, subject to availability.</li>
+        </ul>
+      </div>
+      <div class="event-modal__section">
+        <h4>How to book</h4>
+        <p>Reserve directly by emailing the hotel and reference the wedding code <strong>Boda Zachary y Umangi</strong>.</p>
+        <p>When booking, please provide your name, requested room type, arrival and departure dates, number of rooms, and a credit card to guarantee the reservation. The first night will be charged 15 days prior to arrival.</p>
+        <p>Reservations:<br /><a href="mailto:reservaciones@paradordealcalaoaxaca.mx">reservaciones@paradordealcalaoaxaca.mx</a></p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Reservation deadline</h4>
+        <p>Hotels are already filling up, so we recommend making your hotel booking and travel arrangements within the next two to three months.</p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Website</h4>
+        <p><a href="https://paradordealcalaoaxaca.mx/" target="_blank" rel="noreferrer">Visit Hotel Parador de Alcalá</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="event-modal" id="modal-hotel-sinnombre" role="dialog" aria-modal="true" aria-labelledby="modal-hotel-sinnombre-title" aria-hidden="true">
+    <div class="event-modal__panel" role="document">
+      <button class="event-modal__close" type="button" data-close>Close</button>
+      <h3 class="event-modal__title" id="modal-hotel-sinnombre-title">Hotel Sin Nombre</h3>
+      <div class="event-modal__section">
+        <p>Hotel Sin Nombre is one of Oaxaca’s most celebrated boutique hotels: a beautifully restored 17th-century building in the historic center that blends contemporary minimalist design with traditional Oaxacan craftsmanship. For our wedding weekend, we have reserved the hotel in its entirety, making it an especially fun option for guests who want to stay close to the celebration and enjoy the weekend alongside friends and family.</p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Room types and rates</h4>
+        <div class="modal-table-wrap">
+          <table class="modal-table">
+            <thead>
+              <tr>
+                <th>Room type</th>
+                <th>Bed type</th>
+                <th>Rate (MXN / night)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Standard Room</td>
+                <td>Queen bed</td>
+                <td>$5,034 MXN</td>
+              </tr>
+              <tr>
+                <td>Comfort Room</td>
+                <td>King bed</td>
+                <td>$5,783 MXN</td>
+              </tr>
+              <tr>
+                <td>Sicarú Room</td>
+                <td>King bed</td>
+                <td>$6,533 MXN</td>
+              </tr>
+              <tr>
+                <td>Family Room</td>
+                <td>Two queen beds</td>
+                <td>$7,925 MXN</td>
+              </tr>
+              <tr>
+                <td>Sin Suite</td>
+                <td>King bed</td>
+                <td>$7,925 MXN</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="event-modal__section">
+        <h4>Rate notes</h4>
+        <ul class="modal-list">
+          <li>Rates are per room, per night.</li>
+          <li>Rates include 16% VAT and 3% lodging tax.</li>
+          <li>Reservations require full payment at the time of booking.</li>
+        </ul>
+      </div>
+      <div class="event-modal__section">
+        <h4>Additional policies</h4>
+        <ul class="modal-list">
+          <li>Adults-only property: ages 12 and up.</li>
+          <li>Pets are not permitted.</li>
+        </ul>
+      </div>
+      <div class="event-modal__section">
+        <h4>Amenities</h4>
+        <ul class="modal-list">
+          <li>Welcome drink upon arrival.</li>
+          <li>Daily breakfast included.</li>
+          <li>Morning Eye Opener from 7–9 AM with coffee, tea, cookies, and seasonal fruit.</li>
+          <li>Access to Sin Nombre Experiences, which may include jazz nights, movie nights, and pool days.</li>
+          <li>Heated rooftop pool, terrace restaurant with city views, cantina, and lounge spaces.</li>
+          <li>Airport transfers, massages, private excursions, and yoga classes are available for an additional fee.</li>
+        </ul>
+      </div>
+      <div class="event-modal__section">
+        <h4>How to book</h4>
+        <p>Reserve directly by emailing the hotel and reference <strong>Zachary &amp; Umangi’s Wedding</strong>.</p>
+        <p>When booking, please provide your name, requested room type, arrival and departure dates, and contact email. Reservations are confirmed once payment is received, and the hotel will send an official confirmation.</p>
+        <p>Reservations:<br /><a href="mailto:reservas@hotelsinnombre.com">reservas@hotelsinnombre.com</a></p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Reservation deadline</h4>
+        <p>Hotels are already filling up, so we recommend making your hotel booking and travel arrangements within the next two to three months.</p>
+      </div>
+      <div class="event-modal__section">
+        <h4>Website</h4>
+        <p><a href="https://www.hotelsinnombre.com" target="_blank" rel="noreferrer">Visit Hotel Sin Nombre</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image lightbox -->
+  <div class="image-modal" id="imageModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="image-modal__panel" role="document">
+      <button class="image-modal__close" type="button" aria-label="Close image">Close</button>
+      <img id="imageModalImg" alt="" />
+    </div>
+  </div>
+
+  <script src="assets/js/main.js?v=20260306"></script>
 </body>
 </html>

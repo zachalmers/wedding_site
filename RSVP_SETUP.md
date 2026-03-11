@@ -49,7 +49,7 @@ UMZ-001 | Zach | Chalmers | person@example.com | FALSE |  |  |  |
 1. In the spreadsheet, go to **Extensions → Apps Script**.
 2. Delete any default code and paste the contents of `rsvp-backend.gs`.
 3. Update the constants at the top:
-   - `RSVP_PUBLIC_URL` (use the exact public path for `rsvp.html`; on GitHub Pages this is likely `https://umangiandzach.love/5t6y7u8k/rsvp.html`)
+   - `RSVP_PUBLIC_URL` (use the exact public path for `rsvp.html`; on GitHub Pages this is likely `https://umangiandzach.love/rsvp.html`)
    - `FROM_EMAIL` and `REPLY_TO` (use `info@umangiandzach.love`)
 4. Save.
 

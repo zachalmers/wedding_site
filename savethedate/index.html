@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>#ChalmedByPatel</title>
+  <meta name="description" content="Share your contact details for Umangi & Zach's wedding on December 4–6, 2026." />
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://umangiandzach.love/savethedate/" />
+
+  <!-- Theming -->
+  <meta name="theme-color" content="#0b0c0f" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Umangi &amp; Zach" />
+  <meta property="og:title" content="#ChalmedByPatel | December 4–6, 2026" />
+  <meta property="og:description" content="Save the date: Oaxaca City, Mexico. Please share your contact details!" />
+  <meta property="og:url" content="https://umangiandzach.love/savethedate/" />
+  <meta property="og:image" content="https://umangiandzach.love/savethedate/assets/bg1.jpeg" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="#ChalmedByPatel — December 4–6, 2026" />
+  <meta name="twitter:description" content="Save the date: Oaxaca City, Mexico. Please share your contact details!" />
+  <meta name="twitter:image" content="https://umangiandzach.love/savethedate/assets/bg1.jpeg" />
+
+  <!-- Cute emoji favicon (SVG data URI). Change the emoji if you like!) -->
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">💍</text></svg>' />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css?v=20250814" />
+</head>
+<body>
+  <span class="sr-only">Oaxaca destination wedding — Umangi Patel &amp; Zachary Chalmers — Zach Chalmers.</span>
+  <div class="bg" id="bg"></div>
+  <div class="bg" id="bg2" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <section class="hero" aria-label="Oaxaca City — background slideshow">
+    <!-- Splash header stacked above the form -->
+    <div class="splash" aria-label="Save the Date">
+      <div class="line1">Save the Date</div>
+      <div class="line2">December 4–6, 2026</div>
+      <div class="line3">Oaxaca City, Mexico</div>
+    </div>
+
+    <main class="card" role="main" aria-labelledby="title">
+      <header>
+        <div class="brand">
+          <div class="monogram" aria-hidden="true">U · Z</div>
+          <div>
+            <h1 id="title">Share your contact details</h1>
+            <div class="sub">for <strong>Umangi & Zach’s</strong> wedding</div>
+          </div>
+        </div>
+      </header>
+
+      <form id="contact-form" novalidate autocomplete="on">
+        <input type="text" name="company" id="company" autocomplete="organization" style="position:absolute;left:-9999px;top:-9999px" tabindex="-1" aria-hidden="true" />
+
+        <div>
+          <label class="sr-only" for="firstName">Your first name *</label>
+          <input id="firstName" name="firstName" type="text" autocomplete="given-name" autocapitalize="words" placeholder="First name *" required />
+        </div>
+        <div>
+          <label class="sr-only" for="lastName">Your last name *</label>
+          <input id="lastName" name="lastName" type="text" autocomplete="family-name" autocapitalize="words" placeholder="Last name *" required />
+        </div>
+
+        <div>
+          <label class="sr-only" for="email">Email *</label>
+          <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="Email *" required />
+        </div>
+        <div>
+          <label class="sr-only" for="phone">Mobile phone</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="Mobile phone" />
+        </div>
+
+        <div class="full">
+          <label class="sr-only" for="address1">Street address *</label>
+          <input id="address1" name="address1" type="text" autocomplete="street-address" placeholder="Street address *" required />
+        </div>
+        <div>
+          <label class="sr-only" for="address2">Apt / Unit</label>
+          <input id="address2" name="address2" type="text" autocomplete="address-line2" placeholder="Apt / Unit" />
+        </div>
+        <div>
+          <label class="sr-only" for="city">City *</label>
+          <input id="city" name="city" type="text" autocomplete="address-level2" placeholder="City *" required />
+        </div>
+        <div>
+          <label class="sr-only" for="state">State / Province *</label>
+          <input id="state" name="state" type="text" autocomplete="address-level1" placeholder="State / Province *" required />
+        </div>
+        <div>
+          <label class="sr-only" for="zip">Postal code *</label>
+          <input id="zip" name="zip" type="text" autocomplete="postal-code" placeholder="Postal code *" required />
+        </div>
+        <div>
+          <label class="sr-only" for="country">Country *</label>
+                    <input id="country" name="country-name" type="text" autocomplete="country-name" placeholder="Country *" value="United States" required />
+        </div>
+
+        <div class="full">
+          <label id="members-label" class="field-label-lg">
+            Other members of your party? <span class="tiny">(Optional)</span>
+          </label>
+          <div class="members" id="members">
+            <div class="member" data-key="1">
+              <div class="member-row">
+                <div>
+                  <label class="sr-only" for="member-1-fn">First name</label>
+                  <input id="member-1-fn" name="members[0].firstName" type="text" placeholder="First name" />
+                </div>
+                <div>
+                  <label class="sr-only" for="member-1-ln">Last name</label>
+                  <input id="member-1-ln" name="members[0].lastName" type="text" placeholder="Last name" />
+                </div>
+                <label class="chk" for="member-1-child">
+                  <input type="checkbox" id="member-1-child" name="members[0].child" /> Child
+                </label>
+                <button type="button" class="btn secondary icon remove-btn" aria-label="Remove person" title="Remove">×</button>
+              </div>
+            </div>
+          </div>
+          <div class="actions actions-right">
+            <button class="btn secondary" id="add-member" type="button">+ Add another person</button>
+          </div>
+        </div>
+
+        <div class="full">
+          <label for="likelihood" style="font-size:18px;font-weight:500;color:var(--text);letter-spacing:.1px">Do you think you’ll be able to attend? <span class="tiny">(Not an RSVP, vibes only)</span></label>
+          <div class="slider-row">
+            <span class="tiny emoji">🤷</span>
+            <div class="slider-col">
+              <input id="likelihood" name="likelihood" type="range" min="1" max="5" step="1" value="3" aria-label="Likelihood to attend (1-5)" />
+              <!-- Lock labels to exact slider percentages -->
+              <div class="scale-grid" aria-hidden="true">
+                <span class="s0">Unlikely</span>
+                <span class="s25">Maybe</span>
+                <span class="s50">Probably</span>
+                <span class="s75">Likely</span>
+                <span class="s100">Definitely</span>
+              </div>
+            </div>
+            <span class="tiny emoji">🎉</span>
+          </div>
+        </div>
+
+
+        <div class="full">
+          <label class="sr-only" for="note">Anything we should know?</label>
+          <textarea id="note" name="note" rows="3" placeholder="Anything we should know? (dietary needs, travel constraints, etc.)"></textarea>
+        </div>
+
+        <div class="full actions actions-right">
+          <span id="inline-status" class="status-text" aria-live="polite"></span>
+          <button class="btn secondary" type="submit" id="submit" aria-live="polite">
+            <span class="btn-label">Submit</span>
+            <span class="spinner" aria-hidden="true" hidden></span>
+          </button>
+        </div>
+      </form>
+
+    </main>
+  </section>
+
+  <section class="faq-card">
+    <section class="faq" aria-labelledby="faq-title">
+      <h2 id="faq-title">FAQs</h2>
+      <details>
+        <summary>Is this an RSVP?</summary>
+        <div class="answer tiny">Nope! This is to collect your contact details and get a rough headcount to help us plan! Formal invites + RSVP to follow.</div>
+      </details>
+      <details>
+        <summary>Are kids welcome?</summary>
+        <div class="answer tiny">While a parents’ getaway is encouraged, children and families are warmly welcomed. For those traveling as a family, we’ll share childcare suggestions and kid-friendly ideas to make the trip enjoyable for everyone.</div>
+      </details>
+      <details>
+        <summary>When and where?</summary>
+        <div class="answer tiny">Festivities will begin in Oaxaca City the evening of Friday December 4th, 2026 and conclude Sunday morning.</div>
+      </details>
+      <details>
+        <summary>Getting to Oaxaca?</summary>
+        <div class="answer tiny"><strong>OAX</strong> can be reached via nonstop flights from <strong>LAX</strong>, <strong>IAH</strong>, and <strong>DFW</strong> in the U.S., and via <strong>MEX</strong> or <strong>MTY</strong> in Mexico. We encourage you to explore Mexico before or after the wedding, and we’ll share some personal travel recommendations!</div>
+      </details>
+      <details>
+        <summary>Where to Stay?</summary>
+        <div class="answer tiny">Oaxaca City is a town full of stunning boutique hotels and haciendas plucked from the pages of Architectural Digest. They offer incredible value at every price point. We'll highlight some of our faves.</div>
+      </details>
+            <details>
+        <summary>More questions?</summary>
+        <div class="answer tiny">Shoot us a message! <a href="mailto:info@umangiandzach.love"><strong>info@umangiandzach.love</strong></a></div>
+      </details>
+    </section>
+  </section>
+
+  <footer>
+    <span>© <span id="year"></span> Umangi &amp; Zach | Designed with ❤️ in SF</span>
+  </footer>
+  <div class="footer-spacer" aria-hidden="true"></div>
+
+  <script>
+  (()=>{
+    // ===== Background Slideshow (Ken Burns-style) using local assets =====
+    const bgA = document.getElementById('bg');
+    const bgB = document.getElementById('bg2');
+    let front = bgA;   // currently visible layer
+    let back  = bgB;   // currently hidden layer;
+
+    // Preload a single image and resolve true/false
+    function preloadOne(src){
+      return new Promise(res => {
+        const img = new Image();
+        img.onload = () => res(true);
+        img.onerror = () => res(false);
+        img.src = src;
+      });
+    }
+
+    // Discover bg1.jpeg, bg2.jpeg, ... contiguously until the first miss
+    async function discoverPhotos(){
+      const out = [];
+      for (let i = 1; ; i++) {
+        const url = `./assets/bg${i}.jpeg`;
+        if (await preloadOne(url)) out.push(url); else break;
+      }
+      return out;
+    }
+
+    // In-place Fisher–Yates shuffle
+    function shuffle(arr){
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Initialize slideshow
+    (async function initSlideshow(){
+      const FIRST = './assets/bg1.jpeg';
+      const INTERVAL_MS = 10000; // 10s
+      const POSITIONS = ['center top','left center','center bottom','right center','center center'];
+
+      // Start with FIRST immediately; discover the rest in the background
+      let photos = [FIRST];
+      await preloadOne(FIRST); // ensure first paint
+
+      // Render + start Ken Burns
+      let slideIndex = 0;
+      function setSlide(idx){
+        const src = photos[idx % photos.length];
+        const pos = POSITIONS[Math.floor(Math.random()*POSITIONS.length)];
+        front.style.backgroundImage = `url(${src})`;
+        front.style.backgroundPosition = pos;
+      }
+      setSlide(slideIndex);
+      setTimeout(()=> front.classList.add('kb-zoom'), 10);
+
+      // Background discovery + preload of the rest
+      (async ()=>{
+        const found = await discoverPhotos();
+        let rest = found.filter(p => p !== FIRST);
+        shuffle(rest);
+        // Warm the cache for smoother transitions
+        rest.forEach(src => { const im = new Image(); im.src = src; });
+        photos = [FIRST, ...rest];
+        maybeStart();
+      })();
+
+      // Advance frame (wrap at end)
+      function nextBg(){
+        if (photos.length <= 1) return;
+        slideIndex = (slideIndex + 1) % photos.length;
+
+        // Prepare next image on the hidden layer
+        const src = photos[slideIndex];
+        const pos = POSITIONS[Math.floor(Math.random()*POSITIONS.length)];
+        back.style.backgroundImage = `url(${src})`;
+        back.style.backgroundPosition = pos;
+
+        // Animate: new layer fades in while old fades out; toggle Ken Burns
+        front.classList.remove('kb-zoom');
+        back.classList.add('kb-zoom');
+        back.style.opacity = 1;
+        front.style.opacity = 0;
+
+        // After the crossfade completes (~500ms), swap references
+        setTimeout(()=>{ const t = front; front = back; back = t; }, 520);
+      }
+
+      // Only start cycling once we have more than one photo
+      let started = false; let interval = null;
+      function maybeStart(){
+        if (!started && photos.length > 1) {
+          started = true;
+          interval = setInterval(nextBg, INTERVAL_MS);
+        }
+      }
+
+      // === Power-saving: pause slideshow when tab is hidden ===
+      function pauseSlideshow(){
+        if (interval){
+          clearInterval(interval);
+          interval = null;
+        }
+        // Stop the Ken Burns animation while hidden
+        front.classList.remove('kb-zoom');
+        back.classList.remove('kb-zoom');
+      }
+
+      function resumeSlideshow(){
+        // Only resume if we actually have multiple photos ready
+        if (photos.length > 1 && !interval){
+          // Re-enable animation and timer
+          front.classList.add('kb-zoom');
+          interval = setInterval(nextBg, INTERVAL_MS);
+        }
+      }
+
+      document.addEventListener('visibilitychange', ()=>{
+        if (document.hidden) {
+          pauseSlideshow();
+        } else {
+          resumeSlideshow();
+        }
+      });
+
+      // If the page loads in a background tab, ensure we start paused
+      if (document.hidden) {
+        pauseSlideshow();
+      }
+      // In case reduced motion is requested
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        if (interval) clearInterval(interval);
+        front.classList.remove('kb-zoom');
+        back.classList.remove('kb-zoom');
+      }
+    })();
+
+
+    // ===== Year =====
+    document.getElementById('year').textContent=new Date().getFullYear();
+
+    // ===== Members dynamic rows =====
+    const members=document.getElementById('members');
+    const addMemberBtn=document.getElementById('add-member');
+    const membersLabel=document.getElementById('members-label');
+    let memberKey=1;
+
+    function newMember(indexForName){
+      memberKey+=1; const key=memberKey;
+      const wrap=document.createElement('div');
+      wrap.className='member'; wrap.dataset.key=String(key);
+      wrap.innerHTML=`
+        <div class="member-row">
+          <div>
+            <label class="sr-only" for="member-${key}-fn">First name</label>
+            <input id="member-${key}-fn" name="members[${indexForName}].firstName" type="text" placeholder="First name" />
+          </div>
+          <div>
+            <label class="sr-only" for="member-${key}-ln">Last name</label>
+            <input id="member-${key}-ln" name="members[${indexForName}].lastName" type="text" placeholder="Last name" />
+          </div>
+          <label class="chk" for="member-${key}-child">
+            <input type="checkbox" id="member-${key}-child" name="members[${indexForName}].child" /> Child
+          </label>
+          <button type="button" class="btn secondary icon remove-btn" aria-label="Remove person" title="Remove">×</button>
+        </div>`;
+      return wrap;
+    }
+
+    function renumberNames(){
+      const rows=Array.from(document.querySelectorAll('.members .member'));
+      rows.forEach((row,idx)=>{
+        row.querySelectorAll('input').forEach(inp=>{
+          if (inp.name && inp.name.includes('members[')){
+            const suffix=inp.name.split('].').pop();
+            inp.name=`members[${idx}].${suffix}`;
+          }
+        });
+      });
+      if(membersLabel){membersLabel.style.display=rows.length===0?'none':''}
+    }
+
+    function removeMember(node){ if(!node) return; node.remove(); renumberNames(); }
+
+    addMemberBtn.addEventListener('click',()=>{ const current=members.querySelectorAll('.member').length; const row=newMember(current); members.appendChild(row); renumberNames(); });
+    members.addEventListener('click', (e)=>{ const btn=e.target.closest('.remove-btn'); if(!btn) return; const node=btn.closest('.member'); removeMember(node); });
+    document.addEventListener('DOMContentLoaded', renumberNames);
+
+    // ===== Submission (front-end only) =====
+    const FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbw2fzKTHn9hdWClRQaopSRz4B2YAT-NYW08e4h22vrepHXszNFnzS64oC2QrDuVbHg7/exec";
+    const form=document.getElementById('contact-form');
+    const status=document.getElementById('inline-status');
+    const submitBtn = document.getElementById('submit');
+    const submitLabel = submitBtn.querySelector('.btn-label');
+    const submitSpin = submitBtn.querySelector('.spinner');
+    let isSubmitting = false;
+    function setStatus(type,msg){
+      if(!status) return;
+      status.textContent = msg || '';
+      status.classList.remove('error','success');
+      if(type) status.classList.add(type);
+    }
+
+    // Build payload from form controls, plus derived counts for the sheet.
+    function collectData(){
+      const membersData = Array.from(document.querySelectorAll('.members .member')).map((el)=>({
+        firstName: (el.querySelector('input[name$=".firstName"]').value || '').trim(),
+        lastName: (el.querySelector('input[name$=".lastName"]').value || '').trim(),
+        isChild: !!el.querySelector('input[name$=".child"]').checked,
+      })).filter(m => m.firstName || m.lastName);
+
+      // === Derived values for backend ===
+      const namedMembers = membersData; // already filtered for non-empty names
+      const adultMembers = namedMembers.filter(m => !m.isChild);
+      const childMembers = namedMembers.filter(m => m.isChild);
+      const adultCount = 1 + adultMembers.length; // includes principal as an adult
+      const childCount = childMembers.length;
+      const othersNames = namedMembers
+        .map(m => `${m.firstName} ${m.lastName}`.trim())
+        .filter(Boolean)
+        .join(', ');
+
+      return {
+        ts: new Date().toISOString(),
+        source: 'oaxaca-contact-capture',
+        couple: { bride: 'Umangi', groom: 'Zach' },
+        principal: {
+          firstName: document.getElementById('firstName').value.trim(),
+          lastName: document.getElementById('lastName').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          address1: document.getElementById('address1').value.trim(),
+          address2: document.getElementById('address2').value.trim(),
+          city: document.getElementById('city').value.trim(),
+          state: document.getElementById('state').value.trim(),
+          zip: document.getElementById('zip').value.trim(),
+          country: document.getElementById('country').value.trim(),
+        },
+        members: membersData,
+        // derived fields to help the Apps Script map to columns directly
+        adultCount,
+        childCount,
+        othersNames,
+        likelihood: Number(document.getElementById('likelihood').value),
+        note: document.getElementById('note').value.trim(),
+        notRSVP: true,
+      };
+    }
+
+    // Minimal client-side validation; honeypot blocks bots.
+    function validate(){
+      const required=['firstName','lastName','email','address1','city','state','zip','country'];
+      for(const id of required){ const el=document.getElementById(id); if(!el.value.trim()){ el.focus(); return false; } }
+      const email=document.getElementById('email').value.trim();
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ document.getElementById('email').focus(); return false; }
+      if(document.getElementById('company').value){ return false; } // honeypot
+      return true;
+    }
+
+    // Post to Apps Script endpoint using a CORS-safelisted request.
+    // In no-cors mode the response is opaque; success assumed on resolved fetch.
+    async function postData(data){
+      if(!FORM_ENDPOINT){
+        console.warn('FORM_ENDPOINT is missing');
+        return false;
+      }
+      try{
+        const res = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          // Use a CORS-safelisted content type + no-cors to avoid preflight and CORS blocking
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(data)
+        });
+        // In no-cors mode, the response is opaque; treat successful resolution as success
+        console.log('Posted to GAS (opaque response expected in no-cors mode):', res && res.type);
+        return true;
+      }catch(err){
+        console.error('POST failed:', err);
+        return false;
+      }
+    }
+
+    if (location.protocol === 'file:') {
+      console.warn('Running from file:// origin. Using no-cors POST to avoid CORS errors. For full responses, serve via http(s) (e.g., VS Code Live Server).');
+    }
+
+    // Submit handler: block double-submits, show spinner, and reset on success.
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      if (isSubmitting) return; // guard against double-clicks
+
+      setStatus('', '');
+      if(!validate()){
+        setStatus('error','Please complete required fields.');
+        return;
+      }
+
+      // lock UI
+      isSubmitting = true;
+      submitBtn.disabled = true;
+      submitBtn.setAttribute('aria-busy','true');
+      if (submitLabel) submitLabel.textContent = 'Submitting…';
+      if (submitSpin) submitSpin.hidden = false;
+
+      const payload = collectData();
+      const sent = await postData(payload);
+
+      if (sent) {
+        // Keep visual state as "Submitting…" briefly; then flip back & show success together
+        setTimeout(() => {
+          if (submitSpin) submitSpin.hidden = true;
+          submitBtn.removeAttribute('aria-busy');
+          if (submitLabel) submitLabel.textContent = 'Submit';
+          submitBtn.disabled = false;
+          setStatus('success', 'Thank you! We’ve saved your info. 🎉');
+
+          // Reset the form at the same moment as the UI flip for perfect sync
+          form.reset();
+          members.innerHTML = '';
+          const fallback = newMember(0);
+          members.appendChild(fallback);
+          renumberNames();
+        }, 800);
+      }
+      else {
+        setStatus('error','Something went wrong. Please try again.');
+        // unlock UI on failure
+        if (submitLabel) submitLabel.textContent = 'Submit';
+        if (submitSpin) submitSpin.hidden = true;
+        submitBtn.removeAttribute('aria-busy');
+        submitBtn.disabled = false;
+      }
+
+      isSubmitting = false;
+    });
+
+    // ===== Tiny self-tests (console only) =====
+    (function runSelfTests(){
+      const results=[]; const ok=(n,p)=>results.push({n,p});
+      try{
+        ok('Stacked layout', getComputedStyle(document.querySelector('.hero')).flexDirection==='column');
+        ok('Slider default is numeric', Number(document.getElementById('likelihood').value)===3);
+        ok('Child checkbox present', !!document.querySelector('input[name$=".child"]'));
+        ok('Remove buttons present', document.querySelectorAll('.remove-btn').length>=1);
+      }catch(e){ console.error('Self-tests crashed:', e); }
+      console.groupCollapsed('Contact-capture self-tests');
+      results.forEach(r=>console.log(`${r.p ? '✅' : '❌'} ${r.n}`));
+      console.groupEnd();
+    })();
+  })();
+  </script>
+</body>
+</html>
