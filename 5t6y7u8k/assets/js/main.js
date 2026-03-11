@@ -274,11 +274,47 @@
   // Event modals
   const modalTriggers = Array.from(document.querySelectorAll(".event-card__details-trigger, .modal-trigger"));
   const modals = Array.from(document.querySelectorAll(".event-modal"));
+  const modalFocusableSelector = [
+    "a[href]",
+    "button:not([disabled])",
+    "input:not([disabled])",
+    "select:not([disabled])",
+    "textarea:not([disabled])",
+    "[tabindex]:not([tabindex='-1'])",
+  ].join(", ");
+  const appShellNodes = [
+    document.querySelector(".toc"),
+    document.getElementById("site"),
+    document.getElementById("top"),
+  ].filter(Boolean);
+  let activeModal = null;
+  let activeModalTrigger = null;
+
+  const getFocusableChildren = (modal) => {
+    if (!modal) return [];
+    return Array.from(modal.querySelectorAll(modalFocusableSelector))
+      .filter((el) => !el.hasAttribute("hidden") && el.getAttribute("aria-hidden") !== "true");
+  };
+
+  const setAppInert = (isInert) => {
+    appShellNodes.forEach((node) => {
+      if (!(node instanceof HTMLElement)) return;
+      node.toggleAttribute("inert", isInert);
+    });
+  };
 
   const closeModal = (modal) => {
     if (!modal) return;
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
+    if (activeModal === modal) {
+      activeModal = null;
+      setAppInert(false);
+      if (activeModalTrigger instanceof HTMLElement) {
+        activeModalTrigger.focus({ preventScroll: true });
+      }
+      activeModalTrigger = null;
+    }
   };
 
   modalTriggers.forEach(trigger => {
@@ -286,8 +322,15 @@
       const id = trigger.getAttribute("aria-controls");
       const modal = id ? document.getElementById(id) : null;
       if (!modal) return;
+      if (activeModal && activeModal !== modal) closeModal(activeModal);
+      activeModalTrigger = trigger;
+      activeModal = modal;
       modal.classList.add("is-open");
       modal.setAttribute("aria-hidden", "false");
+      setAppInert(true);
+      const focusableChildren = getFocusableChildren(modal);
+      const initialFocus = focusableChildren[0] || modal.querySelector("[role='document']") || modal;
+      if (initialFocus instanceof HTMLElement) initialFocus.focus({ preventScroll: true });
     });
   });
 
@@ -296,6 +339,24 @@
       const target = event.target;
       if (target === modal || (target instanceof HTMLElement && target.hasAttribute("data-close"))) {
         closeModal(modal);
+      }
+    });
+    modal.addEventListener("keydown", (event) => {
+      if (event.key !== "Tab") return;
+      const focusableChildren = getFocusableChildren(modal);
+      if (!focusableChildren.length) {
+        event.preventDefault();
+        return;
+      }
+      const first = focusableChildren[0];
+      const last = focusableChildren[focusableChildren.length - 1];
+      const active = document.activeElement;
+      if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
       }
     });
   });
@@ -316,6 +377,10 @@
     imageModal.classList.remove("is-open");
     imageModal.setAttribute("aria-hidden", "true");
     if (imageModalImg) imageModalImg.removeAttribute("src");
+    setAppInert(false);
+    if (activeModal === imageModal) activeModal = null;
+    if (activeModalTrigger instanceof HTMLElement) activeModalTrigger.focus({ preventScroll: true });
+    activeModalTrigger = null;
   };
 
   imageButtons.forEach(btn => {
@@ -324,15 +389,25 @@
       const src = btn.getAttribute("data-lightbox");
       const alt = btn.getAttribute("data-lightbox-alt") || "";
       if (!src) return;
+      if (activeModal) closeModal(activeModal);
+      activeModalTrigger = btn;
+      activeModal = imageModal;
       imageModalImg.src = src;
       imageModalImg.alt = alt;
       imageModal.classList.add("is-open");
       imageModal.setAttribute("aria-hidden", "false");
+      setAppInert(true);
+      if (imageModalClose instanceof HTMLElement) imageModalClose.focus({ preventScroll: true });
     });
   });
 
   if (imageModal) {
     imageModal.addEventListener("click", closeImageModal);
+    imageModal.addEventListener("keydown", (event) => {
+      if (event.key !== "Tab" || !(imageModalClose instanceof HTMLElement)) return;
+      event.preventDefault();
+      imageModalClose.focus();
+    });
   }
   if (imageModalClose) {
     imageModalClose.addEventListener("click", closeImageModal);

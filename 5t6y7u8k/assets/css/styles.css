@@ -1079,6 +1079,16 @@ main#main{
   cursor: pointer;
 }
 .image-modal__close:hover{ background: rgba(0,0,0,.55); }
+.image-modal__close:focus-visible,
+.event-modal__close:focus-visible,
+.event-card__details-trigger:focus-visible,
+.stay-card__details-trigger:focus-visible,
+.modal-trigger:focus-visible,
+.story-photo-card__btn:focus-visible,
+.image-card__btn:focus-visible{
+  outline: 3px solid var(--clay);
+  outline-offset: 3px;
+}
 
 /* Event cards */
 .event-card{
