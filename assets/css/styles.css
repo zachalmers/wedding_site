@@ -278,6 +278,10 @@ img{ max-width: 100%; display: block; }
 .field--full{
   grid-column: 1 / -1;
 }
+.rsvp-form-v2 > .field--full{
+  padding-top: 14px;
+  border-top: 1px solid rgba(42,26,18,.14);
+}
 .guest-row .field{
   margin-bottom: 6px;
 }
@@ -364,14 +368,18 @@ img{ max-width: 100%; display: block; }
   gap: 12px;
   flex-wrap: wrap;
 }
-.rsvp-note{
-  margin: 0;
-  color: var(--field-hint);
-  font-size: 12px;
+.rsvp-submit{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 .rsvp-status{
-  margin: 8px 0 0;
+  margin: 0;
   font-size: 12px;
+  line-height: 1.4;
+  max-width: 32ch;
 }
 .rsvp-status[data-type="error"]{ color: #9b1c1c; }
 .rsvp-status[data-type="info"]{ color: var(--field-hint); }
@@ -406,6 +414,37 @@ img{ max-width: 100%; display: block; }
     margin-top: 2px;
   }
   .rsvp-actions{ flex-direction: column; align-items: stretch; }
+  .rsvp-submit{
+    width: 100%;
+    justify-content: space-between;
+  }
+  .rsvp-status{
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px){
+  .rsvp-shell{
+    width: min(860px, calc(100% - 28px));
+  }
+  .rsvp-card{
+    padding: 20px 16px;
+  }
+  .guest-row{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 10px;
+    row-gap: 10px;
+  }
+  .guest-row .field:nth-child(n + 3),
+  .guest-row .field--full,
+  .guest-row__remove{
+    grid-column: 1 / -1;
+  }
+  .guest-row .field > label{
+    font-size: 12px;
+    letter-spacing: .05em;
+    text-wrap: balance;
+  }
 }
 
 /* Page anchor */

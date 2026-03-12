@@ -40,6 +40,45 @@
 
   const showCard = (el) => el && el.classList.remove("is-hidden");
   const hideCard = (el) => el && el.classList.add("is-hidden");
+  const getGuestRows = () => Array.from(document.querySelectorAll(".guest-row"));
+  const getSelectedEvents = (row) => Array.from(row.querySelectorAll("input[name='events']:checked")).map((el) => el.value);
+  const getValidationMessage = (field = null) => {
+    const rows = getGuestRows();
+    const missingAttending = rows.some((row) => {
+      const attendingSelect = row.querySelector("select[name='attending']");
+      return attendingSelect && !attendingSelect.value;
+    });
+    if (missingAttending || (field && field.name === "attending")) {
+      return "Please choose attending or not attending for each guest.";
+    }
+
+    const missingDietary = rows.some((row) => {
+      const attendingSelect = row.querySelector("select[name='attending']");
+      const dietarySelect = row.querySelector("select[name='dietarySelect']");
+      const dietaryOther = row.querySelector("[name='dietaryOther']");
+      if (!attendingSelect || attendingSelect.value !== "yes") return false;
+      if (!dietarySelect || !dietarySelect.value) return true;
+      return dietarySelect.value === "other" && (!dietaryOther || !dietaryOther.value.trim());
+    });
+    if (missingDietary || (field && (field.name === "dietarySelect" || field.name === "dietaryOther"))) {
+      return "Please add dietary needs for every attending guest and plus-one.";
+    }
+
+    const missingEvents = rows.some((row) => {
+      const attendingSelect = row.querySelector("select[name='attending']");
+      return attendingSelect && attendingSelect.value === "yes" && getSelectedEvents(row).length === 0;
+    });
+    if (missingEvents) {
+      return "Please select at least one event for each attending guest.";
+    }
+
+    return "";
+  };
+  const syncSubmitStatus = () => {
+    if (!submitStatus || submitStatus.dataset.type !== "error") return;
+    const message = getValidationMessage();
+    setStatus(submitStatus, message, message ? "error" : "");
+  };
 
   const createGuestRow = ({ firstName = "", lastName = "", email = "", whatsappPhone = "", attending = "", dietary = "", events = [], isPlusOne = false, isPrimaryGuest = false, householdEmail = "" } = {}) => {
     const row = document.createElement("div");
@@ -98,7 +137,7 @@
           <option value="no" ${attending === "no" ? "selected" : ""}>No</option>
         </select>
       </div>
-      <div class="field">
+      <div class="field field--dietary ${attending === "yes" ? "" : "is-hidden"}" aria-hidden="${attending === "yes" ? "false" : "true"}">
         <label for="${dietarySelectId}">Dietary needs</label>
         <select id="${dietarySelectId}" name="dietarySelect" ${attending === "yes" ? "required" : ""}>
           <option value="" ${dietaryPreset ? "" : "selected"} disabled>Select one</option>
@@ -144,7 +183,10 @@
 
       if (enabled) {
         dietarySelect.setAttribute("required", "required");
-        if (dietaryField) dietaryField.classList.remove("is-disabled");
+        if (dietaryField) {
+          dietaryField.classList.remove("is-disabled", "is-hidden");
+          dietaryField.setAttribute("aria-hidden", "false");
+        }
         dietaryOther.disabled = !isOther;
         dietaryOther.classList.toggle("is-hidden", !isOther);
         if (isOther) {
@@ -156,7 +198,10 @@
       } else {
         dietarySelect.removeAttribute("required");
         dietarySelect.value = "";
-        if (dietaryField) dietaryField.classList.add("is-disabled");
+        if (dietaryField) {
+          dietaryField.classList.add("is-disabled", "is-hidden");
+          dietaryField.setAttribute("aria-hidden", "true");
+        }
         dietaryOther.value = "";
         dietaryOther.classList.add("is-hidden");
         dietaryOther.disabled = true;
@@ -194,13 +239,21 @@
     attendingSelect.addEventListener("change", () => {
       syncDietaryState();
       syncEventState();
+      syncSubmitStatus();
     });
     if (dietarySelect) {
       dietarySelect.addEventListener("change", () => {
         syncDietaryState();
+        syncSubmitStatus();
       });
     }
-    dietaryOther.addEventListener("input", autosizeDietaryOther);
+    dietaryOther.addEventListener("input", () => {
+      autosizeDietaryOther();
+      syncSubmitStatus();
+    });
+    eventInputs.forEach((input) => {
+      input.addEventListener("change", syncSubmitStatus);
+    });
     syncDietaryState();
     syncEventState();
 
@@ -209,6 +262,7 @@
       if (removeBtn) {
         removeBtn.addEventListener("click", () => {
           row.remove();
+          syncSubmitStatus();
           if (addPlusOneBtn) {
             const canAdd = canAddPlusOne();
             addPlusOneBtn.disabled = !canAdd;
@@ -316,6 +370,7 @@
       renderGuests(data.guests || []);
       showCard(formCard);
       setStatus(lookupStatus, "", "");
+      setStatus(submitStatus, "", "");
       if (addPlusOneBtn) {
         const canAdd = canAddPlusOne();
         addPlusOneBtn.disabled = !canAdd;
@@ -339,6 +394,7 @@
   if (addPlusOneBtn) {
     addPlusOneBtn.addEventListener("click", () => {
       addPlusOne();
+      syncSubmitStatus();
       const canAdd = canAddPlusOne();
       addPlusOneBtn.disabled = !canAdd;
       addPlusOneBtn.classList.toggle("is-hidden", !canAdd);
@@ -346,8 +402,17 @@
   }
 
   if (rsvpForm) {
+    rsvpForm.addEventListener("invalid", (e) => {
+      setStatus(submitStatus, getValidationMessage(e.target), "error");
+    }, true);
     rsvpForm.addEventListener("submit", async (e) => {
       e.preventDefault();
+      const validationMessage = getValidationMessage();
+      if (!rsvpForm.checkValidity()) {
+        setStatus(submitStatus, validationMessage || "Please complete the missing RSVP details.", "error");
+        rsvpForm.reportValidity();
+        return;
+      }
       setStatus(submitStatus, "Submitting...", "info");
       try {
         const guests = collectGuests();
