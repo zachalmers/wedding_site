@@ -1313,6 +1313,30 @@ main#main{
   font-size: 14px;
   color: rgba(27,31,29,.80);
 }
+.event-modal__section--booking{
+  margin: 18px 0;
+  padding: 18px 22px;
+  border: 1px solid rgba(171,127,74,.28);
+  border-left: 4px solid rgba(171,127,74,.82);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(246,239,229,.88) 0%, rgba(255,252,247,.96) 100%);
+  box-shadow: 0 10px 24px rgba(27,31,29,.06);
+}
+.event-modal__section.event-modal__section--booking h4{
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: rgba(112,76,38,.92);
+}
+.event-modal__section.event-modal__section--booking p:last-child{
+  margin-bottom: 0;
+}
+.event-modal__disclaimer{
+  margin-top: -4px;
+  font-size: 10px;
+  font-style: italic;
+  line-height: 1.5;
+  color: rgba(27,31,29,.62);
+}
 .event-modal__outfit-inspo{
   margin: 2px 0 0;
   font-size: 13px;

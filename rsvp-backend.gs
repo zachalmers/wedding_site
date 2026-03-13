@@ -388,10 +388,22 @@ function buildConfirmationEmail_(guests, notes, editLink) {
   const htmlRows = summary.map((row) => {
     return `
       <tr>
-        <td style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:14px;color:#2a2927;">${escapeHtml_(row.fullName)}</td>
-        <td style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:14px;color:#2a2927;">${escapeHtml_(row.status)}</td>
-        <td style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:14px;color:#2a2927;">${escapeHtml_(row.attending ? (row.events || "—") : "—")}</td>
-        <td style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:14px;color:#2a2927;">${escapeHtml_(row.attending ? row.dietary : "—")}</td>
+        <td style="padding:0 0 12px 0;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;background:#fff9f2;border:1px solid #eadfce;border-radius:10px;">
+            <tr>
+              <td style="padding:14px 16px 8px 16px;font-family:Arial,sans-serif;font-size:18px;line-height:1.3;font-weight:700;color:#2a2927;">
+                ${escapeHtml_(row.fullName)}
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 16px 14px 16px;font-family:Arial,sans-serif;font-size:14px;line-height:1.6;color:#2a2927;">
+                <strong>Status:</strong> ${escapeHtml_(row.status)}<br/>
+                <strong>Events:</strong> ${escapeHtml_(row.attending ? (row.events || "—") : "—")}<br/>
+                <strong>Dietary:</strong> ${escapeHtml_(row.attending ? row.dietary : "—")}
+              </td>
+            </tr>
+          </table>
+        </td>
       </tr>
     `;
   }).join("");
@@ -408,54 +420,39 @@ function buildConfirmationEmail_(guests, notes, editLink) {
                     <strong>Please reply to this email with your flight and hotel details once you&rsquo;ve made arrangements.</strong> December is busy season in Oaxaca, so we strongly encourage booking your hotel soon.
                   </p>`;
 
-  const htmlBody = `
-    <div style="margin:0;padding:0;background:#b8572d;">
-      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#b8572d;padding:24px 0;">
-        <tr>
-          <td align="center">
-            <table role="presentation" width="640" cellspacing="0" cellpadding="0" style="max-width:640px;width:100%;background:#ffe8d6;border:1px solid #e8dfd4;border-radius:14px;overflow:hidden;font-family:Georgia,'Times New Roman',serif;color:#1f1f1f;">
-              <tr>
-                <td style="padding:36px 36px 12px 36px;text-align:center;">
-                  <img src="${escapeHtml_(monogramUrl)}" alt="Umangi and Zach monogram" width="96" style="display:block;margin:0 auto 14px auto;width:96px;height:auto;" />
-                  <div style="font-size:13px;letter-spacing:1.6px;text-transform:uppercase;color:#8a7b6a;">RSVP RECEIVED</div>
-                  <h1 style="margin:10px 0 6px 0;font-size:42px;line-height:1.1;font-weight:600;">Umangi &amp; Zach</h1>
-                  <p style="margin:0;font-family:Arial,sans-serif;font-size:15px;color:#5f5b56;">Oaxaca, Mexico • December 4–6, 2026</p>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:18px 36px 8px 36px;">
-                  <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
-                    ${htmlLead}
-                  </p>
-                  ${htmlTravelPrompt}
-                  <p style="margin:0 0 12px 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;"><strong>Your party details:</strong></p>
-                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;border:1px solid #eadfce;border-radius:10px;overflow:hidden;background:#fff9f2;">
-                    <tr>
-                      <th align="left" style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#7a7268;">Guest</th>
-                      <th align="left" style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#7a7268;">Status</th>
-                      <th align="left" style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#7a7268;">Events</th>
-                      <th align="left" style="padding:10px 12px;border-bottom:1px solid #eadfce;font-family:Arial,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#7a7268;">Dietary</th>
-                    </tr>
-                    ${htmlRows}
-                  </table>
-                  ${notesHtml}
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:24px 36px 36px 36px;text-align:center;">
-                  ${editLink ? `<a href="${escapeHtml_(editLink)}" style="display:inline-block;background:#b8572d;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:.4px;padding:12px 20px;border-radius:999px;">Edit RSVP</a>` : ""}
-                  ${websiteUrl ? `<p style="margin:14px 0 0 0;font-family:Arial,sans-serif;font-size:13px;color:#7a7268;">Wedding website: <a href="${escapeHtml_(websiteUrl)}" style="color:#b8572d;">${escapeHtml_(websiteUrl)}</a></p>` : ""}
-                  <p style="margin:16px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1f1f1f;">
-                    Love,<br/>Umangi & Zach
-                  </p>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </div>
+  const htmlContent = `
+    <tr>
+      <td style="padding:28px 24px 12px 24px;text-align:center;">
+        <img src="${escapeHtml_(monogramUrl)}" alt="Umangi and Zach monogram" width="96" style="display:block;margin:0 auto 14px auto;width:96px;height:auto;" />
+        <div style="font-size:13px;letter-spacing:1.6px;text-transform:uppercase;color:#8a7b6a;">RSVP RECEIVED</div>
+        <h1 style="margin:10px 0 6px 0;font-size:36px;line-height:1.1;font-weight:600;">Umangi &amp; Zach</h1>
+        <p style="margin:0;font-family:Arial,sans-serif;font-size:15px;color:#5f5b56;">Oaxaca, Mexico • December 4–6, 2026</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:16px 24px 8px 24px;">
+        <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
+          ${htmlLead}
+        </p>
+        ${htmlTravelPrompt}
+        <p style="margin:0 0 12px 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;"><strong>Your party details:</strong></p>
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+          ${htmlRows}
+        </table>
+        ${notesHtml}
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:24px 24px 28px 24px;text-align:center;">
+        ${editLink ? `<a href="${escapeHtml_(editLink)}" style="display:inline-block;background:#b8572d;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:.4px;padding:12px 20px;border-radius:999px;">Edit RSVP</a>` : ""}
+        ${websiteUrl ? `<p style="margin:14px 0 0 0;font-family:Arial,sans-serif;font-size:13px;color:#7a7268;">Wedding website: <a href="${escapeHtml_(websiteUrl)}" style="color:#b8572d;">${escapeHtml_(websiteUrl)}</a></p>` : ""}
+        <p style="margin:16px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1f1f1f;">
+          Love,<br/>Umangi & Zach
+        </p>
+      </td>
+    </tr>
   `;
+  const htmlBody = buildEmailShell_(htmlContent);
 
   return { textBody, htmlBody };
 }
@@ -775,55 +772,46 @@ function buildInviteEmail_(householdLabel) {
     "Questions? Reply to this email or contact info@umangiandzach.love",
   ].filter(Boolean).join("\n");
 
-  const htmlBody = `
-    <div style="margin:0;padding:0;background:#b8572d;">
-      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#b8572d;padding:24px 0;">
-        <tr>
-          <td align="center">
-            <table role="presentation" width="640" cellspacing="0" cellpadding="0" style="max-width:640px;width:100%;background:#ffe8d6;border:1px solid #e8dfd4;border-radius:14px;overflow:hidden;font-family:Georgia,'Times New Roman',serif;color:#1f1f1f;">
-              <tr>
-                <td style="padding:36px 36px 12px 36px;text-align:center;">
-                  <img src="${escapeHtml_(monogramUrl)}" alt="Umangi and Zach monogram" width="96" style="display:block;margin:0 auto 14px auto;width:96px;height:auto;" />
-                  <div style="font-size:13px;letter-spacing:1.6px;text-transform:uppercase;color:#8a7b6a;">WE'RE GETTING MARRIED!</div>
-                  <h1 style="margin:10px 0 6px 0;font-size:42px;line-height:1.1;font-weight:600;">Umangi &amp; Zach</h1>
-                  <p style="margin:0;font-family:Arial,sans-serif;font-size:15px;color:#5f5b56;">Oaxaca, Mexico • December 4–6, 2026</p>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:18px 36px 8px 36px;">
-                  <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">Dear ${safeLabel},</p>
-                  <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
-                    We’re so excited to celebrate with you in Oaxaca and would love for you to join us for our wedding weekend.
-                  </p>
-                  <p style="margin:0 0 18px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
-                    Our website has the full schedule, travel details, and hotel information.
-                  </p>
-                  <p style="margin:0 0 8px 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;">
-                    ${websiteUrl ? `<strong>Website:</strong> <a href="${escapeHtml_(websiteUrl)}" style="color:#b8572d;">${escapeHtml_(websiteUrl)}</a><br/>` : ""}
-                    ${password ? `<strong>Password:</strong> ${escapeHtml_(password)}` : ""}
-                  </p>
-                  <p style="margin:16px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;">
-                    Please RSVP by <strong>August 1, 2026</strong>.
-                  </p>
-                  <p style="margin:10px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1f1f1f;">
-                    Love,<br/>Umangi & Zach
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:24px 36px 36px 36px;text-align:center;">
-                  ${websiteUrl ? `<a href="${escapeHtml_(websiteUrl)}" style="display:inline-block;background:#b8572d;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:.4px;padding:12px 20px;border-radius:999px;">Open Wedding Website</a>` : ""}
-                  <p style="margin:18px 0 0 0;font-family:Arial,sans-serif;font-size:13px;color:#7a7268;">
-                    Questions? Reply to this email or reach us at info@umangiandzach.love
-                  </p>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </div>
+  const htmlContent = `
+    <tr>
+      <td style="padding:28px 24px 12px 24px;text-align:center;">
+        <img src="${escapeHtml_(monogramUrl)}" alt="Umangi and Zach monogram" width="96" style="display:block;margin:0 auto 14px auto;width:96px;height:auto;" />
+        <div style="font-size:13px;letter-spacing:1.6px;text-transform:uppercase;color:#8a7b6a;">WE'RE GETTING MARRIED!</div>
+        <h1 style="margin:10px 0 6px 0;font-size:36px;line-height:1.1;font-weight:600;">Umangi &amp; Zach</h1>
+        <p style="margin:0;font-family:Arial,sans-serif;font-size:15px;color:#5f5b56;">Oaxaca, Mexico • December 4–6, 2026</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:16px 24px 8px 24px;">
+        <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">Dear ${safeLabel},</p>
+        <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
+          We’re so excited to celebrate with you in Oaxaca and would love for you to join us for our wedding weekend.
+        </p>
+        <p style="margin:0 0 18px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
+          Our website has the full schedule, travel details, and hotel information.
+        </p>
+        <p style="margin:0 0 8px 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;">
+          ${websiteUrl ? `<strong>Website:</strong> <a href="${escapeHtml_(websiteUrl)}" style="color:#b8572d;">${escapeHtml_(websiteUrl)}</a><br/>` : ""}
+          ${password ? `<strong>Password:</strong> ${escapeHtml_(password)}` : ""}
+        </p>
+        <p style="margin:16px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;">
+          Please RSVP by <strong>August 1, 2026</strong>.
+        </p>
+        <p style="margin:10px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1f1f1f;">
+          Love,<br/>Umangi & Zach
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:24px 24px 28px 24px;text-align:center;">
+        ${websiteUrl ? `<a href="${escapeHtml_(websiteUrl)}" style="display:inline-block;background:#b8572d;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:.4px;padding:12px 20px;border-radius:999px;">Open Wedding Website</a>` : ""}
+        <p style="margin:18px 0 0 0;font-family:Arial,sans-serif;font-size:13px;color:#7a7268;">
+          Questions? Reply to this email or reach us at info@umangiandzach.love
+        </p>
+      </td>
+    </tr>
   `;
+  const htmlBody = buildEmailShell_(htmlContent);
 
   return { textBody, htmlBody };
 }
@@ -853,56 +841,47 @@ function buildReminderEmail_(householdLabel) {
     "Questions? Reply to this email or contact info@umangiandzach.love",
   ].filter(Boolean).join("\n");
 
-  const htmlBody = `
-    <div style="margin:0;padding:0;background:#b8572d;">
-      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#b8572d;padding:24px 0;">
-        <tr>
-          <td align="center">
-            <table role="presentation" width="640" cellspacing="0" cellpadding="0" style="max-width:640px;width:100%;background:#ffe8d6;border:1px solid #e8dfd4;border-radius:14px;overflow:hidden;font-family:Georgia,'Times New Roman',serif;color:#1f1f1f;">
-              <tr>
-                <td style="padding:36px 36px 12px 36px;text-align:center;">
-                  <img src="${escapeHtml_(monogramUrl)}" alt="Umangi and Zach monogram" width="96" style="display:block;margin:0 auto 14px auto;width:96px;height:auto;" />
-                  <div style="font-size:13px;letter-spacing:1.6px;text-transform:uppercase;color:#8a7b6a;">RSVP REMINDER</div>
-                  <h1 style="margin:10px 0 6px 0;font-size:42px;line-height:1.1;font-weight:600;">Umangi &amp; Zach</h1>
-                  <p style="margin:0;font-family:Arial,sans-serif;font-size:15px;color:#5f5b56;">Oaxaca, Mexico • December 4–6, 2026</p>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:18px 36px 8px 36px;">
-                  <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">Dear ${safeLabel},</p>
-                  <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
-                    Quick RSVP reminder from us — we would love to celebrate with you in Oaxaca.
-                  </p>
-                  <p style="margin:0 0 18px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
-                    If you have not submitted yet, please RSVP when you have a moment.
-                  </p>
-                  <p style="margin:0 0 8px 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;">
-                    ${rsvpUrl ? `<strong>RSVP:</strong> <a href="${escapeHtml_(rsvpUrl)}" style="color:#b8572d;">${escapeHtml_(rsvpUrl)}</a><br/>` : ""}
-                    ${websiteUrl ? `<strong>Website:</strong> <a href="${escapeHtml_(websiteUrl)}" style="color:#b8572d;">${escapeHtml_(websiteUrl)}</a><br/>` : ""}
-                    ${password ? `<strong>Password:</strong> ${escapeHtml_(password)}` : ""}
-                  </p>
-                  <p style="margin:16px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;">
-                    Please RSVP by <strong>August 1, 2026</strong>.
-                  </p>
-                  <p style="margin:10px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1f1f1f;">
-                    Love,<br/>Umangi & Zach
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding:24px 36px 36px 36px;text-align:center;">
-                  ${rsvpUrl ? `<a href="${escapeHtml_(rsvpUrl)}" style="display:inline-block;background:#b8572d;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:.4px;padding:12px 20px;border-radius:999px;">Complete RSVP</a>` : ""}
-                  <p style="margin:18px 0 0 0;font-family:Arial,sans-serif;font-size:13px;color:#7a7268;">
-                    Questions? Reply to this email or reach us at info@umangiandzach.love
-                  </p>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </div>
+  const htmlContent = `
+    <tr>
+      <td style="padding:28px 24px 12px 24px;text-align:center;">
+        <img src="${escapeHtml_(monogramUrl)}" alt="Umangi and Zach monogram" width="96" style="display:block;margin:0 auto 14px auto;width:96px;height:auto;" />
+        <div style="font-size:13px;letter-spacing:1.6px;text-transform:uppercase;color:#8a7b6a;">RSVP REMINDER</div>
+        <h1 style="margin:10px 0 6px 0;font-size:36px;line-height:1.1;font-weight:600;">Umangi &amp; Zach</h1>
+        <p style="margin:0;font-family:Arial,sans-serif;font-size:15px;color:#5f5b56;">Oaxaca, Mexico • December 4–6, 2026</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:16px 24px 8px 24px;">
+        <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">Dear ${safeLabel},</p>
+        <p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
+          Quick RSVP reminder from us — we would love to celebrate with you in Oaxaca.
+        </p>
+        <p style="margin:0 0 18px 0;font-family:Arial,sans-serif;font-size:16px;line-height:1.6;">
+          If you have not submitted yet, please RSVP when you have a moment.
+        </p>
+        <p style="margin:0 0 8px 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;">
+          ${rsvpUrl ? `<strong>RSVP:</strong> <a href="${escapeHtml_(rsvpUrl)}" style="color:#b8572d;">${escapeHtml_(rsvpUrl)}</a><br/>` : ""}
+          ${websiteUrl ? `<strong>Website:</strong> <a href="${escapeHtml_(websiteUrl)}" style="color:#b8572d;">${escapeHtml_(websiteUrl)}</a><br/>` : ""}
+          ${password ? `<strong>Password:</strong> ${escapeHtml_(password)}` : ""}
+        </p>
+        <p style="margin:16px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;">
+          Please RSVP by <strong>August 1, 2026</strong>.
+        </p>
+        <p style="margin:10px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1f1f1f;">
+          Love,<br/>Umangi & Zach
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:24px 24px 28px 24px;text-align:center;">
+        ${rsvpUrl ? `<a href="${escapeHtml_(rsvpUrl)}" style="display:inline-block;background:#b8572d;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:.4px;padding:12px 20px;border-radius:999px;">Complete RSVP</a>` : ""}
+        <p style="margin:18px 0 0 0;font-family:Arial,sans-serif;font-size:13px;color:#7a7268;">
+          Questions? Reply to this email or reach us at info@umangiandzach.love
+        </p>
+      </td>
+    </tr>
   `;
+  const htmlBody = buildEmailShell_(htmlContent);
 
   return { textBody, htmlBody };
 }
@@ -956,12 +935,40 @@ function latestDate_(a, b) {
 }
 
 function formatEvents_(events) {
+  const normalized = Array.isArray(events)
+    ? events.map((event) => String(event || "").trim().toLowerCase()).filter(Boolean)
+    : [];
+  if (normalized.length === 3 && normalized.includes("haldi") && normalized.includes("sangeet") && normalized.includes("wedding")) {
+    return "All";
+  }
   const labels = {
     haldi: "Haldi",
     sangeet: "Sangeet",
     wedding: "Ceremony + Reception",
   };
-  return events.map((event) => labels[event] || event).join(", ");
+  return normalized.map((event) => labels[event] || event).join(", ");
+}
+
+function buildEmailShell_(innerHtml) {
+  return `
+    <div style="margin:0;padding:0;background:#b8572d;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;margin:0;background:#b8572d;">
+        <tr>
+          <td align="center" style="padding:12px;">
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;max-width:640px;background:#b8572d;">
+              <tr>
+                <td style="padding:12px;background:#b8572d;">
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;background:#ffe8d6;border:1px solid #e8dfd4;border-radius:14px;font-family:Georgia,'Times New Roman',serif;color:#1f1f1f;">
+                    ${innerHtml}
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  `;
 }
 
 function escapeHtml_(text) {
