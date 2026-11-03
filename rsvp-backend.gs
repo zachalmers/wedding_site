@@ -32,7 +32,7 @@ const SHEETS = {
   },
   guests: {
     name: "Guests",
-    headers: ["householdId", "firstName", "lastName", "email", "whatsappPhone", "isPlusOne", "attending", "events", "dietary", "updatedAt"],
+    headers: ["householdId", "firstName", "lastName", "email", "whatsappPhone", "isPlusOne", "attending", "events", "dietary", "allergies", "mealChoice", "updatedAt"],
   },
   submissions: {
     name: "Submissions",
@@ -46,6 +46,9 @@ function doPost(e) {
     const action = (payload.action || "").toLowerCase();
     if (action === "lookup") {
       return json_(lookup_(payload));
+    }
+    if (action === "submitmeals") {
+      return json_(submitMeals_(payload));
     }
     if (action === "submit") {
       return json_(submit_(payload));
@@ -79,11 +82,19 @@ function lookup_(payload) {
     householdLabel: householdMatch.householdLabel,
     notes: householdMatch.notes || "",
     maxPlusOnes: householdMatch.maxPlusOnes,
-    guests,
+    mealSelectionVersion: 1,
+    guests: guests.map((guest) => ({ ...guest, mealOptions: mealOptions_(guest.dietary) })),
   };
 }
 
 function submit_(payload) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try { return submitRsvp_(payload); }
+  finally { lock.releaseLock(); }
+}
+
+function submitRsvp_(payload) {
   const householdId = String(payload.householdId || "").trim();
   const email = normalizeEmail_(payload.email);
   const token = String(payload.token || "").trim();
@@ -123,8 +134,7 @@ function submit_(payload) {
   });
 
   const guestsSheet = getOrCreateSheet_(SHEETS.guests);
-  removeGuestRows_(guestsSheet, householdId);
-  appendGuests_(guestsSheet, householdId, guests, householdMatch.email || email);
+  saveGuests_(guestsSheet, householdId, guests);
 
   const notes = String(payload.notes || "").trim();
   const editToken = householdMatch.editToken || Utilities.getUuid();
@@ -240,6 +250,9 @@ function getGuestsByHousehold_(sheet, householdId) {
   return data
     .filter((row) => String(row[map.householdId] || "").trim() === householdId)
     .map((row) => ({
+      guestKey: guestKey_({ firstName: row[map.firstName], lastName: row[map.lastName], isPlusOne: String(row[map.isPlusOne]).toLowerCase() === "true" }),
+      allergies: map.allergies != null ? String(row[map.allergies] || "").trim() : "",
+      mealChoice: map.mealChoice != null ? String(row[map.mealChoice] || "").trim() : "",
       firstName: String(row[map.firstName] || "").trim(),
       lastName: String(row[map.lastName] || "").trim(),
       email: map.email != null ? String(row[map.email] || "").trim() : "",
@@ -254,40 +267,122 @@ function getGuestsByHousehold_(sheet, householdId) {
     }));
 }
 
-function removeGuestRows_(sheet, householdId) {
+// Only these columns are changed by RSVP updates; organizer columns stay in place.
+function saveGuests_(sheet, householdId, guests) {
+  const existing = getGuestsByHousehold_(sheet, householdId);
   const data = sheet.getDataRange().getValues();
-  const headers = data.shift();
-  const map = toMap_(headers);
-  for (let i = data.length - 1; i >= 0; i--) {
-    if (String(data[i][map.householdId] || "").trim() === householdId) {
-      sheet.deleteRow(i + 2);
+  const map = toMap_(data[0]);
+  const available = data.slice(1).map((row, index) => ({ row, rowIndex: index + 2 }))
+    .filter((entry) => String(entry.row[map.householdId] || "").trim() === householdId);
+  const used = [];
+  const updates = guests.map((guest, index) => {
+    const key = guest.guestKey || guestKey_(guest);
+    let entry = available.find((item) => !used.includes(item) && guestKey_({
+      firstName: item.row[map.firstName], lastName: item.row[map.lastName],
+      isPlusOne: String(item.row[map.isPlusOne]).toLowerCase() === "true",
+    }) === key);
+    // Older cached RSVP pages do not send original identities when editing names.
+    if (!entry && !guest.guestKey && available[index] && !used.includes(available[index])) {
+      entry = available[index];
     }
+    if (!entry && guest.guestKey) throw new Error("Your guest list changed. Please search again before saving.");
+    if (entry) used.push(entry);
+    const previous = entry && existing.find((item) => item.guestKey === guestKey_({
+      firstName: entry.row[map.firstName], lastName: entry.row[map.lastName],
+      isPlusOne: String(entry.row[map.isPlusOne]).toLowerCase() === "true",
+    }));
+    if (!Object.prototype.hasOwnProperty.call(guest, "allergies")) guest.allergies = previous ? previous.allergies : "";
+    if (!Object.prototype.hasOwnProperty.call(guest, "mealChoice")) guest.mealChoice = previous ? previous.mealChoice : "";
+    if (guest.mealChoice && !mealOptions_(guest.dietary).some((meal) => meal.id === guest.mealChoice)) guest.mealChoice = "";
+    return { entry, guest };
+  });
+  const removed = available.filter((entry) => !used.includes(entry));
+  if (removed.some((entry) => String(entry.row[map.isPlusOne]).toLowerCase() !== "true")) {
+    throw new Error("An invited guest is missing. Please search again before saving.");
   }
+  updates.forEach(({ entry, guest }) => {
+    const values = {
+      householdId, firstName: String(guest.firstName || "").trim(), lastName: String(guest.lastName || "").trim(),
+      email: String(guest.email || "").trim(), whatsappPhone: String(guest.whatsappPhone || "").trim(),
+      isPlusOne: guest.isPlusOne ? "TRUE" : "FALSE", attending: String(guest.attending || "").trim(),
+      events: Array.isArray(guest.events) ? guest.events.join(", ") : "", dietary: String(guest.dietary || "").trim(),
+      allergies: String(guest.allergies || "").trim(), mealChoice: String(guest.mealChoice || "").trim(), updatedAt: new Date(),
+    };
+    const rowIndex = entry ? entry.rowIndex : sheet.getLastRow() + 1;
+    Object.keys(values).forEach((header) => {
+      if (map[header] != null) sheet.getRange(rowIndex, map[header] + 1).setValue(values[header]);
+    });
+  });
+  removed.forEach((entry) => sheet.getRange(entry.rowIndex, 1, 1, data[0].length).clearContent());
 }
 
-function appendGuests_(sheet, householdId, guests, householdEmail) {
-  const now = new Date();
-  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map((header) => String(header || "").trim());
-  const rows = guests.map((guest) => {
-    const row = headers.map(() => "");
-    const assign = (header, value) => {
-      const index = headers.indexOf(header);
-      if (index !== -1) row[index] = value;
-    };
-    assign("householdId", householdId);
-    assign("firstName", String(guest.firstName || "").trim());
-    assign("lastName", String(guest.lastName || "").trim());
-    assign("email", String(guest.email || "").trim());
-    assign("whatsappPhone", String(guest.whatsappPhone || "").trim());
-    assign("isPlusOne", guest.isPlusOne ? "TRUE" : "FALSE");
-    assign("attending", String(guest.attending || "").trim());
-    assign("events", Array.isArray(guest.events) ? guest.events.join(", ") : "");
-    assign("dietary", String(guest.dietary || "").trim());
-    assign("updatedAt", now);
-    return row;
-  });
-  if (!rows.length) return;
-  sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, rows[0].length).setValues(rows);
+function guestKey_(guest) {
+  return JSON.stringify([String(guest.firstName || "").trim().toLowerCase(), String(guest.lastName || "").trim().toLowerCase(), !!guest.isPlusOne]);
+}
+
+function mealOptions_(dietary) {
+  const meals = [
+    { id: "fish", label: "Fish of the day with an hoja santa herb crust, pine nut sauce, and creamy corn fungus rice" },
+    { id: "pork", label: "Almond mole sauce with confit suckling pig" },
+    { id: "cannelloni", label: "Huitlacoche cannelloni, cilantro with flower, radish, creamy avocado and pumpkin flower sauce" },
+    { id: "chilacayote", label: "White mole with baked chilacayote" },
+  ];
+  const category = String(dietary || "").trim().toLowerCase();
+  if (category === "baby") return [{ id: "baby", label: "Baby meal" }];
+  if (category === "vegan") return [{ id: "vegan", label: "Vegan Meal" }];
+  if (["veg", "vegetarian"].includes(category)) return meals.slice(2);
+  if (["omnivore", "non-veg", "nonveg", "non veg"].includes(category)) return meals;
+  return [];
+}
+
+function needsMeal_(guest) {
+  return guest.attending === "yes" && guest.events.includes("wedding");
+}
+
+function submitMeals_(payload) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const householdSheet = getOrCreateSheet_(SHEETS.households);
+    const token = String(payload.token || "").trim();
+    const email = normalizeEmail_(payload.email);
+    const household = token ? findHouseholdByToken_(householdSheet, token) : findHouseholdByEmail_(householdSheet, email);
+    if (!household || household.householdId !== String(payload.householdId || "").trim()) {
+      throw new Error("Invitation not found. Please search again.");
+    }
+    const sheet = getOrCreateSheet_(SHEETS.guests);
+    const current = getGuestsByHousehold_(sheet, household.householdId).filter(needsMeal_);
+    const guests = Array.isArray(payload.guests) ? payload.guests : [];
+    if (!current.length || guests.length !== current.length) throw new Error("Your guest list changed. Please search again.");
+    const keys = guests.map((guest) => guest.guestKey);
+    if (new Set(keys).size !== keys.length || new Set(current.map((guest) => guest.guestKey)).size !== current.length) {
+      throw new Error("Unable to match each guest. Please contact us for help.");
+    }
+    // Validate the entire party before writing anything. Eligibility comes from the sheet.
+    const updates = current.map((guest) => {
+      const answer = guests.find((item) => item.guestKey === guest.guestKey);
+      if (!answer || !mealOptions_(guest.dietary).some((meal) => meal.id === answer.mealChoice)) {
+        throw new Error(`Please choose an available meal for ${guest.firstName} ${guest.lastName}.`);
+      }
+      if (String(answer.previousAllergies || "") !== guest.allergies || String(answer.previousMealChoice || "") !== guest.mealChoice) {
+        throw new Error("These details changed since you opened the page. Please search again to see the latest answers.");
+      }
+      return { guest, answer };
+    });
+    const data = sheet.getDataRange().getValues();
+    const map = toMap_(data[0]);
+    updates.forEach(({ guest, answer }) => {
+      const index = data.findIndex((row, index) => index > 0 && String(row[map.householdId] || "").trim() === household.householdId && guestKey_({
+        firstName: row[map.firstName], lastName: row[map.lastName], isPlusOne: String(row[map.isPlusOne]).toLowerCase() === "true",
+      }) === guest.guestKey);
+      sheet.getRange(index + 1, map.mealChoice + 1).setValue(answer.mealChoice);
+      sheet.getRange(index + 1, map.allergies + 1).setValue(String(answer.allergies || "").trim());
+      sheet.getRange(index + 1, map.updatedAt + 1).setValue(new Date());
+    });
+    return { ok: true, message: "Thank you! Your party’s meal choices and allergy notes have been saved." };
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 function updateHouseholdMeta_(sheet, rowIndex, editToken, notes) {
@@ -351,13 +446,14 @@ function buildConfirmationEmail_(guests, notes, editLink) {
       : "";
     const dietaryRaw = String(guest.dietary || "").trim();
     const dietary = attending ? (formatDietary_(dietaryRaw) || "None") : "";
-    return { fullName, status, events, dietary, attending };
+    return { fullName, status, events, dietary, attending, allergies: String(guest.allergies || "").trim(), meal: (mealOptions_(guest.dietary).find((meal) => meal.id === guest.mealChoice) || {}).label || "" };
   });
 
   const textRows = summary.map((row) => {
     const parts = [`- ${row.fullName}: ${row.status}`];
     if (row.attending && row.events) parts.push(`Events: ${row.events}`);
-    if (row.attending) parts.push(`Dietary: ${row.dietary}`);
+    if (row.attending) parts.push(`Dietary: ${row.dietary}`, `Allergies / restrictions: ${row.allergies || "None recorded"}`);
+    if (row.attending && row.meal) parts.push(`Meal: ${row.meal}`);
     return parts.join(" | ");
   });
   const allDeclined = summary.length > 0 && summary.every((row) => !row.attending);
@@ -399,7 +495,9 @@ function buildConfirmationEmail_(guests, notes, editLink) {
               <td style="padding:0 16px 14px 16px;font-family:Arial,sans-serif;font-size:14px;line-height:1.6;color:#2a2927;">
                 <strong>Status:</strong> ${escapeHtml_(row.status)}<br/>
                 <strong>Events:</strong> ${escapeHtml_(row.attending ? (row.events || "—") : "—")}<br/>
-                <strong>Dietary:</strong> ${escapeHtml_(row.attending ? row.dietary : "—")}
+                <strong>Dietary:</strong> ${escapeHtml_(row.attending ? row.dietary : "—")}<br/>
+                <strong>Allergies / restrictions:</strong> ${escapeHtml_(row.attending ? (row.allergies || "None recorded") : "—")}
+                ${row.attending && row.meal ? `<br/><strong>Meal:</strong> ${escapeHtml_(row.meal)}` : ""}
               </td>
             </tr>
           </table>
@@ -463,6 +561,7 @@ function formatDietary_(value) {
     veg: "Veg",
     vegetarian: "Vegetarian",
     vegan: "Vegan",
+    baby: "Baby",
     omnivore: "Omnivore",
     "non veg": "Non-Veg",
     "non-veg": "Non-Veg",

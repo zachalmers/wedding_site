@@ -1940,3 +1940,13 @@ body::after{
   40%{ background-position: 50% 56%; }
   100%{ background-position: 50% 50%; }
 }
+
+/* Reception meal selection */
+.meal-guest { margin: 24px 0; padding: 20px 0; border: 0; border-top: 1px solid rgba(42,26,18,.14); min-width: 0; }
+.meal-guest legend { padding: 0 8px 0 0; font-size: 24px; font-family: "Cormorant Garamond", serif; }
+.meal-option { display: flex; align-items: flex-start; gap: 12px; margin: 10px 0; padding: 14px; border: 1px solid rgba(42,26,18,.2); border-radius: 8px; cursor: pointer; line-height: 1.5; }
+.meal-option:has(input:checked) { border-color: var(--accent, #865c3d); background: rgba(134,92,61,.08); }
+.meal-option input[type="radio"] { width: 18px; height: 18px; flex: 0 0 18px; margin: 3px 0 0; padding: 0; }
+.meal-guest > label { display: block; margin-top: 18px; text-transform: none; letter-spacing: normal; font-size: 16px; }
+.meal-guest > label.meal-option { display: flex; margin-top: 10px; }
+.meal-guest textarea { width: 100%; margin-top: 8px; }

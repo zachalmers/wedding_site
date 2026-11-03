@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f1210" />
+  <title>Meal choices — Umangi &amp; Zach</title>
+  <meta name="description" content="Reception meal choices for Umangi & Zach — Oaxaca, Mexico." />
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">💍</text></svg>' />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/styles.css?v=20261102" />
+</head>
+<body>
+  <div class="gate" id="gate" aria-hidden="false">
+    <div class="gate__panel" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+      <div class="gate__logo" aria-hidden="true">
+        <img src="assets/monogram.png" alt="" />
+      </div>
+      <p class="gate__eyebrow">Welcome</p>
+      <h1 id="gate-title">Umangi &amp; Zach</h1>
+      <p class="gate__lead">Enter the password to choose your meals.</p>
+      <form id="gate-form" class="gate__form" autocomplete="off">
+        <label class="gate__label" for="gate-pass">Password</label>
+        <input id="gate-pass" type="password" placeholder="Password" required />
+        <button class="btn btn--ghost gate__cta" type="submit">Enter</button>
+        <p id="gate-error" class="gate__error" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="site" class="rsvp-page">
+    <main class="rsvp-shell">
+      <header class="rsvp-header">
+        <div class="rsvp-logo" aria-hidden="true">
+          <img src="assets/monogram.png" alt="" />
+        </div>
+        <p class="rsvp-kicker">Reception meal choices</p>
+        <h1>Umangi &amp; Zach</h1>
+        <p class="rsvp-meta">Dec 4–6, 2026 | Oaxaca, Mexico</p>
+        <p class="rsvp-lead">Please choose a reception meal for each guest in your party and review your allergy notes.</p>
+      </header>
+
+      <section class="rsvp-card">
+        <h2>Find your invitation</h2>
+        <form id="meal-lookup" class="rsvp-lookup">
+          <div class="field"><label for="meal-email">Invitation email</label><input id="meal-email" type="email" autocomplete="email" placeholder="you@example.com" required /></div>
+          <button class="btn btn--ghost" type="submit">Find my party</button>
+          <p id="meal-lookup-status" class="rsvp-status" aria-live="polite"></p>
+        </form>
+      </section>
+      <section class="rsvp-card is-hidden" id="meal-card">
+        <h2 id="meal-household">Your party</h2>
+        <p>Choose one meal per guest. Please review the allergy and restriction notes we already have for you.</p>
+        <form id="meal-form">
+          <div id="meal-guests"></div>
+          <button id="meal-submit" class="btn btn--primary" type="submit">Save meal choices</button>
+          <p id="meal-status" class="rsvp-status" aria-live="polite"></p>
+        </form>
+        <p class="rsvp-subtle"><a id="meal-rsvp-link" href="rsvp.html">Update your RSVP or dietary preference</a> · <a href="index.html">Wedding website</a></p>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/js/main.js?v=20260219"></script>
+  <script src="assets/js/meals.js?v=20261102"></script>
+</body>
+</html>

@@ -80,9 +80,10 @@
     setStatus(submitStatus, message, message ? "error" : "");
   };
 
-  const createGuestRow = ({ firstName = "", lastName = "", email = "", whatsappPhone = "", attending = "", dietary = "", events = [], isPlusOne = false, isPrimaryGuest = false, householdEmail = "" } = {}) => {
+  const createGuestRow = ({ firstName = "", lastName = "", email = "", whatsappPhone = "", attending = "", dietary = "", allergies = "", guestKey = "", events = [], isPlusOne = false, isPrimaryGuest = false, householdEmail = "" } = {}) => {
     const row = document.createElement("div");
     row.className = "guest-row";
+    row.dataset.guestKey = guestKey;
     row.dataset.plusOne = isPlusOne ? "1" : "0";
     const rowId = `guest-${++guestRowCounter}`;
     const firstNameId = `${rowId}-first-name`;
@@ -103,7 +104,9 @@
     }).join("");
     const dietaryValue = dietary || "";
     const dietaryLower = dietaryValue.toLowerCase();
-    const dietaryPreset = dietaryLower === "vegan"
+    const dietaryPreset = dietaryLower === "baby"
+      ? "baby"
+      : dietaryLower === "vegan"
       ? "vegan"
       : dietaryLower === "veg" || dietaryLower === "vegetarian"
         ? "vegetarian"
@@ -142,6 +145,7 @@
         <select id="${dietarySelectId}" name="dietarySelect" ${attending === "yes" ? "required" : ""}>
           <option value="" ${dietaryPreset ? "" : "selected"} disabled>Select one</option>
           <option value="vegetarian" ${dietaryPreset === "vegetarian" ? "selected" : ""}>Vegetarian</option>
+          <option value="baby" ${dietaryPreset === "baby" ? "selected" : ""}>Baby</option>
           <option value="vegan" ${dietaryPreset === "vegan" ? "selected" : ""}>Vegan</option>
           <option value="omnivore" ${dietaryPreset === "omnivore" ? "selected" : ""}>Omnivore</option>
           <option value="other" ${dietaryPreset === "other" ? "selected" : ""}>Other (provide details)</option>
@@ -155,6 +159,10 @@
       <div class="field">
         <label for="${whatsappId}">WhatsApp (optional)</label>
         <input id="${whatsappId}" type="tel" name="whatsappPhone" value="${safeWhatsapp}" placeholder="+1 415 555 0123" autocomplete="tel" inputmode="tel" />
+      </div>
+      <div class="field field--full">
+        <label for="${rowId}-allergies">Food allergies or other restrictions</label>
+        <textarea id="${rowId}-allergies" name="allergies" rows="2" placeholder="None, or details we should know">${escapeAttr(allergies)}</textarea>
       </div>
       <div class="field field--full field--events" aria-hidden="true">
         <label class="label--sentence">Please <strong>uncheck</strong> if you are unable to attend an event.</label>
@@ -317,6 +325,8 @@
       }
       const events = Array.from(row.querySelectorAll("input[name='events']:checked")).map((el) => el.value);
       return {
+        guestKey: row.dataset.guestKey || "",
+        allergies: get("allergies"),
         firstName: get("firstName"),
         lastName: get("lastName"),
         email: get("guestEmail"),

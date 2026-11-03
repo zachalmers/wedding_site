@@ -17,7 +17,7 @@ householdId | email | householdLabel | maxPlusOnes | notes | editToken | lastSub
 
 **Guests**
 ```
-householdId | firstName | lastName | email | isPlusOne | attending | events | dietary | updatedAt
+householdId | firstName | lastName | email | whatsappPhone | isPlusOne | attending | events | dietary | allergies | mealChoice | updatedAt
 ```
 
 **Submissions**
@@ -89,3 +89,16 @@ If the alias is not configured, Apps Script will still send but may use the defa
 
 ---
 If you need help importing guest lists or want a bulk CSV template, tell me and I’ll generate one.
+
+## Reception meal choices
+
+`meals.html` uses the same invitation email lookup and existing RSVP edit tokens. Share this page with attending guests; no new RSVP is required. It only updates `allergies`, `mealChoice`, and `updatedAt` for reception attendees.
+
+- `dietary`: `omnivore` (four dishes), `vegetarian` (cannelloni or chilacayote), `vegan` (Vegan Meal), or `baby` (Baby meal).
+- `allergies`: free-text allergy and other restriction notes, separate from dietary preference. Existing notes are prefilled for review.
+- `mealChoice`: stable code `fish`, `pork`, `cannelloni`, `chilacayote`, `vegan`, or `baby`. Use these codes for catering totals.
+- Guests must be marked `attending=yes` with `wedding` in `events` to select a reception meal.
+
+The server supplies and validates eligible choices from the current sheet. Meal saves do not send email or change RSVP status, events, contacts, or household notes. Stale meal submissions must reload before overwriting newer meal/allergy details. Ordinary RSVP saves preserve these fields and organizer columns in place; changing dietary category clears an incompatible saved meal.
+
+Deploy the updated Apps Script first: **Deploy → Manage deployments → Edit → New version → Deploy**, preserving the existing `/exec` URL. Then publish the site files. The meal page refuses to submit against an older backend. Test with `node --test tests/rsvp-backend.test.cjs` before release.
