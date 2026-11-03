@@ -16,7 +16,7 @@ class Sheet {
     };
   }
 }
-function setup() {
+function setup({ failSend = false, failAlias = false } = {}) {
   const guests = new Sheet([
     ['householdId','firstName','lastName','email','whatsappPhone','isPlusOne','attending','events','dietary','allergies','mealChoice','updatedAt','table'],
     ['H1','Alex','One','alex@example.com','123','FALSE','yes','haldi, wedding','omnivore','no pork','','old',8],
@@ -27,11 +27,19 @@ function setup() {
   const households = new Sheet([['householdId','email','householdLabel','maxPlusOnes','notes','editToken','lastSubmitted','sendInvite','inviteSentAt','inviteStatus','inviteError','lastReminderSentAt','reminderStatus','reminderError'],['H1','alex@example.com','Party',1,'keep notes','token','old','','','','','','','']]);
   const submissions = new Sheet([['submittedAt','householdId','email','notes','payload']]);
   const sheets = { Guests: guests, Households: households, Submissions: submissions };
-  const context = vm.createContext({ console, SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheetByName: (name) => sheets[name] }) }, LockService: { getScriptLock: () => ({ waitLock() {}, releaseLock() {} }) } });
+  const sent = [];
+  const attempts = [];
+  const mailErrors = [];
+  const GmailApp = { sendEmail: (...args) => {
+    attempts.push(args);
+    if (failSend || (failAlias && args[3].from)) throw new Error('Mail unavailable');
+    sent.push(args);
+  } };
+  const context = vm.createContext({ console: { error: (...args) => mailErrors.push(args) }, GmailApp, SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheetByName: (name) => sheets[name] }) }, LockService: { getScriptLock: () => ({ waitLock() {}, releaseLock() {} }) } });
   vm.runInContext(fs.readFileSync(require('node:path').join(__dirname, '../rsvp-backend.gs'), 'utf8'), context);
   const current = () => JSON.parse(JSON.stringify(context.getGuestsByHousehold_(guests, 'H1')));
   const payload = () => ({ email: 'alex@example.com', householdId: 'H1', guests: current().map((guest) => ({ guestKey: guest.guestKey, mealChoice: guest.dietary === 'omnivore' ? 'fish' : guest.dietary === 'baby' ? 'baby' : 'cannelloni', allergies: guest.allergies, previousAllergies: guest.allergies, previousMealChoice: guest.mealChoice })) });
-  return { context, guests, households, submissions, current, payload };
+  return { context, guests, households, submissions, current, payload, sent, attempts, mailErrors };
 }
 test('menu visibility: four omnivore, two vegetarian, one vegan and baby', () => {
   const { context } = setup();
@@ -110,4 +118,56 @@ test('missing invited guests fail before any row writes', () => {
 test('confirmation escapes allergy notes and includes meal names', () => {
   const {context,current}=setup(); const input=current(); input[0].allergies='<script>alert(1)</script>'; input[0].mealChoice='fish';
   const result=context.buildConfirmationEmail_(input,'',''); assert.ok(result.textBody.includes('pine nut sauce')); assert.ok(result.htmlBody.includes('&lt;script&gt;')); assert.ok(!result.htmlBody.includes('<script>'));
+});
+
+test('successful meal save emails the stored household address after persisting selections', () => {
+  const {context,guests,payload,sent}=setup(); const input=payload();
+  input.token='token'; input.email='untrusted@example.com'; input.guests[0].allergies='Peanuts';
+  const result=context.submitMeals_(input);
+  assert.equal(result.emailSent,true); assert.equal(sent.length,1);
+  assert.equal(sent[0][0],'alex@example.com');
+  assert.equal(sent[0][1],'Meal choices confirmed — Umangi & Zach');
+  assert.ok(sent[0][2].includes('Peanuts')); assert.ok(sent[0][2].includes('pine nut sauce'));
+  assert.ok(sent[0][2].includes('Baby meal')); assert.ok(sent[0][2].includes('meals.html?token=token'));
+  assert.ok(!sent[0][2].includes('flight and hotel'));
+  assert.equal(sent[0][3].replyTo,'info@umangiandzach.love');
+  assert.equal(guests.data[1][10],'fish'); assert.equal(guests.data[1][9],'Peanuts');
+});
+test('invalid or stale meal submissions send no confirmation email', () => {
+  for (const mutate of [p=>p.guests[1].mealChoice='pork',p=>p.guests[0].previousAllergies='stale']) {
+    const {context,payload,sent,attempts}=setup(); const input=payload(); mutate(input);
+    assert.throws(()=>context.submitMeals_(input)); assert.equal(sent.length,0); assert.equal(attempts.length,0);
+  }
+});
+test('mail failure preserves saved meals and returns a truthful success response', () => {
+  const {context,guests,payload,sent,mailErrors}=setup({failSend:true});
+  const result=context.submitMeals_(payload());
+  assert.equal(result.ok,true); assert.equal(result.emailSent,false); assert.equal(sent.length,0);
+  assert.equal(guests.data[1][10],'fish'); assert.ok(result.message.includes('saved, but'));
+  assert.equal(mailErrors.length,1);
+});
+test('meal email retains the existing sender-alias fallback', () => {
+  const {context,payload,sent,attempts}=setup({failAlias:true});
+  assert.equal(context.submitMeals_(payload()).emailSent,true);
+  assert.equal(attempts.length,2); assert.equal(sent.length,1); assert.equal(sent[0][3].from,undefined);
+  assert.equal(sent[0][3].replyTo,'info@umangiandzach.love');
+});
+test('meal email supports households without an edit token', () => {
+  const {context,households,payload,sent}=setup(); households.data[1][5]='';
+  assert.equal(context.submitMeals_(payload()).emailSent,true);
+  assert.ok(sent[0][2].includes('meals.html?email=alex%40example.com'));
+});
+test('original RSVP email keeps its subject, wording and RSVP edit link', () => {
+  const {context,current,sent}=setup();
+  context.sendConfirmationEmail_('alex@example.com','token',current(),'hello');
+  assert.equal(sent[0][1],'RSVP received — Umangi & Zach');
+  assert.ok(sent[0][2].includes('Edit your RSVP: https://umangiandzach.love/rsvp.html?token=token'));
+  assert.ok(sent[0][3].htmlBody.includes('RSVP RECEIVED'));
+  assert.ok(!sent[0][3].htmlBody.includes('MEAL CHOICES CONFIRMED'));
+});
+test('meal confirmation escapes names and allergy details in HTML', () => {
+  const {context,current}=setup(); const guests=current(); guests[0].firstName='<b>Alex</b>'; guests[0].allergies='<script>bad</script>';
+  const email=context.buildConfirmationEmail_(guests,'','https://example.com',true);
+  assert.ok(email.htmlBody.includes('&lt;b&gt;Alex&lt;/b&gt;')); assert.ok(email.htmlBody.includes('&lt;script&gt;bad&lt;/script&gt;'));
+  assert.ok(email.htmlBody.includes('Edit meal choices')); assert.ok(!email.htmlBody.includes('Edit RSVP'));
 });

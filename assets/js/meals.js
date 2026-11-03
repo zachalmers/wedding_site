@@ -108,7 +108,7 @@
         householdId: invitation.household.householdId, guests: answers });
       if (invitation !== currentInvitation) return;
       guests.forEach((guest, index) => Object.assign(guest, { allergies: answers[index].allergies, mealChoice: answers[index].mealChoice }));
-      setStatus(status, data.message, "success");
+      setStatus(status, data.message, data.emailSent === false ? "info" : "success");
     } catch (error) { setStatus(status, error.message, "error"); }
     finally {
       submit.disabled = false;

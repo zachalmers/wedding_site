@@ -1,5 +1,6 @@
 const SETTINGS = {
   RSVP_PUBLIC_URL: "https://umangiandzach.love/rsvp.html",
+  MEALS_PUBLIC_URL: "https://umangiandzach.love/meals.html",
   WEDDING_SITE_URL: "https://umangiandzach.love/",
   SITE_PASSWORD: "curryandmole",
   FROM_EMAIL: "info@umangiandzach.love",
@@ -379,7 +380,22 @@ function submitMeals_(payload) {
       sheet.getRange(index + 1, map.allergies + 1).setValue(String(answer.allergies || "").trim());
       sheet.getRange(index + 1, map.updatedAt + 1).setValue(new Date());
     });
-    return { ok: true, message: "Thank you! Your party’s meal choices and allergy notes have been saved." };
+    const savedGuests = updates.map(({ guest, answer }) => ({
+      ...guest, mealChoice: answer.mealChoice, allergies: String(answer.allergies || "").trim(),
+    }));
+    let emailSent = false;
+    try {
+      emailSent = sendMealConfirmationEmail_(household, savedGuests);
+    } catch (err) {
+      // A mail failure must not turn an already-saved selection into a failed submission.
+      console.error("Meal confirmation email failed for household " + household.householdId + ": " + String(err));
+    }
+    return {
+      ok: true, emailSent,
+      message: emailSent
+        ? "Thank you! Your party’s meal choices and allergy notes have been saved. A confirmation email has been sent to your invitation email address."
+        : "Your party’s meal choices and allergy notes have been saved, but we couldn’t send the confirmation email. You can return to this page to review your selections.",
+    };
   } finally {
     lock.releaseLock();
   }
@@ -411,6 +427,21 @@ function sendConfirmationEmail_(recipient, token, guests, notes) {
     : "";
   const confirmation = buildConfirmationEmail_(guests, notes, editLink);
 
+  sendWeddingConfirmation_(recipient, "RSVP received — Umangi & Zach", confirmation);
+}
+
+function sendMealConfirmationEmail_(household, guests) {
+  const recipient = normalizeEmail_(household.email);
+  if (!recipient) return false;
+  const editLink = SETTINGS.MEALS_PUBLIC_URL + (household.editToken
+    ? `?token=${encodeURIComponent(household.editToken)}`
+    : `?email=${encodeURIComponent(recipient)}`);
+  const confirmation = buildConfirmationEmail_(guests, "", editLink, true);
+  sendWeddingConfirmation_(recipient, "Meal choices confirmed — Umangi & Zach", confirmation);
+  return true;
+}
+
+function sendWeddingConfirmation_(recipient, subject, confirmation) {
   const options = {
     htmlBody: confirmation.htmlBody,
     name: "Umangi & Zach",
@@ -421,18 +452,18 @@ function sendConfirmationEmail_(recipient, token, guests, notes) {
     if (SETTINGS.FROM_EMAIL) {
       options.from = SETTINGS.FROM_EMAIL;
     }
-    GmailApp.sendEmail(recipient, "RSVP received — Umangi & Zach", confirmation.textBody, options);
+    GmailApp.sendEmail(recipient, subject, confirmation.textBody, options);
   } catch (err) {
     const fallback = {
       htmlBody: confirmation.htmlBody,
       name: "Umangi & Zach",
       replyTo: SETTINGS.REPLY_TO || "",
     };
-    GmailApp.sendEmail(recipient, "RSVP received — Umangi & Zach", confirmation.textBody, fallback);
+    GmailApp.sendEmail(recipient, subject, confirmation.textBody, fallback);
   }
 }
 
-function buildConfirmationEmail_(guests, notes, editLink) {
+function buildConfirmationEmail_(guests, notes, editLink, mealSelection = false) {
   const monogramUrl = "https://umangiandzach.love/assets/monogram.png";
   const websiteUrl = SETTINGS.WEDDING_SITE_URL || "";
   const summary = (Array.isArray(guests) ? guests : []).map((guest) => {
@@ -457,15 +488,17 @@ function buildConfirmationEmail_(guests, notes, editLink) {
     return parts.join(" | ");
   });
   const allDeclined = summary.length > 0 && summary.every((row) => !row.attending);
-  const textLead = allDeclined
+  const textLead = mealSelection
+    ? "Thank you for choosing your reception meals! We’ve recorded the selections and allergy notes below. We can’t wait to celebrate with you in Oaxaca."
+    : allDeclined
     ? "Thank you so much for letting us know your plans. We’ll miss celebrating with you in Oaxaca, and we’re so grateful for your love and support."
     : "Thanks for sending your RSVP. We can’t wait to celebrate with you in Oaxaca!";
-  const textTravelPrompt = allDeclined
+  const textTravelPrompt = mealSelection || allDeclined
     ? ""
     : "Please reply to this email with your flight and hotel details once you’ve made arrangements. December is busy season in Oaxaca, so we strongly encourage booking your hotel soon.";
 
   const textBody = [
-    "RSVP received — thank you!",
+    mealSelection ? "Meal choices confirmed — thank you!" : "RSVP received — thank you!",
     "",
     textLead,
     textTravelPrompt,
@@ -474,7 +507,7 @@ function buildConfirmationEmail_(guests, notes, editLink) {
     ...textRows,
     "",
     notes ? `Notes for the couple: ${notes}` : "",
-    editLink ? `Edit your RSVP: ${editLink}` : "",
+    editLink ? `${mealSelection ? "Edit your meal choices" : "Edit your RSVP"}: ${editLink}` : "",
     websiteUrl ? `Wedding website: ${websiteUrl}` : "",
     "",
     "Love,",
@@ -509,10 +542,12 @@ function buildConfirmationEmail_(guests, notes, editLink) {
   const notesHtml = notes
     ? `<p style="margin:14px 0 0 0;font-family:Arial,sans-serif;font-size:14px;line-height:1.6;color:#2f2d2a;"><strong>Notes for the couple:</strong> ${escapeHtml_(notes)}</p>`
     : "";
-  const htmlLead = allDeclined
+  const htmlLead = mealSelection
+    ? "Thank you for choosing your reception meals! We’ve recorded the selections and allergy notes below. We can’t wait to celebrate with you in Oaxaca."
+    : allDeclined
     ? "Thank you so much for letting us know your plans. We&rsquo;ll miss celebrating with you in Oaxaca, and we&rsquo;re so grateful for your love and support."
     : "Thanks for sending your RSVP. We can’t wait to celebrate with you in Oaxaca!";
-  const htmlTravelPrompt = allDeclined
+  const htmlTravelPrompt = mealSelection || allDeclined
     ? ""
     : `<p style="margin:0 0 14px 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#2f2d2a;">
                     <strong>Please reply to this email with your flight and hotel details once you&rsquo;ve made arrangements.</strong> December is busy season in Oaxaca, so we strongly encourage booking your hotel soon.
@@ -522,7 +557,7 @@ function buildConfirmationEmail_(guests, notes, editLink) {
     <tr>
       <td style="padding:28px 24px 12px 24px;text-align:center;">
         <img src="${escapeHtml_(monogramUrl)}" alt="Umangi and Zach monogram" width="96" style="display:block;margin:0 auto 14px auto;width:96px;height:auto;" />
-        <div style="font-size:13px;letter-spacing:1.6px;text-transform:uppercase;color:#8a7b6a;">RSVP RECEIVED</div>
+        <div style="font-size:13px;letter-spacing:1.6px;text-transform:uppercase;color:#8a7b6a;">${mealSelection ? "MEAL CHOICES CONFIRMED" : "RSVP RECEIVED"}</div>
         <h1 style="margin:10px 0 6px 0;font-size:36px;line-height:1.1;font-weight:600;">Umangi &amp; Zach</h1>
         <p style="margin:0;font-family:Arial,sans-serif;font-size:15px;color:#5f5b56;">Oaxaca, Mexico • December 4–6, 2026</p>
       </td>
@@ -542,7 +577,7 @@ function buildConfirmationEmail_(guests, notes, editLink) {
     </tr>
     <tr>
       <td style="padding:24px 24px 28px 24px;text-align:center;">
-        ${editLink ? `<a href="${escapeHtml_(editLink)}" style="display:inline-block;background:#b8572d;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:.4px;padding:12px 20px;border-radius:999px;">Edit RSVP</a>` : ""}
+        ${editLink ? `<a href="${escapeHtml_(editLink)}" style="display:inline-block;background:#b8572d;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:.4px;padding:12px 20px;border-radius:999px;">${mealSelection ? "Edit meal choices" : "Edit RSVP"}</a>` : ""}
         ${websiteUrl ? `<p style="margin:14px 0 0 0;font-family:Arial,sans-serif;font-size:13px;color:#7a7268;">Wedding website: <a href="${escapeHtml_(websiteUrl)}" style="color:#b8572d;">${escapeHtml_(websiteUrl)}</a></p>` : ""}
         <p style="margin:16px 0 0 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#1f1f1f;">
           Love,<br/>Umangi & Zach
